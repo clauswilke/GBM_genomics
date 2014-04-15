@@ -4,6 +4,8 @@ from sets import Set
 import sys
 import os
 
+data_dir = '/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/"
+
 # some VCF information
 ##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
 ##FORMAT=<ID=IGT,Number=1,Type=String,Description="Genotype when called independently (only filled if called in joint prior mode)">
@@ -49,12 +51,16 @@ def make_data( sample_file ):
 def make_data_directories( sample_file ):
 
     VCF_name = sample_file[ -24:-7 ]
-    if not os.path.exists( '../DATA/MUTATION_CALLS/%s' % VCF_name ):
-        os.makedirs( '../DATA/MUTATION_CALLS/%s' % VCF_name )
-    if not os.path.exists( '../DATA/MUTATION_CALLS/%s/FILT_LISTS' % VCF_name ):
-        os.makedirs( '../DATA/MUTATION_CALLS/%s/FILT_LISTS' % VCF_name )
+    
+    mutation_dir = os.path.join( data_dir, "MUTATION_CALLS", VCF_name )
+    if not os.path.exists( mutation_dir ):
+        os.makedirs( mutation_dir )
         
-    return VCF_name
+    filter_dir = os.path.join( data_dir, "MUTATION_CALLS", VCF_name, 'FILT_LISTS' )
+    if not os.path.exists( filter_dir ):
+        os.makedirs( filter_dir )
+        
+    return VCF_name, mutation_dir, filter_dir
 
 # make it a more work-with-able dictionary
 def read_data( data ):

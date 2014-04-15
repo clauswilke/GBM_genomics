@@ -2,10 +2,12 @@
 # it finds all mutations within 10 bp of an indel of quality 50 or greater
 # it also parses the idel file, cause that had to happe sometime
 
-def filter_three( VCF_dict, VCF_name ):
+import os.path
 
-    normal_indel_file = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/INDELS/%s_blood.txt" % VCF_name
-    tumor_indel_file = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/INDELS/%s_tumor.txt" % VCF_name
+def filter_three( VCF_dict, VCF_name, indel_dir, mutation_dir ):
+
+    normal_indel_file = os.path.join( indel_dir, VCF_name + "_blood.txt" )
+    tumor_indel_file = os.path.join( indel_dir, VCF_name + "_tumor.txt" )
 
     # make a chrom dictionary of loc lists of indel locations, the lists should be sorted
     indel_locs = {}
@@ -62,7 +64,7 @@ def filter_three( VCF_dict, VCF_name ):
             j = j + 1
 
     # save to file
-    new_file = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/MUTATION_CALLS/%s/FILT_LISTS/3_excluded.txt" % VCF_name
+    new_file = os.path.join( mutation_dir, VCF_name, "FILT_LISTS/3_excluded.txt" )
     new_fh = open( new_file, 'w' )
     for chrom in filtered_3_indels:
         for loc in filtered_3_indels[ chrom ]:

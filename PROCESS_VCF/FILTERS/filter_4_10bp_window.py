@@ -3,9 +3,10 @@
 
 # you must import Set from sets to run this function
 
-def filter_four( VCF_dict, VCF_name ):
+def filter_four( VCF_dict, VCF_name, filter_dir ):
 
     from sets import Set
+    import os.path
 
     # make a dictionary all_locs[ chrom ] : [ list of integer locations on the chromosome with a SNP ]
     all_locs = {}
@@ -33,7 +34,7 @@ def filter_four( VCF_dict, VCF_name ):
             filtered_4_10bp_window[ chrom ].append( loc )
 
     # save the output in a file in DATA/sample/filters/filter_4_excluded.txt
-    new_file = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/MUTATION_CALLS/%s/FILT_LISTS/4_excluded.txt" % VCF_name
+    new_file = os.path.join( filter_dir, "4_excluded.txt" )
     new_fh = open( new_file, 'w' )
     for chrom in filtered_4_10bp_window:
         for loc in filtered_4_10bp_window[ chrom ]:

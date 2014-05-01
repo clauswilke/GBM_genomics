@@ -7,7 +7,9 @@
 
 ##FORMAT=<ID=DP4,Number=4,Type=Integer,Description="# high-quality ref-forward bases, ref-reverse, alt-forward and alt-reverse bases">
 
-def filter_eight( VCF_dict, VCF_name ):
+def filter_eight( VCF_dict, VCF_name, filter_dir ):
+
+    import os.path
 
     existence = []
 
@@ -35,7 +37,7 @@ def filter_eight( VCF_dict, VCF_name ):
                 VCF_dict[ chrom ][ loc ][ "FILT_8" ] = "PASS"
 
     # writing it all to file...
-    new_file = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/MUTATION_CALLS/%s/FILT_LISTS/8_excluded.txt" % VCF_name
+    new_file = os.path.join( filter_dir, "8_excluded.txt" )
     new_fh = open( new_file, 'w' )
     if len( existence ) >= 1:
         for SNP in existence:

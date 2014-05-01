@@ -5,7 +5,9 @@
 # this was a completely arbitrary decision based on the fact that I wasn't catching anything at 40
 # and also on the fact that Matt wanted to me get the number of mutations per file somewhat below 300, closer to 100, so I needed to catch more
 
-def filter_two( VCF_dict, VCF_name ):
+def filter_two( VCF_dict, VCF_name, filter_dir ):
+
+    import os.path
 
     filtered_2_SSC_50 = {}
 
@@ -20,7 +22,7 @@ def filter_two( VCF_dict, VCF_name ):
             #print SS_tumor, type( SS_tumor )
 
     # save the output in DATA/mutation_calls/sample/filt_lists/2_excluded.txt  
-    new_file = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/MUTATION_CALLS/%s/FILT_LISTS/2_excluded.txt" % VCF_name
+    new_file = os.path.join( filter_dir, "2_excluded.txt" )
     new_fh = open( new_file, 'w' )
     for chrom in filtered_2_SSC_50:
         for loc in filtered_2_SSC_50[ chrom ]:

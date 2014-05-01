@@ -8,9 +8,11 @@
 ## when we discussed this with Max, he proposed an alternative that I have declined to code, partly becuase I don't know how
 ## his alternative is to filter everything with a GATK quality score less than a certain THRESHOLD (which is not specified)
 
-def filter_five( VCF_dict, VCF_name ):
+def filter_five( VCF_dict, VCF_name, filter_dir ):
 
-    new_file = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/MUTATION_CALLS/%s/FILT_LISTS/5_excluded.txt" % VCF_name
+    import os.path
+
+    new_file = os.path.join( filter_dir, "5_excluded.txt" )
     new_fh = open( new_file, 'w' )
 
     # the filter and adding it to the VCF_dict are practically the same thing, so I've combined them into one step here

@@ -4,9 +4,11 @@
 
 ## the alternative to this filter is filter 8, as we talked about it with Max, but I can do whatever I want
 
-def filter_seven( VCF_dict, VCF_name ):
+def filter_seven( VCF_dict, VCF_name, filter_dir ):
 
-    new_file = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/MUTATION_CALLS/%s/FILT_LISTS/7_excluded.txt" % VCF_name
+    import os.path
+
+    new_file = os.path.join( filter_dir, "7_excluded.txt" )
     new_fh = open( new_file, 'w' )
 
     for chrom in VCF_dict:

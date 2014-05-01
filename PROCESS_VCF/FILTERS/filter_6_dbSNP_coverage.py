@@ -3,7 +3,9 @@
 
 ## the alternative we discussed with Max, not included here, is to just remove any SNP with coverage less than 20 or some other higher threshold
 
-def filter_six( VCF_dict, VCF_name ):
+def filter_six( VCF_dict, VCF_name, filter_dir ):
+
+    import os.path
 
     # get and parse the list of SNPs, and make a dictionary of all the SNP locations by chromosome
 

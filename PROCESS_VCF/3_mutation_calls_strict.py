@@ -4,9 +4,12 @@ from sets import Set
 import sys
 import os
 
-data_dir = '/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/"
+data_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/"
+vcf_dir = "/share/WilkeLab/work/MattCC/TCGA_NextGen_Data/SomaticSniper_Data_FINAL/VCF/"
+indel_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/INDELS"
+# filter_dir and mutation_dir made in the script
 
-# some VCF information
+## some VCF information
 ##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
 ##FORMAT=<ID=IGT,Number=1,Type=String,Description="Genotype when called independently (only filled if called in joint prior mode)">
 ##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Total read depth">
@@ -32,11 +35,15 @@ import filter_7_LOH
 import filter_8_alt_coverage 
 
 # open the VCF, and put the information in a list called "data"
-def make_sample_file_list( ):
+def make_sample_file_list( vcf_dir ):
+
+    sample_list = [ "C484.TCGA-32-2616" ]
 
     sample_file_list = []
-    sample_file = "/share/WilkeLab/work/MattCC/TCGA_NextGen_Data/SomaticSniper_Data_FINAL/C484.TCGA-32-2616.SS.vcf"
-    sample_file_list.append( sample_file )
+    for sample in sample_list:
+        sample_ext = sample + ".SS.vcf"
+        sample_file = os.path.join( vcf_dir, sample_ext )
+        sample_file_list.append( sample_file )
 
     return sample_file_list
 
@@ -130,16 +137,13 @@ def summary( VCF_dict, VCF_sample ):
 
     # all the mutations in the VCF dict
     total_unfiltered = 0
-    filtered_a = 0
-    filtered_b = 0
+    total_filtered = 0
 
-    unfiltered_file = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/MUTATION_CALLS/%s/unfiltered.txt" % VCF_name
-    filtered_a_file = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/MUTATION_CALLS/%s/filtered_a.txt" % VCF_name
-    filtered_b_file = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/MUTATION_CALLS/%s/filtered_b.txt" % VCF_name
+    unfiltered_file = os.path.join ( mutation_dir, "unfiltered.txt" )
+    filtered_file = os.path.join( mutation_dir, "filtered_a.txt" )
 
     unfiltered_fh = open( unfiltered_file, 'w' )
-    filtered_a_fh = open( filtered_a_file, 'w' )
-    filtered_b_fh = open( filtered_b_file, 'w' )
+    filtered_fh = open( filtered_file, 'w' )
 
     for chrom in VCF_dict:
         for loc in VCF_dict[ chrom ]:
@@ -149,28 +153,21 @@ def summary( VCF_dict, VCF_sample ):
             if VCF_dict[ chrom ][ loc ][ filt_2 ] == "PASS":
                 if VCF_dict[ chrom ][ loc ][ filt_3 ] == "PASS":
                     if VCF_dict[ chrom ][ loc ][ filt_4 ] == "PASS":
-                        if fVCF_dict[ chrom ][ loc ][ filt_5a ] == "PASS":
-                            if VCF_dict[ chrom ][ loc ][ filt_6a ] == "PASS":
-                                if VCF_dict[ chrom ][ loc ][ filt_7a ] == "PASS":
-                                    filtered_a = filtered_a + 1
-                                    filtered_a_fh.write( "%s\t%s\n" % ( chrom, loc ) )
-                        elif VCF_dict[ chrom ][ loc ][ filt_5b ] == "PASS":
-                            if VCF_dict[ chrom ][ loc ][ filt_6b ] == "PASS":
-                                if VCF_dict[ chrom ][ loc ][ filt_7b ] == "PASS":
-                                    if VCF_dict[ chrom ][ loc ][ filt_8 ] == "PASS":
-                                        filtered_b = filtered_b + 1
-                                        filtered_b_fh.write( "%s\t%s\n" % ( chrom, loc ) )
+                        if fVCF_dict[ chrom ][ loc ][ filt_5 ] == "PASS":
+                            if VCF_dict[ chrom ][ loc ][ filt_6 ] == "PASS":
+                                if VCF_dict[ chrom ][ loc ][ filt_7 ] == "PASS":
+                                    total_filtered = total_filtered + 1
+                                    filtered_fh.write( "%s\t%s\n" % ( chrom, loc ) )
 
     unfiltered_fh.close()
-    filtered_a_fh.close()
-    filtered_b_fh.close()
+    filtered_fh.close()
     
     # summary
     # when filters done, add to the summary how many passed each filter, also as columns
-    summary_file = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/MUTATION_CALLS/%s/summary.txt" % VCF_name
+    summary_file = os.path.join( mutation_dir, "summary.txt" )
     summary_fh = open( summary_file, 'w' )
-    summary_fh.write( "SAMPLE\tUNFILTERED\tFILTERED_A\tFILTERED_B\n" )
-    summary_fh.write( "%s\t%s\t%s\t%s\n" % ( VCF_sample, total_unfiltered, filtered_a, filtered_b ) )
+    summary_fh.write( "SAMPLE\tUNFILTERED\tFILTERED\n" )
+    summary_fh.write( "%s\t%s\t%s\n" % ( VCF_sample, total_unfiltered, total_filtered ) )
     summary_fh.close()
 
     return
@@ -179,22 +176,22 @@ def summary( VCF_dict, VCF_sample ):
 ## MAIN FUNCTION ##
 ###################
 
-sample_file_list = make_sample_file_list()  ## makes the list of all the VCFs that will be analyzed
+sample_file_list = make_sample_file_list( vcf_dir )  ## makes the list of all the VCFs that will be analyzed
 
 for sample_file in sample_file_list:
-    VCF_name = make_data_directories( sample_file ) ## makes the directories in ../DATA/ where the output of this script will be stored
+    VCF_name, mutation_dir, filter_dir = make_data_directories( sample_file ) ## makes the directories in ../DATA/ where the output of this script will be stored
     data = make_data( sample_file ) ## reads the VCF into a file_header
     VCF_dict = read_data( data ) ## puts the relevant data into dictionary form
 
     ## run the filters of VCF dict
     # filter one, removes all reads with mapping quality <40, is part of makeing the VCF and does not need to be repeated here
-    VCF_dict = filter_2_somatic_score_40.filter_two( VCF_dict, VCF_name )  ## runs filter two, no SNP with somatic score <50 in blood or normal tissue
-    VCF_dict = filter_3_indels.filter_three( VCF_dict, VCF_name ) ## this runs filter three, no SNP w/in 10 bp of a predicted indel of quality >=50
-    VCF_dict = filter_4_10bp_window.filter_four( VCF_dict, VCF_name ) ## runs filter four, no SNP w/in 10 bp of another SNP, and saves output
-    VCF_dict = filter_5_VAQ.filter_five( VCF_dict, VCF_name ) ## runs filter five, no SNP with VAQ <= 20
-    VCF_dict = filter_6_dbSNP_coverage.filter_six( VCF_dict, VCF_name ) ## this runs filter six, removing sites with rsIDs if coverage is very low
-    VCF_dict = filter_7_LOH.filter_seven( VCF_dict, VCF_name ) ## runs filter seven, not counting any LOH 'cause they're probably artifacts
-    VCF_dict = filter_8_alt_coverage.filter_eight( VCF_dict, VCF_name ) ## runs filter eight gets rid of all heterozygous sites where the coverage of the alternate allele is less than 10% of the major allele
+    VCF_dict = filter_2_somatic_score_40.filter_two( VCF_dict, VCF_name, filter_dir )  ## runs filter two, no SNP with somatic score <50 in blood or normal tissue
+    VCF_dict = filter_3_indels.filter_three( VCF_dict, VCF_name, indel_dir, mutation_dir, filter_dir ) ## this runs filter three, no SNP w/in 10 bp of a predicted indel of quality >=50
+    VCF_dict = filter_4_10bp_window.filter_four( VCF_dict, VCF_name, filter_dir ) ## runs filter four, no SNP w/in 10 bp of another SNP, and saves output
+    VCF_dict = filter_5_VAQ.filter_five( VCF_dict, VCF_name, filter_dir ) ## runs filter five, no SNP with VAQ <= 20
+    VCF_dict = filter_6_dbSNP_coverage.filter_six( VCF_dict, VCF_name, filter_dir ) ## this runs filter six, removing sites with rsIDs if coverage is very low
+    VCF_dict = filter_7_LOH.filter_seven( VCF_dict, VCF_name, filter_dir ) ## runs filter seven, not counting any LOH 'cause they're probably artifacts
+    VCF_dict = filter_8_alt_coverage.filter_eight( VCF_dict, VCF_name, filter_dir ) ## runs filter eight gets rid of all heterozygous sites where the coverage of the alternate allele is less than 10% of the major allele
 
     # print VCF_dict
 

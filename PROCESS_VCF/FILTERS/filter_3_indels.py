@@ -4,7 +4,9 @@
 
 import os.path
 
-def filter_three( VCF_dict, VCF_name, indel_dir, mutation_dir ):
+def filter_three( VCF_dict, VCF_name, indel_dir, mutation_dir, filter_dir ):
+
+    import os.path
 
     normal_indel_file = os.path.join( indel_dir, VCF_name + "_blood.txt" )
     tumor_indel_file = os.path.join( indel_dir, VCF_name + "_tumor.txt" )
@@ -64,7 +66,7 @@ def filter_three( VCF_dict, VCF_name, indel_dir, mutation_dir ):
             j = j + 1
 
     # save to file
-    new_file = os.path.join( mutation_dir, VCF_name, "FILT_LISTS/3_excluded.txt" )
+    new_file = os.path.join( filter_dir, "3_excluded.txt" )
     new_fh = open( new_file, 'w' )
     for chrom in filtered_3_indels:
         for loc in filtered_3_indels[ chrom ]:

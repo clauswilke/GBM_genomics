@@ -7,6 +7,7 @@ import os
 data_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/"
 vcf_dir = "/share/WilkeLab/work/MattCC/TCGA_NextGen_Data/SomaticSniper_Data_FINAL/VCF/"
 indel_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/INDELS"
+dbsnp_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/DBSNP"
 # filter_dir and mutation_dir made in the script
 
 ## some VCF information
@@ -189,7 +190,7 @@ for sample_file in sample_file_list:
     VCF_dict = filter_3_indels.filter_three( VCF_dict, VCF_name, indel_dir, mutation_dir, filter_dir ) ## this runs filter three, no SNP w/in 10 bp of a predicted indel of quality >=50
     VCF_dict = filter_4_10bp_window.filter_four( VCF_dict, VCF_name, filter_dir ) ## runs filter four, no SNP w/in 10 bp of another SNP, and saves output
     VCF_dict = filter_5_VAQ.filter_five( VCF_dict, VCF_name, filter_dir ) ## runs filter five, no SNP with VAQ <= 20
-    VCF_dict = filter_6_dbSNP_coverage.filter_six( VCF_dict, VCF_name, filter_dir ) ## this runs filter six, removing sites with rsIDs if coverage is very low
+    VCF_dict = filter_6_dbSNP_coverage.filter_six( VCF_dict, VCF_name, filter_dir, dbsnp_dir ) ## this runs filter six, removing sites with rsIDs if coverage is very low
     VCF_dict = filter_7_LOH.filter_seven( VCF_dict, VCF_name, filter_dir ) ## runs filter seven, not counting any LOH 'cause they're probably artifacts
     VCF_dict = filter_8_alt_coverage.filter_eight( VCF_dict, VCF_name, filter_dir ) ## runs filter eight gets rid of all heterozygous sites where the coverage of the alternate allele is less than 10% of the major allele
 

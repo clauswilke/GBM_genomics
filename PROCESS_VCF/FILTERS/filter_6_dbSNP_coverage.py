@@ -8,7 +8,7 @@ def filter_six( VCF_dict, VCF_name, filter_dir ):
     import os.path
 
     # get and parse the list of SNPs, and make a dictionary of all the SNP locations by chromosome
-
+    
 
     # the test is twofold, for rs_ID and coverage
     for chrom in VCF_dict:

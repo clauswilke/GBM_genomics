@@ -80,8 +80,13 @@ def save_output( indel_dict, tissue ):
 ## MAIN FUNCTION ##
 ###################
 
-tumor_indel_file = "/share/WilkeLab/work/MattCC/TCGA_NextGen_Data/GATK_Indel_Calls_FINAL/TCGA_GBM.tumor.indels.recal.vcf"
-blood_indel_file = "/share/WilkeLab/work/MattCC/TCGA_NextGen_Data/GATK_Indel_Calls_FINAL/TCGA_GBM.blood.indels.recal.vcf"
+import os.path
+
+gatk_indel_dir = "/share/WilkeLab/work/MattCC/TCGA_NextGen_Data/GATK_Indel_Calls_FINAL"
+
+tumor_indel_file = os.path.join( gatk_indel_dir, "TCGA_GBM.tumor.indels.recal.vcf" )
+blood_indel_file = os.path.join( gatk_indel_dir, "TCGA_GBM.blood.indels.recal.vcf" )
+
 file_list = [ tumor_indel_file, blood_indel_file ]
 # file_list = [ blood_indel_file ]
 

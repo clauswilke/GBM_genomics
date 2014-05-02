@@ -38,12 +38,20 @@ import filter_8_alt_coverage
 # open the VCF, and put the information in a list called "data"
 def make_sample_file_list( vcf_dir ):
 
-    sample_list = [ "C484.TCGA-32-2616" ]
+    sample_list = []
+    # for testing used this: [ "C484.TCGA-32-2616.SS.vcf" ]
+    vcf_list = os.path.join( data_dir, "VCFs.txt" )
+    vcf_fh = open( vcf_list, 'r' )
+    for line in vcf_fh:
+        line = line.strip( "\r\n" )
+        fields = line.split ( "\t" )
+        sample = fields[ 1 ]
+        sample_list.append( sample )
 
     sample_file_list = []
     for sample in sample_list:
-        sample_ext = sample + ".SS.vcf"
-        sample_file = os.path.join( vcf_dir, sample_ext )
+        # sample_ext = sample + ".SS.vcf"
+        sample_file = os.path.join( vcf_dir, sample )
         sample_file_list.append( sample_file )
 
     return sample_file_list
@@ -186,7 +194,13 @@ summary = {}
 sample_file_list = make_sample_file_list( vcf_dir )  ## makes the list of all the VCFs that will be analyzed
 
 for sample_file in sample_file_list:
+
+    if not os.path.exists( sample_file ):
+        print "does not exist; try again: " + sample_file
+        continue
+    
     VCF_name, mutation_dir, filter_dir = make_data_directories( sample_file ) ## makes the directories in ../DATA/ where the output of this script will be stored
+    print "begin processing %s..." % VCF_name
     data = make_data( sample_file ) ## reads the VCF into a file_header
     VCF_dict = read_data( data ) ## puts the relevant data into dictionary form
 
@@ -200,12 +214,19 @@ for sample_file in sample_file_list:
     VCF_dict = filter_7_LOH.filter_seven( VCF_dict, VCF_name, filter_dir ) ## runs filter seven, not counting any LOH 'cause they're probably artifacts
     VCF_dict = filter_8_alt_coverage.filter_eight( VCF_dict, VCF_name, filter_dir ) ## runs filter eight gets rid of all heterozygous sites where the coverage of the alternate allele is less than 10% of the major allele
 
-    # print VCF_dict
+    # print VCF_dict    
+#    mutation_calls( VCF_dict, VCF_name, summary )
 
-    
-    mutation_calls( VCF_dict, VCF_name, summary )
+    print "have now processed " +  VCF_name
 
 print summary
+summary_file = os.path.join( data_dir, "MUTATION_CALLS", "summary.txt" )
+summary_fh = open( summary_file, 'w' )
+summary_fh.write( "SAMPLE\tUNFILTERED\tFILTERED\n" )
+for sample in summary:
+    summary_fh.write( "%s\t%s\t%s\n" % ( sample, summary[ sample ][ "UNFILT" ], summary[ sample ][ "FILT" ] ) )
+summary_fh.close()
+
 
 ################################################################################
 ## Somatic Mutation Filtering                                                 ##

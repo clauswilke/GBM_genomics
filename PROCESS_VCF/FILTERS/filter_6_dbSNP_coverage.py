@@ -39,8 +39,12 @@ def filter_six( VCF_dict, VCF_name, filter_dir, dbsnp_dir ):
         j=0
         while i < len( dbsnp_snps ):
             # print i, j 
-            while j < len( vcf_snps ):
-                # print i,j
+            while j < len( vcf_snps ) and i < len( dbsnp_snps ):
+                if i > len( dbsnp_snps ):
+                    continue
+                # print i,len( dbsnp_snps ), j, len( vcf_snps )
+                # print i, dbsnp_snps[ i ]
+                # print j, vcf_snps[ j ]
                 if vcf_snps[ j ] < dbsnp_snps[ i ]:
                     # then vcf_snps[ j ] is not a site with a dbSNP entry, so...
                     coverage = vcf_coverage[ j ]
@@ -66,11 +70,19 @@ def filter_six( VCF_dict, VCF_name, filter_dir, dbsnp_dir ):
             # what do we do to stop the infinite loop?
             i=i+1
 
+
     new_file = os.path.join( filter_dir, "6_excluded.txt" )
     new_fh = open( new_file, 'w' )
     for chrom in VCF_dict:
         for loc in VCF_dict[ chrom ]:
             # print chrom, loc
+            ## SOMETHING IS TOTALLY WRONG OR THIS WOULDN'T BE HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            if "FILT_6" not in VCF_dict[ chrom ][ loc ]:
+                coverage = [ VCF_dict[ chrom ][ loc ][ "read_depth_normal" ], VCF_dict[ chrom ][ loc ][ "read_depth_tumor" ] ]
+                if coverage[ 0 ] >= 20 and coverage[ 1 ] >= 20:
+                    VCF_dict[ chrom ][ loc ][ "FILT_6" ] = "PASS"
+                else:
+                    VCF_dict[ chrom ][ loc ][ "FILT_6" ] = "FAIL"
             if VCF_dict[ chrom ][ loc ][ "FILT_6" ] == "FAIL":
                 # print "still a failure", chrom, loc
                 # print chrom, loc

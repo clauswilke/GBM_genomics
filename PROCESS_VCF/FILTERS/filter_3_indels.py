@@ -11,12 +11,20 @@ def filter_three( VCF_dict, VCF_name, indel_dir, mutation_dir, filter_dir ):
     normal_indel_file = os.path.join( indel_dir, VCF_name + "_blood.txt" )
     tumor_indel_file = os.path.join( indel_dir, VCF_name + "_tumor.txt" )
 
+    files = []
+    if os.path.exists( normal_indel_file ):
+        files.append( normal_indel_file )
+    if os.path.exists( tumor_indel_file ):
+        files.append( tumor_indel_file )
+
     # make a chrom dictionary of loc lists of indel locations, the lists should be sorted
     indel_locs = {}
-    tumor_fh = open( tumor_indel_file, 'r' )
-    normal_fh = open( normal_indel_file, 'r' )
-    headers = [ tumor_fh, normal_fh ]
-    for header in headers:
+    # tumor_fh = open( tumor_indel_file, 'r' )
+    # normal_fh = open( normal_indel_file, 'r' )
+    # headers = [ tumor_fh, normal_fh ]
+
+    for file in files:
+        header = open( file, 'r' )
         data = header.readlines()
         for line in data:
             line = line.strip( '\n' )
@@ -50,6 +58,10 @@ def filter_three( VCF_dict, VCF_name, indel_dir, mutation_dir, filter_dir ):
     filtered_3_indels = {}
     
     for chrom in indel_locs:
+
+        if chrom not in SNP_locs:
+            continue
+
         j = 0
         k = 0
         filtered_3_indels[ chrom ] = []

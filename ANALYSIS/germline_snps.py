@@ -2,22 +2,28 @@
 # answers the question, which, if any, germline SNPs appear in this sample a lot?
 
 import os
+import VCF_list
 
-mutations_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/MUTATION_CALLS"
+sample_paths = VCF_list.sample_dir_paths()
 
-sample_list = [ "C484.TCGA-19-4065" ]
+# print sample_paths
 
 germline_SNP_dict = {}
 still_to_analyze = 0
+analyzed = 0
 
-for sample in sample_list:
-    filter6_file = os.path.join( mutations_dir, sample, "FILT_LISTS", "6_excluded.txt" )
+for path in sample_paths:
+    filter6_file = os.path.join( path, "FILT_LISTS", "6_excluded.txt" )
 
     if not os.path.exists( filter6_file ):
         still_to_analyze = still_to_analyze + 1
-    
-    6_fh = open( filter6_file, 'r' )
-    for line in 6_fh:
+        # print "NOT HERE"
+        continue
+
+    # print "HERE"
+    analyzed = analyzed + 1
+    filt_fh = open( filter6_file, 'r' )
+    for line in filt_fh:
         line = line.strip( "\n\r" )
         fields = line.split( "\t" )
         chrom = fields[ 0 ]
@@ -29,7 +35,15 @@ for sample in sample_list:
         else:
             germline_SNP_dict[ chrom ][ loc ] = germline_SNP_dict[ chrom ][ loc ] + 1
 
-print germline_SNP_dict
+# print germline_SNP_dict
 print still_to_analyze
+print analyzed
 
+repeat_germline_snps = 0
+for chrom in germline_SNP_dict:
+    for loc in germline_SNP_dict[ chrom ]:
+        if germline_SNP_dict[ chrom ][ loc ] >1:
+            print chrom, loc, germline_SNP_dict[ chrom ][ loc ]
+            repeat_germline_snps = repeat_germline_snps + 1
 
+print repeat_germline_snps

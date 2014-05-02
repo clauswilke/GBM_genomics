@@ -215,7 +215,7 @@ for sample_file in sample_file_list:
     VCF_dict = filter_8_alt_coverage.filter_eight( VCF_dict, VCF_name, filter_dir ) ## runs filter eight gets rid of all heterozygous sites where the coverage of the alternate allele is less than 10% of the major allele
 
     # print VCF_dict    
-#    mutation_calls( VCF_dict, VCF_name, summary )
+    mutation_calls( VCF_dict, VCF_name, summary )
 
     print "have now processed " +  VCF_name
 

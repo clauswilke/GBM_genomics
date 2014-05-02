@@ -31,7 +31,7 @@ def filter_six( VCF_dict, VCF_name, filter_dir, dbsnp_dir ):
             t_dp = VCF_dict[ chrom ][ loc ][ "read_depth_tumor" ]
             vcf_coverage.append( [ int( n_dp ), int( t_dp ) ] )
             
-        # then compare them... if ( loc in SNP_dict and reads<20 ) or (reads < 15 ): exclude
+        # then compare them... if ( loc in SNP_dict and reads<20 ) or (reads < 10 ): exclude
         # this is super messy, I know
         # print len( vcf_snps )
         # print len( dbsnp_snps )
@@ -41,25 +41,25 @@ def filter_six( VCF_dict, VCF_name, filter_dir, dbsnp_dir ):
             # print i, j 
             while j < len( vcf_snps ):
                 # print i,j
-                if vcf_snps[ j ] > dbsnp_snps[ i ]:
-                    i = i+1
-                    continue
                 if vcf_snps[ j ] < dbsnp_snps[ i ]:
                     # then vcf_snps[ j ] is not a site with a dbSNP entry, so...
                     coverage = vcf_coverage[ j ]
-                    if coverage[ 0 ] >=15 and coverage[ 1 ] >= 15:
-                        VCF_dict[ chrom ][ loc ][ "FILT_6" ] = "PASS"
+                    if coverage[ 0 ] >=10 and coverage[ 1 ] >= 10:
+                        VCF_dict[ chrom ][ str( vcf_snps[ j ] ) ][ "FILT_6" ] = "PASS"
                     else:
-                        VCF_dict[ chrom ][ loc ][ "FILT_6" ] = "FAIL"
+                        VCF_dict[ chrom ][ str( vcf_snps[ j ] ) ][ "FILT_6" ] = "FAIL"
                     j = j+1
+                    continue
+                if vcf_snps[ j ] > dbsnp_snps[ i ]:
+                    i = i+1
                     continue
                 if vcf_snps[ j ] == dbsnp_snps[ i ]:
                     # then vcf_snps[ j ] is a site with a dbSNP entry, so...
                     coverage = vcf_coverage[ j ]
                     if coverage[ 0 ] >= 20 and coverage[ 1 ] >= 20:
-                        VCF_dict[ chrom ][ loc ][ "FILT_6" ] = "PASS"
+                        VCF_dict[ chrom ][ str( vcf_snps[ j ] ) ][ "FILT_6" ] = "PASS"
                     else:
-                        VCF_dict[ chrom ][ loc ][ "FILT_6" ] = "FAIL"
+                        VCF_dict[ chrom ][ str( vcf_snps[ j ] ) ][ "FILT_6" ] = "FAIL"
                     j = j+1
                     continue
             # if we reach the end of j before we reach the end of i,
@@ -70,10 +70,13 @@ def filter_six( VCF_dict, VCF_name, filter_dir, dbsnp_dir ):
     new_fh = open( new_file, 'w' )
     for chrom in VCF_dict:
         for loc in VCF_dict[ chrom ]:
+            # print chrom, loc
             if VCF_dict[ chrom ][ loc ][ "FILT_6" ] == "FAIL":
+                # print "still a failure", chrom, loc
+                # print chrom, loc
                 new_fh.write( "%s\t%s\n" % ( chrom, loc ) )
+    new_fh.close()
 
-
-    print "where is filter six? finally running..."
+    print "where is filter six? finally runs..."
 
     return VCF_dict

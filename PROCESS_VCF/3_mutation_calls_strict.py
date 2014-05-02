@@ -134,14 +134,14 @@ def read_data( data ):
 
 # write results to file
 #################********************* this function has not yet been tested because all the filters aren't finished, so right now it doesn't work
-def summary( VCF_dict, VCF_sample ):
+def mutation_calls( VCF_dict, VCF_name, summary ):
 
     # all the mutations in the VCF dict
     total_unfiltered = 0
     total_filtered = 0
 
     unfiltered_file = os.path.join ( mutation_dir, "unfiltered.txt" )
-    filtered_file = os.path.join( mutation_dir, "filtered_a.txt" )
+    filtered_file = os.path.join( mutation_dir, "filtered.txt" )
 
     unfiltered_fh = open( unfiltered_file, 'w' )
     filtered_fh = open( filtered_file, 'w' )
@@ -151,31 +151,37 @@ def summary( VCF_dict, VCF_sample ):
             total_unfiltered = total_unfiltered + 1
             unfiltered_fh.write( "%s\t%s\n" % ( chrom, loc ) )
             
-            if VCF_dict[ chrom ][ loc ][ filt_2 ] == "PASS":
-                if VCF_dict[ chrom ][ loc ][ filt_3 ] == "PASS":
-                    if VCF_dict[ chrom ][ loc ][ filt_4 ] == "PASS":
-                        if fVCF_dict[ chrom ][ loc ][ filt_5 ] == "PASS":
-                            if VCF_dict[ chrom ][ loc ][ filt_6 ] == "PASS":
-                                if VCF_dict[ chrom ][ loc ][ filt_7 ] == "PASS":
-                                    total_filtered = total_filtered + 1
-                                    filtered_fh.write( "%s\t%s\n" % ( chrom, loc ) )
+            if VCF_dict[ chrom ][ loc ][ "FILT_2" ] == "PASS":
+                if VCF_dict[ chrom ][ loc ][ "FILT_3" ] == "PASS":
+                    if VCF_dict[ chrom ][ loc ][ "FILT_4" ] == "PASS":
+                        if VCF_dict[ chrom ][ loc ][ "FILT_5" ] == "PASS":
+                            if VCF_dict[ chrom ][ loc ][ "FILT_6" ] == "PASS":
+                                if VCF_dict[ chrom ][ loc ][ "FILT_7" ] == "PASS":
+                                    if VCF_dict[ chrom ][ loc ][ "FILT_8" ] == "PASS":
+                                        total_filtered = total_filtered + 1
+                                        filtered_fh.write( "%s\t%s\n" % ( chrom, loc ) )
 
     unfiltered_fh.close()
     filtered_fh.close()
-    
+
+    summary[ VCF_name ] = {}
+    summary[ VCF_name ][ "UNFILT" ] = total_unfiltered
+    summary[ VCF_name ][ "FILT" ] = total_filtered
     # summary
     # when filters done, add to the summary how many passed each filter, also as columns
-    summary_file = os.path.join( mutation_dir, "summary.txt" )
-    summary_fh = open( summary_file, 'w' )
-    summary_fh.write( "SAMPLE\tUNFILTERED\tFILTERED\n" )
-    summary_fh.write( "%s\t%s\t%s\n" % ( VCF_sample, total_unfiltered, total_filtered ) )
-    summary_fh.close()
+    # summary_file = os.path.join( mutation_dir, "summary.txt" )
+    # summary_fh = open( summary_file, 'w' )
+    # summary_fh.write( "SAMPLE\tUNFILTERED\tFILTERED\n" )
+    # summary_fh.write( "%s\t%s\t%s\n" % ( VCF_sample, total_unfiltered, total_filtered ) )
+    # summary_fh.close()
 
     return
 
 ###################
 ## MAIN FUNCTION ##
 ###################
+
+summary = {}
 
 sample_file_list = make_sample_file_list( vcf_dir )  ## makes the list of all the VCFs that will be analyzed
 
@@ -196,7 +202,10 @@ for sample_file in sample_file_list:
 
     # print VCF_dict
 
-    # summary( VCF_dict, VCF_sample )
+    
+    mutation_calls( VCF_dict, VCF_name, summary )
+
+print summary
 
 ################################################################################
 ## Somatic Mutation Filtering                                                 ##

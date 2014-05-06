@@ -55,14 +55,16 @@ def data_locs( file ):
 
     for chrom in dict:
         dict[ chrom ] = sorted( dict[ chrom ] )
-        print dict[ chrom ]
+        # print dict[ chrom ]
 
     return dict
 
 ## this function
-#def compare_locs( filt_dict, unfilt_dict ):
+def compare_locs( filt_dict, unfilt_dict ):
 
-#    return
+    overlap = {}
+
+    return overlap
 
 ###################
 ## MAIN FUNCTION ##
@@ -75,12 +77,16 @@ for double in amp_doubles:
 
     for dir in amp_doubles[ double ]:
         files = [ os.path.join( dir, "filtered.txt" ), os.path.join( dir, "unfiltered.txt" ) ]
+        filt_dict = {}
+        unfilt_dict = {}
         for file in files:
             if "un" in file and os.path.exists( file ):
                 unfilt_dict = data_locs( file )
-            elif os.path.exits( file ):
+            elif os.path.exists( file ):
                 filt_dict = data_locs( file )
-        
+        if filt_dict and unfilt_dict:
+            overlap = compare_locs( filt_dict, unfilt_dict )
+
 
         #filt_dict, unfilt_dict = data_locs( type, dir )
         #overlap_55 = compare_locs( filt_dict, unfilt_dict )

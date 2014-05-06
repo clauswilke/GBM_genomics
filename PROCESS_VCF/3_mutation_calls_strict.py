@@ -172,9 +172,9 @@ def mutation_calls( VCF_dict, VCF_name, summary ):
     unfiltered_fh.close()
     filtered_fh.close()
 
-    summary[ VCF_name ] = {}
-    summary[ VCF_name ][ "UNFILT" ] = total_unfiltered
-    summary[ VCF_name ][ "FILT" ] = total_filtered
+    # summary[ VCF_name ] = {}
+    # summary[ VCF_name ][ "UNFILT" ] = total_unfiltered
+    # summary[ VCF_name ][ "FILT" ] = total_filtered
     # summary
     # when filters done, add to the summary how many passed each filter, also as columns
     # summary_file = os.path.join( mutation_dir, "summary.txt" )
@@ -198,6 +198,14 @@ for sample_file in sample_file_list:
     if not os.path.exists( sample_file ):
         print "does not exist; try again: " + sample_file
         continue
+
+    #############**************########### check you want this part in...
+    ## this takes out anything I have already analyzed...
+    VCF_name = sample_file[ -24:-7 ]
+    VCF_dir = os.path.join( data_dir, "MUTATION_CALLS", VCF_name )
+    if os.path.exists( VCF_dir ):
+        print "already analyzed this sample..." + VCF_name
+        continue
     
     VCF_name, mutation_dir, filter_dir = make_data_directories( sample_file ) ## makes the directories in ../DATA/ where the output of this script will be stored
     print "begin processing %s..." % VCF_name
@@ -219,13 +227,13 @@ for sample_file in sample_file_list:
 
     print "have now processed " +  VCF_name
 
-print summary
-summary_file = os.path.join( data_dir, "MUTATION_CALLS", "summary.txt" )
-summary_fh = open( summary_file, 'w' )
-summary_fh.write( "SAMPLE\tUNFILTERED\tFILTERED\n" )
-for sample in summary:
-    summary_fh.write( "%s\t%s\t%s\n" % ( sample, summary[ sample ][ "UNFILT" ], summary[ sample ][ "FILT" ] ) )
-summary_fh.close()
+# print summary
+# summary_file = os.path.join( data_dir, "MUTATION_CALLS", "summary.txt" )
+# summary_fh = open( summary_file, 'w' )
+# summary_fh.write( "SAMPLE\tUNFILTERED\tFILTERED\n" )
+# for sample in summary:
+#    summary_fh.write( "%s\t%s\t%s\n" % ( sample, summary[ sample ][ "UNFILT" ], summary[ sample ][ "FILT" ] ) )
+# summary_fh.close()
 
 
 ################################################################################

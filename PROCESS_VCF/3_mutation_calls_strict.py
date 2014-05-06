@@ -202,8 +202,8 @@ for sample_file in sample_file_list:
     #############**************########### check you want this part in...
     ## this takes out anything I have already analyzed...
     VCF_name = sample_file[ -24:-7 ]
-    VCF_dir = os.path.join( data_dir, "MUTATION_CALLS", VCF_name )
-    if os.path.exists( VCF_dir ):
+    VCF_filt_file = os.path.join( data_dir, "MUTATION_CALLS", VCF_name, "filtered.txt" )
+    if os.path.exists( VCF_filt_file ):
         print "already analyzed this sample..." + VCF_name
         continue
     

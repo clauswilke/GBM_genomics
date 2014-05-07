@@ -64,6 +64,8 @@ def compare_locs( filt_dict, unfilt_dict ):
 
     overlap = {}
 
+    
+
     return overlap
 
 ###################
@@ -75,17 +77,33 @@ def compare_locs( filt_dict, unfilt_dict ):
 amp_doubles = check_for_amp_doubles()
 for double in amp_doubles:
 
-    for dir in amp_doubles[ double ]:
-        files = [ os.path.join( dir, "filtered.txt" ), os.path.join( dir, "unfiltered.txt" ) ]
-        filt_dict = {}
-        unfilt_dict = {}
-        for file in files:
-            if "un" in file and os.path.exists( file ):
-                unfilt_dict = data_locs( file )
-            elif os.path.exists( file ):
-                filt_dict = data_locs( file )
-        if filt_dict and unfilt_dict:
-            overlap = compare_locs( filt_dict, unfilt_dict )
+    # these are the constructs you'll be working with; this will change as you have filt300 and filt100 samples to add to these
+    WGA_filt_dict = {}
+    WGA_unfilt_dict = {}
+    WGS_filt_dict = {}
+    WGS_unfilt_dict = {}
+
+    # for each sample for which you have a WGS and a WGA
+    # make the WGA (C282) or WGS(C484) dictionaries
+    for dir in double:
+        if "C282" in dir:
+            files = [ os.path.join( dir, "filtered.txt" ), os.path.join( dir, "unfiltered.txt" ) ]
+            for file in files:
+                if "un" in file and os.path.exists( file ):
+                    WGA_unfilt_dict = data_locs( file )
+                elif os.path.exists( file ):
+                    WGA_filt_dict = data_locs( file )
+        elif "C484" in dir:
+            files = [ os.path.join( dir, "filtered.txt" ), os.path.join( dir, "unfiltered.txt" ) ]
+            for file in files:
+                if "un" in file and os.path.exists( file ):
+                    WGS_unfilt_dict = data_locs( file )
+                elif os.path.exists( file ):
+                    WGS_filt_dict = data_locs( file )
+
+    # now run the comparison
+    if WGA_unfilt_dict and WGS_unfilt_dict:
+        print "yay!"
 
 
         #filt_dict, unfilt_dict = data_locs( type, dir )

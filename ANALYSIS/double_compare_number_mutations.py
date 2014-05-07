@@ -1,5 +1,7 @@
 # this is the script that copares the number of mutations in each of the pairs of doubles files
 
-import sort_doubles
+import os
+import VCF_list
 
-doubles_dict = sort_doubles.sort_doubles()
+### first let's consider the WGS v. WGA case
+# get the paths to the relevant directories

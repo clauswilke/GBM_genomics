@@ -1,42 +1,38 @@
-# this script takes mutation files of doubles and finds the overlap
-## should take different filter levels, will work out how when I have all the levels...
+## this script takes mutation files of doubles and finds the overlap
+
+# for now this is only working on the WGS/WGA double files
+# and is also only working on the unfiltered data
+# eventually (when I have data) it should work on different filter levels and different doubles samples
 
 import os
+import VCF_list
 
 data_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/"
-doubles_file = os.path.join( data_dir, "doubles.txt" )
 mutation_dir = os.path.join( data_dir, "MUTATION_CALLS" )
 
-## this function checks to make sure that all the amplification v. non-amplification files that should be there, are there
-## it returns a dictionary of sample names as keys with two paths (list, sorted) as values
-def check_for_amp_doubles():
+# next we make sure that all the files that we need are there
+# filter_level is basically file_name (e.g. "unfiltered.txt" or "filtered_04.txt")
+def check_file_existence( filter_level, double_samples ):
 
-    amp_doubles = {}
-    doubles_fh = open( doubles_file, 'r' )
-    for line in doubles_fh:
-        line = line.strip( "\r\n" )
-        fields = line.split( "\t" )
-        sample_name = fields[ 0 ]
-        file_one = fields[ 1 ][ :17 ]
-        file_two = fields[ 2 ][ :17 ]
-        path_one = os.path.join( mutation_dir, file_one )
-        path_two = os.path.join( mutation_dir, file_two )
+    useable_double_samples = {}
+    num_doub = 0
 
-        # if os.path.exists( path_one ):
-        #     one = "has one"
-        # if os.path.exists( path_two ):
-        #     two = "has two"
-        # if one == "has one" and two == "has two":
-        #     double = "TRUE"
-        # else:
-        #     double = "FALSE"
-        # print double, one, two
-        
-        amp_doubles[ sample_name ] = sorted( [ path_one, path_two ] )
+    for sample in double_samples:
+        existence = []
+        print double_samples[ sample ]
+        for dir in double_samples[ sample ]:
+            file = os.path.join( dir, filter_level )
+            if os.path.exists( file ):
+                existence.append( "TRUE" )
+        if existence == [ "TRUE", "TRUE" ]:
+            num_doub += 1
+            useable_double_samples[ sample ] = double_samples[ sample ]
 
-    return amp_doubles
+    print "there are" + num_doub + "useable samples"
 
-## this function
+    return useable_double_samples
+
+## this function makes a dictionary of all the mutations in a file, which can then be fed into a comparison function
 def data_locs( file ):
 
     dict = {}
@@ -74,37 +70,15 @@ def compare_locs( filt_dict, unfilt_dict ):
 
 ## pretty sure C282 is WGA and C484 WGS. Will double check that with Matt and update this note, however. 
 
-amp_doubles = check_for_amp_doubles()
-for double in amp_doubles:
+# first thing is to load the doubles files
+double_samples = VCF_list.analyzed_doubles()
 
-    # these are the constructs you'll be working with; this will change as you have filt300 and filt100 samples to add to these
-    WGA_filt_dict = {}
-    WGA_unfilt_dict = {}
-    WGS_filt_dict = {}
-    WGS_unfilt_dict = {}
+# and check to make sure that all the files you need are there
+filter_level = "unfiltered.txt"
+useable_double_samples = check_file_existence( filter_level, double_samples )
 
-    # for each sample for which you have a WGS and a WGA
-    # make the WGA (C282) or WGS(C484) dictionaries
-    for dir in double:
-        if "C282" in dir:
-            files = [ os.path.join( dir, "filtered.txt" ), os.path.join( dir, "unfiltered.txt" ) ]
-            for file in files:
-                if "un" in file and os.path.exists( file ):
-                    WGA_unfilt_dict = data_locs( file )
-                elif os.path.exists( file ):
-                    WGA_filt_dict = data_locs( file )
-        elif "C484" in dir:
-            files = [ os.path.join( dir, "filtered.txt" ), os.path.join( dir, "unfiltered.txt" ) ]
-            for file in files:
-                if "un" in file and os.path.exists( file ):
-                    WGS_unfilt_dict = data_locs( file )
-                elif os.path.exists( file ):
-                    WGS_filt_dict = data_locs( file )
-
-    # now run the comparison
-    if WGA_unfilt_dict and WGS_unfilt_dict:
-        print "yay!"
+# now run the comparison
 
 
-        #filt_dict, unfilt_dict = data_locs( type, dir )
-        #overlap_55 = compare_locs( filt_dict, unfilt_dict )
+
+# and save the data in /ANALYSIS/FIGURES, so that you can generate figures...

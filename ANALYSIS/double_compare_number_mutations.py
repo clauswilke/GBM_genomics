@@ -33,9 +33,18 @@ for sample in sample_dirs:
     C484_file = os.path.join( C484_dir, "unfiltered.txt" )
     C484_count = how_many_muts.count_muts( C484_file )
 
+    all_files.append( C282_count )
+    all_files.append( C484_count )
     C282_files.append( C282_count )
     C484_files.append( C484_count )
-    pair = ( C282_count, C484_count )
+    pair = ( sample, C282_count, C484_count )
     paired_counts.append( pair )
 
-# and finally save them in a file /ANALYSIS/FIGURES, where I can make them into figures using R...
+# and finally save them in a file /GBM_genomics/FIGURES, where I can make them into figures using R...
+figure_data_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/GBM_genomics/FIGURES/FIGURE_DATA"
+file = os.path.join( figure_data_dir, "unfiltered_WGS-WGA_counts.txt" )
+file_fh = open( file, 'w' )
+file_fh.write( "SAMPLE\tC282_count\tC484_count\n" )
+for tuple in paired_counts:
+    file_fh.write( "%s\t%s\t%s\n" % ( tuple[ 0 ], tuple[ 1 ], tuple[ 2 ] ) )
+file_fh.close()

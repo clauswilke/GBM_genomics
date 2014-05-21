@@ -59,7 +59,7 @@ def data_locs( file ):
 ## the hypothesis states that a substantial portion of the mutations in dictA (time_0 and WGS) should also be in dictB (time_1 and WGA)
 def compare_locs( dictA, dictB ):
 
-    all = {}
+    difference = {}
     overlap = {}
 
     # set up chrom keys in overlap and all
@@ -71,37 +71,39 @@ def compare_locs( dictA, dictB ):
         if chrom not in chroms:
             chroms.append( chrom )
     for chrom in chroms:
-        all[ chrom ] = []
+        difference[ chrom ] = []
         if chrom in dictA and chrom in dictB:
             overlap[ chrom ] = []
 
     # now do the comparison, from the point of view of dictA
     for chrom in dictA:
     	if chrom not in dictB:
-    		all[ chrom ] = dictA[ chrom ]
+    		difference[ chrom ] = dictA[ chrom ]
     		continue
     	else:
         	for loc in dictA[ chrom ]:
         		if loc in dictB[ chrom ]:
         			overlap[ chrom ].append( loc )
-        			all[ chrom ].append( loc )
         		else:
-        			all[ chrom ].append( loc )
+        			difference[ chrom ].append( loc )
     # and from the point of view of dictB, given all overlap with dictA has already been found
     for chrom in dictB:
-    	for loc in dictB[ chrom ]:
-    		if loc not in all[ chrom ]:
-    			all[ chrom ].append( loc )
+    	if chrom not in dictA:
+    		difference[ chrom ] = dictB[ chrom ]
+    	else:
+	    	for loc in dictB[ chrom ]:
+    			if loc not in overlap[ chrom ]:
+    				difference[ chrom ].append( loc )
     			
     # print overlap
 
     # sort all and overlap for my peace of mind
-    for chrom in all:
-        all[ chrom ] = sorted( all[ chrom ] )
+    for chrom in difference:
+        difference[ chrom ] = sorted( difference[ chrom ] )
     for chrom in overlap:
         overlap[ chrom ] = sorted( overlap[ chrom ] )
 
-    return all, overlap
+    return difference, overlap
 
 ###################
 ## MAIN FUNCTION ##
@@ -153,8 +155,11 @@ for sample in useable_double_samples:
     # print C484_dict
 
 	# and finally get around to comparing the two...
-	all, overlap = compare_locs( C282_dict, C484_dict )
-	print all, overlap
+	difference, overlap = compare_locs( C282_dict, C484_dict )
+	print overlap
+	#print all, overlap
+
+	# and finally, write the data to a file...
 
 """
 

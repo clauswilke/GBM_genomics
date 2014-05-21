@@ -6,13 +6,23 @@
 ## analyzed_VCF_doubles: 
 ##
 
-def analyzed_VCFs():
+import os
+
+## all functions take an argument, data_set, which tells the function which set of mutation calls,
+## essentially which filter settings,
+## it should ba analyzing (or counting the files to analyze, as the case may be with doubles)
+##
+## the options for the 55 WGS/WGA samples are: "MUTATION_CALLS" (original), "MUTATION_CALLS_STD40 (the std40 settings), ...
+## the options for the 13 before/after samples are: ...
+##
+
+def analyzed_VCFs( data_set ):
 
     import os
 
     analyzed_VCFs = []
     
-    mut_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/MUTATION_CALLS"
+    mut_dir = os.path.join( "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA", data_set )
     one = os.walk( mut_dir )
     data = [x[0] for x in os.walk( mut_dir ) ]
 
@@ -23,12 +33,12 @@ def analyzed_VCFs():
 
     return analyzed_VCFs
 
-def analyzed_doubles():
+def analyzed_doubles( data_set ):
 
     # this part is the same as the existing VCFs function above
     import os
 
-    mut_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/MUTATION_CALLS"
+    mut_dir = os.path.join( "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA", data_set )
     one = os.walk( mut_dir )
     data = [x[0] for x in os.walk( mut_dir ) ]
 

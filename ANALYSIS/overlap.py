@@ -1,17 +1,17 @@
 ## this script takes mutation files of doubles and finds the overlap
+## then stores the results in ...
 
 # for now this is only working on the WGS/WGA double files
-# and is also only working on the unfiltered data
-# eventually (when I have data) it should work on different filter levels and different doubles samples
+# for data_set and filter_level, see command line argument explanations in "MAIN FUNCTION"
 
 import os
 import VCF_list
+import sys
 
 data_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/"
 mutation_dir = os.path.join( data_dir, "MUTATION_CALLS" )
 
 # next we make sure that all the files that we need are there
-# filter_level is basically file_name (e.g. "unfiltered.txt" or "filtered_04.txt")
 def check_file_existence( filter_level, double_samples ):
 
     useable_double_samples = {}
@@ -64,10 +64,10 @@ def compare_locs( dictA, dictB ):
 
     # set up chrom keys in overlap and all
     chroms = []
-    for chrom in dictB:
+    for chrom in dictA:
         if chrom not in chroms:
             chroms.append( chrom )
-    for chrom in dictA:
+    for chrom in dictB:
         if chrom not in chroms:
             chroms.append( chrom )
     for chrom in chroms:
@@ -75,23 +75,25 @@ def compare_locs( dictA, dictB ):
         if chrom in dictA and chrom in dictB:
             overlap[ chrom ] = []
 
-    # now do the compare from the point of view of dictB
-    for chrom in dictB:
-        for loc in dictB:
-            if chrom in dictA:
-                if loc in dictA[ chrom ]:
-                    overlap[ chrom ].append( loc )
-                    all[ chrom ].append( loc )
-                else:
-                    all[ chrom ].append( loc )
-            else:
-                all[ chrom ].append( loc )
-
-    # and from the point of view of dictA, given all overlap with dictB has already been found
+    # now do the comparison, from the point of view of dictA
     for chrom in dictA:
-        for loc in dictA[ chrom ]:
-            if loc not in all[ chrom ]:
-                all[ chrom ].append( loc )
+    	if chrom not in dictB:
+    		all[ chrom ] = dictA[ chrom ]
+    		continue
+    	else:
+        	for loc in dictA[ chrom ]:
+        		if loc in dictB[ chrom ]:
+        			overlap[ chrom ].append( loc )
+        			all[ chrom ].append( loc )
+        		else:
+        			all[ chrom ].append( loc )
+    # and from the point of view of dictB, given all overlap with dictA has already been found
+    for chrom in dictB:
+    	for loc in dictB[ chrom ]:
+    		if loc not in all[ chrom ]:
+    			all[ chrom ].append( loc )
+    			
+    # print overlap
 
     # sort all and overlap for my peace of mind
     for chrom in all:
@@ -105,13 +107,26 @@ def compare_locs( dictA, dictB ):
 ## MAIN FUNCTION ##
 ###################
 
+# this function runs with several command line options, as follows:
+# sys.argv1 = data_set, and should refer to which filter settings were used, and the file that houses that dataset
+## it should be "MUTATION_CALLS" (original), "MUTATION_CALLS_STD40 (the std40 settings), ...
+# sys.argv[2] = filter_level, and should be either "filtered.txt" or "unfiltered.txt"
+## this gives you the filtered data set or the unfiltered data set for the run that you are analyzing
+
 ## pretty sure C282 is WGA and C484 WGS. Will double check that with Matt and update this note, however. 
 
+## debugging...
+# print sys.argv[ 0 ]
+# print sys.argv[ 1 ], type( sys.argv[ 1 ] )
+# print sys.argv[ 2 ], type( sys.argv[ 2 ] )
+
 # first thing is to load the doubles files
-double_samples, doub_count = VCF_list.analyzed_doubles()
+data_set = sys.argv[ 1 ]
+double_samples, doub_count = VCF_list.analyzed_doubles( data_set )
+# print doub_count
 
 # and check to make sure that all the files you need are there
-filter_level = "unfiltered.txt"
+filter_level = sys.argv[ 2 ]
 useable_double_samples = check_file_existence( filter_level, double_samples )
 
 # now run the comparison
@@ -119,17 +134,32 @@ useable_double_samples = check_file_existence( filter_level, double_samples )
 for sample in useable_double_samples:
     C282_dict = {}
     C484_dict = {}
-    for dir in useable_double_samples[ sample ]:
+    dirs = useable_double_samples[ sample ]
+    
+    # get each of the two file_names
+    for dir in dirs:
         file = os.path.join( dir, filter_level )
+        
+        # analyze the C282 file
         if "C282" in file:
-            C282_dict = data_locs( file )
-            # print "made WGA daict..."
+        	C282_dict = data_locs( file )
+        	print "made C282 dict..."
         elif "C484" in file:
-            C484_dict = data_locs( file )
-            # print "made WGS dict..."
+        	C484_dict = data_locs( file )
+        	print "made C484 dict..."
+        else:
+        	print "error... not a C282 or a C484... what?"
+    # print C282_dict
     # print C484_dict
-    all, overlap = compare_locs( C484_dict, C282_dict )
-    print overlap
+
+	# and finally get around to comparing the two...
+	all, overlap = compare_locs( C282_dict, C484_dict )
+	print all, overlap
+
+"""
+
 
 # and save the data in /GBM_genomics/FIGURES/FIGURE_DATA, so that you can generate figures...
 print 
+
+"""

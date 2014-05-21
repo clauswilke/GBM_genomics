@@ -68,11 +68,11 @@ def make_data_directories( sample_file ):
 
     VCF_name = sample_file[ -24:-7 ]
     
-    mutation_dir = os.path.join( data_dir, "MUTATION_CALLS", VCF_name )
+    mutation_dir = os.path.join( data_dir, "MUTATION_CALLS_STD40", VCF_name )
     if not os.path.exists( mutation_dir ):
         os.makedirs( mutation_dir )
         
-    filter_dir = os.path.join( data_dir, "MUTATION_CALLS", VCF_name, 'FILT_LISTS' )
+    filter_dir = os.path.join( data_dir, "MUTATION_CALLS_STD40", VCF_name, 'FILT_LISTS' )
     if not os.path.exists( filter_dir ):
         os.makedirs( filter_dir )
         
@@ -202,7 +202,7 @@ for sample_file in sample_file_list:
     #############**************########### check you want this part in...
     ## this takes out anything I have already analyzed...
     VCF_name = sample_file[ -24:-7 ]
-    VCF_filt_file = os.path.join( data_dir, "MUTATION_CALLS", VCF_name, "filtered.txt" )
+    VCF_filt_file = os.path.join( data_dir, "MUTATION_CALLS_STD40", VCF_name, "filtered.txt" )
     if os.path.exists( VCF_filt_file ):
         print "already analyzed this sample..." + VCF_name
         continue

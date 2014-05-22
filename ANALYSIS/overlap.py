@@ -132,6 +132,26 @@ def write_files( sample, data_set, filter_level, overlap, difference ):
 
 	return 
 
+def summarize_for_figs( sample, data_set, filter_level, overlap, difference, summary ):
+
+	diff_muts = 0
+	over_muts = 0
+	
+	for chrom in overlap:
+		for loc in overlap[ chrom ]:
+			over_muts += 1
+			
+	for chrom in difference:
+		for loc in difference[ chrom ]:
+			diff_muts += 1
+	
+	all_muts = diff_muts + over_muts
+	
+	print sample, over_muts, diff_muts, all_muts
+	summary[ sample ] = [ over_muts, diff_muts, all_muts ]
+
+	return
+
 ###################
 ## MAIN FUNCTION ##
 ###################
@@ -158,37 +178,31 @@ double_samples, doub_count = VCF_list.analyzed_doubles( data_set )
 filter_level = sys.argv[ 2 ]
 useable_double_samples = check_file_existence( filter_level, double_samples )
 
+summary = {}
 # now run the comparison
-# currently assuming that C282 is WGA and C484 is WGS
 for sample in useable_double_samples:
-    C282_dict = {}
-    C484_dict = {}
-    dirs = useable_double_samples[ sample ]
-    
-    # get each of the two file_names
-    for dir in dirs:
-        file = os.path.join( dir, filter_level )
-        
-        # analyze the C282 file
-        if "C282" in file:
-        	C282_dict = data_locs( file )
-        	print "made C282 dict..."
-        elif "C484" in file:
-        	C484_dict = data_locs( file )
-        	print "made C484 dict..."
-        else:
-        	print "error... not a C282 or a C484... what?"
-    # print C282_dict
-    # print C484_dict
-
-	# and finally get around to comparing the two...
-	difference, overlap = compare_locs( C282_dict, C484_dict )
-	print "calculated overlap..."
-	# print difference, overlap
-
-	# and finally, write the data to a file...
+	dictA = data_locs( os.path.join( useable_double_samples[ sample ][ 0 ], sys.argv[ 2 ] ) )
+	dictB = data_locs( os.path.join( useable_double_samples[ sample ][ 1 ], sys.argv[ 2 ] ) )
+	difference, overlap = compare_locs( dictA, dictB )
 	write_files( sample, data_set, filter_level, overlap, difference )
-	
+	summarize_for_figs( sample, data_set, filter_level, overlap, difference, summary )
+
+# write summary to file
+figure_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/GBM_genomics/FIGURES/FIGURE_DATA"
+figure_data_file = os.path.join( figure_dir, "STD40_" + "unfiltered_" + "overlap.txt" )
+figure_fh = open( figure_data_file, 'w' )
+figure_fh.write( "SAMPLE\tOVERLAP\tDIFFERENCE\tTOTAL\n" )
+for sample in summary:
+	over = summary[ sample ][ 0 ]
+	diff = summary[ sample ][ 1 ]
+	all = summary[ sample ][ 2 ]
+	figure_fh.write( "%s\t%s\t%s\t%s\n" % ( sample, over, diff, all ) )
+figure_fh.close()
+
+## this function stands basically independently; only run it if you want to
+## it does exactly the same thing as the "summarize_figs" function, except that it goes chromosome by chromosome
+
+
 
 
 """

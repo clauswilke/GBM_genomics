@@ -147,7 +147,10 @@ def summarize_for_figs( sample, data_set, filter_level, overlap, difference, sum
 	
 	all_muts = diff_muts + over_muts
 	
-	print sample, over_muts, diff_muts, all_muts
+	p_o = float( over_muts )/float( over_muts + diff_muts )
+	p_d = float( diff_muts )/float( over_muts + diff_muts )
+	
+	print sample, over_muts, diff_muts, all_muts, p_o, p_d
 	summary[ sample ] = [ over_muts, diff_muts, all_muts ]
 
 	return
@@ -155,6 +158,9 @@ def summarize_for_figs( sample, data_set, filter_level, overlap, difference, sum
 ###################
 ## MAIN FUNCTION ##
 ###################
+
+## run command: python overlap.py <data_set> <filter_level>
+## example run command: python overlap.py MUTATION_CALLS_STD40 unfiltered.txt
 
 # this function runs with several command line options, as follows:
 # sys.argv1 = data_set, and should refer to which filter settings were used, and the file that houses that dataset
@@ -186,22 +192,20 @@ for sample in useable_double_samples:
 	difference, overlap = compare_locs( dictA, dictB )
 	write_files( sample, data_set, filter_level, overlap, difference )
 	summarize_for_figs( sample, data_set, filter_level, overlap, difference, summary )
-
+	
 # write summary to file
 figure_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/GBM_genomics/FIGURES/FIGURE_DATA"
 figure_data_file = os.path.join( figure_dir, "STD40_" + "unfiltered_" + "overlap.txt" )
 figure_fh = open( figure_data_file, 'w' )
-figure_fh.write( "SAMPLE\tOVERLAP\tDIFFERENCE\tTOTAL\n" )
+figure_fh.write( "SAMPLE\tOVERLAP\tDIFFERENCE\tTOTAL\tPERCENT_OVERLAP\tPERCENT_DIFFERENCE\n" )
 for sample in summary:
 	over = summary[ sample ][ 0 ]
 	diff = summary[ sample ][ 1 ]
 	all = summary[ sample ][ 2 ]
-	figure_fh.write( "%s\t%s\t%s\t%s\n" % ( sample, over, diff, all ) )
+	percent_over = str( float( over )/float( all ) )
+	percent_diff = str( float( diff )/float( all ) )
+	figure_fh.write( "%s\t%s\t%s\t%s\t%s\t%s\n" % ( sample, over, diff, all, percent_over, percent_diff ) )
 figure_fh.close()
-
-## this function stands basically independently; only run it if you want to
-## it does exactly the same thing as the "summarize_figs" function, except that it goes chromosome by chromosome
-
 
 
 

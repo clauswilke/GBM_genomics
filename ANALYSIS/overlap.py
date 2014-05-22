@@ -105,6 +105,33 @@ def compare_locs( dictA, dictB ):
 
     return difference, overlap
 
+def write_files( sample, data_set, filter_level, overlap, difference ):
+
+	data_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/DOUBLES/WGA-S"
+	dataset_dir = os.path.join( data_dir, data_set )
+	if not os.path.exists( dataset_dir ):
+		os.makedirs( dataset_dir )
+	samp_dir = os.path.join( dataset_dir, sample )
+	if not os.path.exists( samp_dir ):
+		os.makedirs( samp_dir )
+	
+	diff_file = os.path.join( samp_dir, "difference_" + filter_level )
+	overlap_file = os.path.join( samp_dir, "overlap_" + filter_level )
+	
+	diff_fh = open( diff_file, 'w' )
+	for chrom in difference:
+		for loc in difference[ chrom ]:
+			diff_fh.write( "%s\t%s\n" % ( chrom, loc ) )
+	diff_fh.close()
+	
+	overlap_fh = open( overlap_file, 'w' )
+	for chrom in overlap:
+		for loc in overlap[ chrom ]: 
+			overlap_fh.write( "%s\t%s\n" % ( chrom, loc ) )
+	overlap_fh.close()
+
+	return 
+
 ###################
 ## MAIN FUNCTION ##
 ###################
@@ -156,10 +183,13 @@ for sample in useable_double_samples:
 
 	# and finally get around to comparing the two...
 	difference, overlap = compare_locs( C282_dict, C484_dict )
-	print overlap
-	#print all, overlap
+	print "calculated overlap..."
+	# print difference, overlap
 
 	# and finally, write the data to a file...
+	write_files( sample, data_set, filter_level, overlap, difference )
+	
+
 
 """
 

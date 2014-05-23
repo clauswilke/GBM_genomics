@@ -19,8 +19,10 @@ dev.off()
 
 # plot of (paired) C282 against C484, with a line at 1 to see how things fall
 # anything below the line is in line with the hypothesis, above is bad
-pdf( "../FIGURE_PDFS/C282_v_C484.pdf" )
-plot(data$C282_count, data$C484_count, log='xy')
+png( "../FIGURE_PDFS/C282_v_C484.png" )
+#pdf( "../FIGURE_PDFS/C282_v_C484.pdf" )
+par(bty='n')
+plot(data$C282_count, data$C484_count, log='xy', pch=20, xlab="No. of putative SNPs, WGA", ylab="No. of putative SNPs, WGS" )
 abline(0,1)
 dev.off()
 

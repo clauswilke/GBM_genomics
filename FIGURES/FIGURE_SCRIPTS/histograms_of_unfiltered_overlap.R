@@ -17,9 +17,11 @@ plot( difference, main="Density of [WGS/WGA difference]/[Total WGA mutations]", 
 dev.off()
 
 # plot of the size of the overlap v. total # unfiltered mutations
-pdf( "../FIGURE_PDFS/unfiltered_total_muts_v_percent_overlap.pdf" )
+png( "../FIGURE_PDFS/unfiltered_total_muts_v_percent_overlap.png" )
+#pdf( "../FIGURE_PDFS/unfiltered_total_muts_v_percent_overlap.pdf" )
+# when necessary, use the following title: No. of putative SNPs does not correlate with % WGS/WGA overlap
 par(bty = 'n')
-plot( data$TOTAL, data$PERCENT_OVERLAP_by_WGA.282, log='x', pch=20, main="No. of putative SNPs does not correlate with % WGS/WGA overlap", xlab="log of number of putative SNPs (unfiltered)", ylab="percent overlap between WGS and WGA (unfiltered)" )
+plot( data$TOTAL, data$PERCENT_OVERLAP_by_WGA.282, log='x', pch=20, main="", xlab="log of no. of putative SNPs (unfiltered)", ylab="percent overlap between WGS and WGA (unfiltered)" )
 abline( 0,1 )
 dev.off()
 

@@ -1,21 +1,42 @@
-setwd( "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/GBM_genomics/FIGURES/" )
+# setwd( "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/GBM_genomics/FIGURES/" )
 
 # this script makes histograms of mutation frequency for the different data sets
 
 # first load the data
-data = read.table( "./FIGURE_DATA/unfiltered_WGS-WGA_counts.txt", header=T )
+data = read.table( "../FIGURE_DATA/unfiltered_WGS-WGA_counts.txt", header=T )
 
-
-# histogram of C282
-pdf( "./FIGURE_PDFS/C282_count_histogram.pdf" )
-hist( data$C282_count )
+# density plot of C282
+pdf( "../FIGURE_PDFS/unfiltered_C282_density.pdf" )
+d1 = density( data$C282_count, from=0, to=10000 )
+plot(d1)
 dev.off()
 
-# histogram of C484
-pdf( "./FIGURE_PDFS/C484_count_histogram.pdf" )
-hist( data$C484_count )
-dev.off
+# density plot of C484
+pdf( "../FIGURE_PDFS/unfiltered_C484_density.pdf" )
+d2 = density( data$C484_count, from=0, to=10000 )
+plot(d2)
+dev.off()
 
-# plot of C282 against C484
+# plot of (paired) C282 against C484, with a line at 1 to see how things fall
+# anything below the line is in line with the hypothesis, above is bad
+pdf( "../FIGURE_PDFS/C282_v_C484.pdf" )
+plot(data$C282_count, data$C484_count, log='xy')
+abline(0,1)
+dev.off()
+
+# the two density plots on top of each other, to see what is going on
+pdf( "../FIGURE_PDFS/unfiltered_C282_C484_density.pdf" )
+plot( d2$x, d2$y, type='l', col='red')
+lines( d1$x, d1$y, col='blue' )
+dev.off()
+
+# and finally, the differene: how much bigger is the one than the other?
+pdf( "../FIGURE_PDFS/unfiltered_C282-C484.pdf" ) 
+d3 = density( data$C282_count-data$C484_count )
+plot( d3$x, d3$y, type='l', col='blue')
+dev.off()
+
+
+
 
 

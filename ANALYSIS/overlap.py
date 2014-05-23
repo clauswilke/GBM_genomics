@@ -29,6 +29,11 @@ def check_file_existence( filter_level, double_samples ):
             useable_double_samples[ sample ] = double_samples[ sample ]
 
     print "there are %g useable samples..." % num_doub
+    
+    # sort so all the 282s (A) come before all the 484s (B)
+    # and in the next set all the XXX (A) come before the XXX (B) 
+    for sample in useable_double_samples:
+    	useable_double_samples[ sample ] = sorted( useable_double_samples[ sample ] )
 
     return useable_double_samples
 
@@ -61,13 +66,17 @@ def compare_locs( dictA, dictB ):
 
     difference = {}
     overlap = {}
+    A_only = {}
+    B_only = {}
 
-    # set up chrom keys in overlap and all
+    # set up chrom keys in overlap, difference, A_only, and B_only
     chroms = []
     for chrom in dictA:
+    	A_only[ chrom ] = []
         if chrom not in chroms:
             chroms.append( chrom )
     for chrom in dictB:
+    	B_only[ chrom ] = []
         if chrom not in chroms:
             chroms.append( chrom )
     for chrom in chroms:
@@ -79,6 +88,7 @@ def compare_locs( dictA, dictB ):
     for chrom in dictA:
     	if chrom not in dictB:
     		difference[ chrom ] = dictA[ chrom ]
+    		A_only[ chrom ] = dictA[ chrom ]
     		continue
     	else:
         	for loc in dictA[ chrom ]:
@@ -86,14 +96,18 @@ def compare_locs( dictA, dictB ):
         			overlap[ chrom ].append( loc )
         		else:
         			difference[ chrom ].append( loc )
+        			A_only[ chrom ].append( loc )
+        			
     # and from the point of view of dictB, given all overlap with dictA has already been found
     for chrom in dictB:
     	if chrom not in dictA:
     		difference[ chrom ] = dictB[ chrom ]
+    		B_only[ chrom ] = dictB[ chrom ]
     	else:
 	    	for loc in dictB[ chrom ]:
     			if loc not in overlap[ chrom ]:
     				difference[ chrom ].append( loc )
+    				B_only[ chrom ].append( loc )
     			
     # print overlap
 
@@ -102,8 +116,12 @@ def compare_locs( dictA, dictB ):
         difference[ chrom ] = sorted( difference[ chrom ] )
     for chrom in overlap:
         overlap[ chrom ] = sorted( overlap[ chrom ] )
+    for chrom in A_only:
+    	A_only[ chrom ] = sorted( A_only[ chrom ] )
+    for chrom in B_only:
+    	B_only[ chrom ] = sorted( B_only[ chrom ] )
 
-    return difference, overlap
+    return difference, overlap, A_only, B_only
 
 def write_files( sample, data_set, filter_level, overlap, difference ):
 
@@ -132,10 +150,12 @@ def write_files( sample, data_set, filter_level, overlap, difference ):
 
 	return 
 
-def summarize_for_figs( sample, data_set, filter_level, overlap, difference, summary ):
+def summarize_for_figs( sample, data_set, filter_level, overlap, difference, A_only, B_only, summary ):
 
 	diff_muts = 0
 	over_muts = 0
+	a_muts = 0
+	b_muts = 0
 	
 	for chrom in overlap:
 		for loc in overlap[ chrom ]:
@@ -145,15 +165,34 @@ def summarize_for_figs( sample, data_set, filter_level, overlap, difference, sum
 		for loc in difference[ chrom ]:
 			diff_muts += 1
 	
+	for chrom in A_only:
+		for loc in A_only[ chrom ]:
+			a_muts += 1
+	
+	for chrom in B_only:
+		for loc in B_only[ chrom ]:
+			b_muts += 1
+	
 	all_muts = diff_muts + over_muts
 	
-	p_o = float( over_muts )/float( over_muts + diff_muts )
-	p_d = float( diff_muts )/float( over_muts + diff_muts )
+	# and calculate the many percents
+	over_p_all = float( over_muts )/float( over_muts + diff_muts )
+	diff_p_all = float( diff_muts )/float( over_muts + diff_muts )
 	
-	print sample, over_muts, diff_muts, all_muts, p_o, p_d
-	summary[ sample ] = [ over_muts, diff_muts, all_muts ]
+	over_p_A = float( over_muts )/float( over_muts + a_muts )
+	diff_p_A = float( diff_muts )/float( over_muts + a_muts )
+	
+	over_p_B = float( over_muts )/float( over_muts + b_muts )
+	diff_p_B = float( diff_muts )/float( over_muts + b_muts )
+	
+	a_tot = over_muts + a_muts 
+	b_tot = over_muts + b_muts
+	
+	# print to show your working, and return summary...
+	print sample, over_muts, diff_muts, all_muts
+	summary[ sample ] = [ over_muts, diff_muts, all_muts, a_muts, a_tot, b_muts, b_tot, over_p_all, over_p_A, over_p_B, diff_p_all, diff_p_A, diff_p_B ]
 
-	return
+	return summary
 
 ###################
 ## MAIN FUNCTION ##
@@ -189,22 +228,33 @@ summary = {}
 for sample in useable_double_samples:
 	dictA = data_locs( os.path.join( useable_double_samples[ sample ][ 0 ], sys.argv[ 2 ] ) )
 	dictB = data_locs( os.path.join( useable_double_samples[ sample ][ 1 ], sys.argv[ 2 ] ) )
-	difference, overlap = compare_locs( dictA, dictB )
+	difference, overlap, A_only, B_only = compare_locs( dictA, dictB )
 	write_files( sample, data_set, filter_level, overlap, difference )
-	summarize_for_figs( sample, data_set, filter_level, overlap, difference, summary )
+	summarize_for_figs( sample, data_set, filter_level, overlap, difference, A_only, B_only, summary )
 	
+
+# summary[ sample ] = [ over_muts, diff_muts, all_muts, a_muts, a_tot, b_muts, b_tot, over_p_all, over_p_A, over_p_B, diff_p_all, diff_p_A, diff_p_B ]
 # write summary to file
+# C282 = A = amplification; C484 = B = WGS
 figure_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/GBM_genomics/FIGURES/FIGURE_DATA"
 figure_data_file = os.path.join( figure_dir, "STD40_" + "unfiltered_" + "overlap.txt" )
 figure_fh = open( figure_data_file, 'w' )
-figure_fh.write( "SAMPLE\tOVERLAP\tDIFFERENCE\tTOTAL\tPERCENT_OVERLAP\tPERCENT_DIFFERENCE\n" )
+figure_fh.write( "SAMPLE\tOVERLAP\tDIFFERENCE\tTOTAL\tONLY_WGA(C282)\tTOTAL_WGA(C282)\tONLY_WGS(C484)\tTOTAL_WGS(C484)\tPERCENT_OVERLAP_by_ALL\tPERCENT_OVERLAP_by_WGA-282\tPERCENT_OVERLAP_by_WGS-484\tPERCENT_DIFFERENCE_by_ALL\tPERCENT_DIFFERENCE_by_WGA-282\tPERCENT_DIFFERENCE_by_WGS-484\n" )
 for sample in summary:
 	over = summary[ sample ][ 0 ]
 	diff = summary[ sample ][ 1 ]
 	all = summary[ sample ][ 2 ]
-	percent_over = str( float( over )/float( all ) )
-	percent_diff = str( float( diff )/float( all ) )
-	figure_fh.write( "%s\t%s\t%s\t%s\t%s\t%s\n" % ( sample, over, diff, all, percent_over, percent_diff ) )
+	WGA_only = summary[ sample ][ 3 ]
+	WGA_tot = summary[ sample ][ 4 ]
+	WGS_only = summary[ sample ][ 5 ]
+	WGS_tot = summary[ sample ][ 6 ]
+	over_p_all = summary[ sample ][ 7 ]
+	over_p_282 = summary[ sample ][ 8 ]
+	over_p_484 = summary[ sample ][ 9 ]
+	diff_p_all = summary[ sample ][ 10 ]
+	diff_p_282 = summary[ sample ][ 11 ]
+	diff_p_484 = summary[ sample ][ 12 ]
+	figure_fh.write( "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % ( sample, over, diff, all, WGA_only, WGA_tot, WGS_only, WGS_tot, over_p_all, over_p_282, over_p_484, diff_p_all, diff_p_282, diff_p_484 ) )
 figure_fh.close()
 
 

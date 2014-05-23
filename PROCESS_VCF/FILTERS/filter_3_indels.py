@@ -27,32 +27,22 @@ def filter_three( VCF_dict, VCF_name, indel_dir, mutation_dir, filter_dir ):
         header = open( file, 'r' )
         data = header.readlines()
         for line in data:
-            line = line.strip( '\n' )
-            fields = line.split( '\t' )
+            fields = line.strip( '\n' ).split( '\t' )
             chrom = fields[ 0 ]
-            loc = int( fields[ 1 ] )
+            loc = int( fields[ 1 ] ) 
             if chrom not in indel_locs:
                 indel_locs[ chrom ] = []
-                indel_locs[ chrom ].append( loc )
-            else:
-                indel_locs[ chrom ].append( loc )
-
+            indel_locs[ chrom ].append( loc )
+            
     for chrom in indel_locs:
         indel_locs[ chrom ].sort()
     
     # make a chrom dictionary loc list of SNP mutations, the lists should be sorted
-    SNP_locs = {}
+    # MC:  THIS IS A MUCH MORE PYTHONIC WAY OF STRUCTURING YOUR INNER LOOP.
+    #  dict.keys() GIVES YOU ALL OF THE KEYS (LOCS)
+    SNP_locs = { }
     for chrom in VCF_dict:
-        for loc in VCF_dict[ chrom ]:
-            int_loc = int( loc )
-            if chrom not in SNP_locs:
-                SNP_locs[ chrom ] = []
-                SNP_locs[ chrom ].append( int_loc )
-            else:
-                SNP_locs[ chrom ].append( int_loc )
-
-    for chrom in SNP_locs:
-        SNP_locs[ chrom ].sort()
+        SNP_locs[chrom] = list( map( int, VCF_dict.keys() ) ).sort()
 
     # compare them to find which SNPs to filter
     filtered_3_indels = {}

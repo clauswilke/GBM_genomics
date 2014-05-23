@@ -43,7 +43,7 @@
 
 %%% The "real" document content comes below...
 
-\title{Double Sequencing Analysis (this still needs a title)}
+\title{Needs a title...}
 \author{Dakota Z. Derryberry, Claus O. Wilke, Matthew C. Cowperthwaite}
 
 \begin{document}
@@ -68,14 +68,14 @@ We next looked at the overlap between the called putative SNPs in the WGS and WG
 
 \begin{figure}
 \includegraphics[scale=0.5]{unfiltered_overlap_WGS_WGA_together_densities.png}
-\caption{This figure shows the density of the percentage of each WGS (blue) and WGA (red) sample that overlaps with the other from teh same patient. The WGS distribution is higher and narrower, showing that the WGS samples overall have a higher percentage overlap than the WGA samples, and less range in this parameter. }
+\caption{This figure shows the density of the percentage of each WGS (blue) and WGA (red) sample that overlaps with the other sample from the same patient. The WGS distribution is higher and narrower, showing that the WGS samples overall have a higher percentage overlap than the WGA samples, and less range in this parameter. }
 \end{figure}
 
-Although most samples agree with the hypotheses in figures one and two, there are outlyers: 
+As seen in figure one, most WGS samples have around 500 putative mutaitons, and most WGA samples have around 1000, but there are a number of exceptions. We hypothesized that these samples, some containing as many as 10,000 mutations, were mostly corrupted data. To test this, we plotted the percentage of the WGA samples that overlaped with the corresponding WGS samples (as a measure of sample quality) against the total number of putative SNPs in the WGS sample (Figure 3). We expected a negative correlation, which would indicate that as the quality of the sample worsened, the number of mutations increased. Instead, we got a completely random distribution. This could indicate... (still trying to decide what I think this indicates)
 
 \begin{figure}
 \includegraphics[scale=0.5]{unfiltered_total_muts_v_percent_overlap.png}
-\caption{This is figure 3}
+\caption{Plot of the percentage of the WGA samples that overlaped with the corresponding WGS samples (as a measure of sample quality) against the total number of putative SNPs in the WGS sample}
 \end{figure}
 
 \subsection{Unfiltered data: Time points}

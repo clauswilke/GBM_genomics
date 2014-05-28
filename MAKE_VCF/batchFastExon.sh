@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# this is heavily modified and meant for making the 12 2 files
+
 module load bwa/0.7.4
 module load samtools
 module load picard
@@ -7,32 +9,14 @@ module load python
 module load pylauncher
 module load gatk/2.5.2
 
+# these are command line arguments; pfx is the sample name (the TCGA barcode; everything before .bam or .fastq)
 pfx=$1
 splitSize=$2
 batchSize=$3
 coresPerRun=$4
-refDir="$WORK/Hs_reference_datasets"
+refDir="/work/00001/mattcowp/Hs_reference_datasets"
 hgReference="$refDir/Homo_sapiens.GRCh37.72.dna.fa"
 queue="normal"
-pkFile="$HOME/src/pk"
-
-function decrypt {
-      echo "gpg --no-tty --batch --yes --passphrase-file $3 --output $1 --decrypt $2/$1.gpg"  `date` 
-      gpg --no-tty --batch --passphrase-file $3 --output $1 --decrypt $2/$1.gpg
-      sleep 10
-}
-
-function encrypt {
-    md5sum $1 > $1.md5
-    gpg --no-tty --batch --cipher-algo AES256 --passphrase-file $2 --output $1.gpg --symmetric $1
-    if [ -f $1.gpg ]
-    then
-        echo $1 " done."
-        # rm $1
-    else
-        echo "Encryption of $1 failed!"  `date` 
-    fi
-}
 
 # 0. Decrypt the bam file and extract, split and filter the reads (remove unpaired reads)
 # Note:   I added a optional initial flag, "UNPACK_ONLY", that will run the decryption and SamToFastQ steps.
@@ -40,6 +24,7 @@ function encrypt {
 #         to unpack everything with 8 samples per node and then process everything else at 4 cores per
 #         node.  Unpack is roughly 3/4 of the total processing time.
 echo $1;
+
 if [[ "$1" == *"UNPACK"* ]];
 then
 

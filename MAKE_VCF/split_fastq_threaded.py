@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+# run command: python $HOME/GBM_genomics/MAKE_VCF/split_fastq_threaded.py $pfx $splitSize
+# $pfx is a barcode for the sample, and $splitSize is a command line argument
+
 import os
 import sys
 import Queue
@@ -87,6 +90,7 @@ def main():
     print "waiting for splits to finish..."
     threadQueue.join()
 
+## this is where we run the main function, main()
 main()
 print (time.time()-startTime)
 sys.exit()

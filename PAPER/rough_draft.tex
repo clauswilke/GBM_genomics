@@ -43,7 +43,7 @@
 
 %%% The "real" document content comes below...
 
-\title{Needs a title...}
+\title{Reproducibility of SNP calling in multiple sequencing runs from single tumors}
 \author{Dakota Z. Derryberry, Claus O. Wilke, Matthew C. Cowperthwaite}
 
 \begin{document}
@@ -59,24 +59,9 @@ Intro goes here.
 
 For 55 samples, TCGA has two identical data sets except for the sample preparation: one is whole genome sequencing (WGS) and the other is whole genome amplified sequencing (WGA). We calculated the number of mutations in each of these 110 samples (2 each from 55 patients). The number of mutations per sample ranged considerably, from XX to XX in the WGS samples and from XX to XX in the WGA samples. That the range is higher among the WGA samples is expected, because the amplification process may introduces mutations thereby artificially inflating the number of mutations in the dataset. To test this, we plotted the number of putative SNPs in the WGS and WGA sample preparation for each individual patient. As expected, for most patients, there were more mutations in the WGA sample than in the WGS sample (Figure 1). Surprisingly, not all exceptions had night numbers of mutations. One WGA sample with fewer than 50 mutaions had nearly 500 in the corresponding WGS sample; and one WGS sample with more than 200 mutations had only 200 in the corresponding WGA sample.
 
-\begin{figure}
-\includegraphics[scale=0.5]{C282_v_C484.png}
-\caption{This figure plots the number of putative SNPs called by SomaticSniper (unfiltered) using the WGS v. WGA. Each point is a patient. The line is y=x, so points falling below the line agree with the hypothesis that whole genome amplification makes more mutations in a sample.}
-\end{figure}
-
 We next looked at the overlap between the called putative SNPs in the WGS and WGA samples. Although amplification may introduce new mutations, the mutations found in the WGS sample for each patient should be (mostly) a subset of those found in the WGA sample for that same patient. Although WGS may itself introduce some new mutations, the percent of WGS mutations that overlap with those found in the WGA sample should be significantly higher than the percent of WGA mutations found in the overlap with WGS. To test this, we calculated the overlap between the WGS and WGA samples for each patient. As expected, WGS samples have fewer non-overlapping putative SNPs than WGA samples (Figure 2). 
 
-\begin{figure}
-\includegraphics[scale=0.5]{unfiltered_overlap_WGS_WGA_together_densities.png}
-\caption{This figure shows the density of the percentage of each WGS (blue) and WGA (red) sample that overlaps with the other sample from the same patient. The WGS distribution is higher and narrower, showing that the WGS samples overall have a higher percentage overlap than the WGA samples, and less range in this parameter. }
-\end{figure}
-
 As seen in figure one, most WGS samples have around 500 putative mutaitons, and most WGA samples have around 1000, but there are a number of exceptions. We hypothesized that these samples, some containing as many as 10,000 mutations, were mostly corrupted data. To test this, we plotted the percentage of the WGA samples that overlaped with the corresponding WGS samples (as a measure of sample quality) against the total number of putative SNPs in the WGS sample (Figure 3). We expected a negative correlation, which would indicate that as the quality of the sample worsened, the number of mutations increased. Instead, we got a completely random distribution. This could indicate... (still trying to decide what I think this indicates)
-
-\begin{figure}
-\includegraphics[scale=0.5]{unfiltered_total_muts_v_percent_overlap.png}
-\caption{Plot of the percentage of the WGA samples that overlaped with the corresponding WGS samples (as a measure of sample quality) against the total number of putative SNPs in the WGS sample}
-\end{figure}
 
 \subsection{Unfiltered data: Time points}
 
@@ -95,5 +80,22 @@ We used custom python scripts, available in the above github repository, to perf
 \section{Discussion}
 
 What do I think of this?
+
+\section{Figures}
+
+\begin{figure}
+\includegraphics[scale=1.0]{C282_v_C484.png}
+\caption{This figure plots the number of putative SNPs called by SomaticSniper (unfiltered) using the WGS v. WGA. Each point is a patient. The line is y=x, so points falling below the line agree with the hypothesis that whole genome amplification makes more mutations in a sample.}
+\end{figure}
+
+\begin{figure}
+\includegraphics[scale=1.0]{unfiltered_overlap_WGS_WGA_together_densities.png}
+\caption{This figure shows the density of the percentage of each WGS (blue) and WGA (red) sample that overlaps with the other sample from the same patient. The WGS distribution is higher and narrower, showing that the WGS samples overall have a higher percentage overlap than the WGA samples, and less range in this parameter. }
+\end{figure}
+
+\begin{figure}
+\includegraphics[scale=1.0]{unfiltered_total_muts_v_percent_overlap.png}
+\caption{Plot of the percentage of the WGA samples that overlaped with the corresponding WGS samples (as a measure of sample quality) against the total number of putative SNPs in the WGS sample}
+\end{figure}
 
 \end{document}

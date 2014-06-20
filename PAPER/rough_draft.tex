@@ -49,9 +49,35 @@
 \begin{document}
 \maketitle
 
+\section{Abstract}
+
+A) What system are you studying?
+B) Why is it important?
+C) What is your research approach?
+D) (optional) How is your research different from previous work?
+E) What are the results of your research?
+F) What conclusions can we draw from these results?
+
 \section{Introduction}
 
-Intro goes here.
+A) What is the general field of study?
+B) What is the specific question of the research?
+C) Why is (a) and/or (b) important?
+D) What has previously been done in this area?
+E) How does your research differ?
+F) (end with) a summary of the research described in this paper
+
+Glioblastoma multiforme (GBM) is the most common and deadly primary brain tumor, with a median survival of 13.9 months and a 5-year survival of ~5\% \cite{TCGA-GBM-13}. Prognosis for patients with this disease remains poor despite significant research investment, due to the difficulty of surgical resection and the limited number of effective chemoteraputics. Like all cancers, GBM is an evolutionary disease caused by mutations and other alterations to normal glial cell lines. However, following substantial research efforts dedicated to identifying all of the mutations in an individual patient's tumor to try and identify causal variants, few precise causal elationships have been identified. There are two theories behind this descrepancy: First is the view that "GBM growth is driven by a signaling network with functional redundancy that permits adaptation" \cite{TCGA-GBM-13}. Second is the notion that batch effects and sequencing protocols, and thus the data on which genomic analyses are based, is imperfect. In reality, both of these views are probably correct. In this paper, we use data from doubly-sequnced GBM patients to investigate key attributes of the data and some of the most common computational processing pipelines.
+
+ The largest effort behind this research is that of The Cancer Genome Atlas' Research Network, who first sequenced 206 GBMs in 2008 \cite{TCGA-GBM}. In the intervening years, this data set has grown to contain over 500 tumors with multiple types of molecular data, all made publicly available \cite{TCGA-GBM-13}. Each sample in the database contains data from a single patient's tumor and blood samples, allowing researchers to directly compare the two, and then compare sets of differences between tumor and "normal" tissue between patients.  While most of the ~600 sequencing samples in teh TCGA are from different patients, some 63 patients appear in the database twice, 55 having been seuqenced once each with two different DNA preparation methods, and 13 having been sequenced at two different times. In this paper,
+
+Since it's publication in 2008, TCGA data has been used by researchers to investigate a variety of phenomena in GBM. (subtyping, drivres, pathways, targets) These successes aside, other results have caused some researchers to question what exactly is measured by the TCGA sequencing data. (the apper that showed all four subtypes in one tumor) (the more recent over time paper) (maybe another about heterogeneity) Sample preparation and sequencing methods, as well as computational analytical methods, indubitably influence sequencing results. In this paper, we begin to ask how.
+
+WGS and WGA are different... We have 55 samples of each... Expectation is X, and we find as follows...
+
+Same thing for the 13 samples...
+
+Everyone must filter, (describe why)... We begin with the one SNP-caller SomaticSniper, and compare the filtered to the unfiltered date... We find as follows...
 
 \section{Results}
 
@@ -79,7 +105,11 @@ We used custom python scripts, available in the above github repository, to perf
 
 \section{Discussion}
 
-What do I think of this?
+A) Start with a brief (one paragraph or less) summary fo your research, what you did and what you found
+B) Put your results into perspective, discussing (i) what they imply and (ii) how they compare to existing literature
+C) Address potential shortcomings. What could have gone wrong, which parts of the research might be misleading, are there any other caveats?
+D) (optional) Describe implications for future research; are there obvious extensions?
+E) (optional) End with a paragraph that again summarizes your research and highlights the most important findings
 
 \section{Figures}
 

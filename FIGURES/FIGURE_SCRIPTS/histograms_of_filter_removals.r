@@ -13,9 +13,17 @@ d7 = density( data$FILTER_7 )
 d8 = density( data$FILTER_8 )
 
 # make the box plot that will show everything
+png( "../FIGURE_PDFS/boxplot_number_filtered.png" )
 par(bty='n')
-boxplot( data[,c(5,7,4,3,6,8)], log='y', ylim=c(1,100000), xaxt='n' )
-axis( 1, at=1:6, labels=c( "Variant Allele\nQuality (VAQ)\n>20", "Removes\nLOH", "No putative\nSNPs within\n10 bp window\nof other SNPs", "No putative\nSNPs within\n10 bp window\nof indels", "No overlap\nwith dbSNP\ncoverage", "Alternate\nallele\ncoverage\n>=10%") )
+boxplot( data[,c(5,7,4,3,6,8)], log='y', ylim=c(1,100000), xaxt='n', pch=20, ylab="# of putative SNPs filtered, per sample" )
+axis( 1, at=1:6, padj=0.8, cex.axis=0.7, labels=c( "Variant Allele\nQuality (VAQ)\n>20", "Removes\nLOH", "No putative\nSNPs within\n10 bp window\nof other SNPs", "No putative\nSNPs within\n10 bp window\nof indels", "No overlap\nwith dbSNP\ncoverage", "Alternate\nallele\ncoverage\n>=10%") )
+dev.off()
+
+pdf( "../FIGURE_PDFS/boxplot_number_filtered.pdf" )
+par(bty='n')
+boxplot( data[,c(5,7,4,3,6,8)], log='y', ylim=c(1,100000), xaxt='n', pch=20, ylab="# of putative SNPs filtered, per sample" )
+axis( 1, at=1:6, padj=0.8, cex.axis=0.7, labels=c( "Variant Allele\nQuality (VAQ)\n>20", "Removes\nLOH", "No putative\nSNPs within\n10 bp window\nof other SNPs", "No putative\nSNPs within\n10 bp window\nof indels", "No overlap\nwith dbSNP\ncoverage", "Alternate\nallele\ncoverage\n>=10%") )
+dev.off()
 
 ### still working on two problems:
 ### how to make the figure horizontally longer so that all labels fit, and 
@@ -27,3 +35,19 @@ axis( 1, at=1:6, labels=c( "Variant Allele\nQuality (VAQ)\n>20", "Removes\nLOH",
 #, "Removes\nLOH", "No putative\nSNPs within\n10 bp window\nof other SNPs", "No putative\nSNPs within\n10 bp window\nof indels", "No overlap\nwith dbSNP\ncoverage", "Alternate\nallele\ncoverage\n>=10%"), line=4 )
 
 ## this second part of the script makes the same figure, but for only the putative SNPs that are in the overlaps in the unfiltered data
+
+overlap_data = read.table( "../FIGURE_DATA/overlap_numbers_excluded_by_filter_MUTATION_CALLS_STD40.txt", header=T )
+
+# make the same plot for the overlaps
+png( "../FIGURE_PDFS/boxplot_percent_overlap_filtered.png" )
+par(bty='n')
+boxplot( overlap_data[,c(9,13,7,5,11,15)], ylim=c(0,1), xaxt='n', ylab="% of unfiltered overlap filtered, per sample", pch=20 )
+axis( 1, at=1:6, padj = 0.8, cex.axis=0.7, labels=c( "Variant Allele\nQuality (VAQ)\n>20", "Removes\nLOH", "No putative\nSNPs within\n10 bp window\nof other SNPs", "No putative\nSNPs within\n10 bp window\nof indels", "No overlap\nwith dbSNP\ncoverage", "Alternate\nallele\ncoverage\n>=10%") )
+dev.off()
+
+# make the same plot for the overlaps
+pdf( "../FIGURE_PDFS/boxplot_percent_overlap_filtered.pdf" )
+par(bty='n')
+boxplot( overlap_data[,c(9,13,7,5,11,15)], ylim=c(0,1), xaxt='n', ylab="% of unfiltered overlap filtered, per sample", pch=20 )
+axis( 1, at=1:6, padj = 0.8, cex.axis=0.7, labels=c( "Variant Allele\nQuality (VAQ)\n>20", "Removes\nLOH", "No putative\nSNPs within\n10 bp window\nof other SNPs", "No putative\nSNPs within\n10 bp window\nof indels", "No overlap\nwith dbSNP\ncoverage", "Alternate\nallele\ncoverage\n>=10%") )
+dev.off()

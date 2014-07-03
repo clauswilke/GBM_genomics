@@ -8,7 +8,7 @@ from sets import Set
 import VCF_list
 
 
-data_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/MUTATION_CALLS"
+data_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/MUTATION_CALLS_STD40"
 overlap_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/DATA/OVERLAP"
 fig_data_dir = "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/GBM_genomics/FIGURES/FIGURE_DATA"
 

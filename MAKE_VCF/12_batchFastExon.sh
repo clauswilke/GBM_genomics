@@ -18,15 +18,15 @@ queue="normal"
 
 # 1. .bam to .fastq conversion
 cd /scratch/00001/mattcowp/dakota
-echo $pfx
+# echo $pfx
 cd $pfx
 echo "$pfx:" `date` > ../$pfx.log
 
 # we have to convert a bam into a fastq
 # might have to change path to picard; check this in idev
-echo "Running SamToFastQ on $pfx...."  `date` >> ../$pfx.log
-(java -d64 -Xmx4g -jar /opt/apps/picard/1.98/SamToFastq.jar I=$pfx.bam F=$pfx.1.fastq F2=$pfx.2.fastq 2>&1) >> $pfx\_SamToFastQ.log
-echo "SamToFastQ done: " `date` >> ../$pfx.log
+# echo "Running SamToFastQ on $pfx...."  `date` >> ../$pfx.log
+# (java -d64 -Xmx4g -jar /opt/apps/picard/1.98/SamToFastq.jar I=$pfx.bam F=$pfx.1.fastq F2=$pfx.2.fastq 2>&1) >> $pfx\_SamToFastQ.log
+# echo "SamToFastQ done: " `date` >> ../$pfx.log
 
 # exit: this is the test point for bam to fastq conversion
 # I tested it successfully on sample TCGA-02-2468-01A-01D-1494-08.5
@@ -138,7 +138,7 @@ python /home1/01839/dakotaz/GBM_genomics/MAKE_VCF/launcher.py merge.script $core
 rm -rf pylauncher_tmp*
 echo "Chromosome merge Finished: " `date` >> ../$pfx.log
 
-exit 
+# exit, not testing
 
 # HAVEN'T YET LOOKED AT CODE BEYOND THIS POINT!!!!!!!!! (Keep looking...)
 

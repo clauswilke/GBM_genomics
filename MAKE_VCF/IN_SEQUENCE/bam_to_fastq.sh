@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # this script takes a TCGA .bam (aligned to hg18) and converts it to a pair of unaligned .fastq files
 
 module load samtools
@@ -5,8 +7,6 @@ module load picard
 
 # these are command line arguments; pfx is the sample name (the TCGA barcode)
 pfx=$1
-refDir="/work/00001/mattcowp/Hs_reference_datasets"
-hgReference="$refDir/Homo_sapiens.GRCh37.72.dna.fa"
 queue="normal"
 
 # 1. pfx.bam to pfx.fastq conversion

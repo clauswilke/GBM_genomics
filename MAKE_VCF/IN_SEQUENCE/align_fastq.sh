@@ -1,0 +1,1 @@
+# the purpose of this script is to align the two fastq files of a TCGA sample (paired ends) to hg19

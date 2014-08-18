@@ -1,0 +1,1 @@
+# this script takes a TCGA .bam (aligned to hg18) and converts it to a pair of unaligned .fastq files

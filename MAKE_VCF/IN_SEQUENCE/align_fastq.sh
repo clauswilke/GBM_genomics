@@ -7,6 +7,7 @@ ml samtools
 
 # pfx is the sample name
 pfx=$1
+outprefix="C484.TCGA-02-2486-01A-01D-1494-08.5.1_out"
 queue="normal"
 # reference hg19
 refDir="/work/00001/mattcowp/Hs_reference_datasets"

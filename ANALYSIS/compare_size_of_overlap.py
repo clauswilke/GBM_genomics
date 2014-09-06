@@ -73,7 +73,7 @@ def find_samples():
 										if C282_LOH_VAQ == True:
 											if C484_LOH_VAQ == True:
 												#print "FOUND"
-												files = [ os.path.join( STD_40_dir, C282_dict, "unfiltered.txt" ), os.path.join( STD_40_dir, C484_dict, "unfiltered.txt" ), os.path.join( STD_40_dir, C282_dict, "filtered.txt" ), os.path.join( STD_40_dir, C484_dict, "filtered.txt" ), os.path.join( LOH_dir, C282_file ), os.path.join( LOH_dir, C484_file ), os.path.join( VAQ_dir, C282_file ), os.path.join( VAQ_dir, C484_file ), os.path.join( LOH_VAQ_dir, C282_file ), os.path.join( LOH_VAQ_dir, C484_file ) ]
+												files = [ os.path.join( STD_40_dir, C282_dict, "unfiltered.txt" ), os.path.join( STD_40_dir, C484_dict, "unfiltered.txt" ), os.path.join( STD_40_dir, C282_dict, "filtered.txt" ), os.path.join( STD_40_dir, C484_dict, "filtered.txt" ), os.path.join( LOH_dir, C282_file ), os.path.join( LOH_dir, C484_file ), os.path.join( VAQ_dir, C282_file ), os.path.join( VAQ_dir, C484_file ), os.path.join( LOH_VAQ_dir, C282_file ), os.path.join( LOH_VAQ_dir, C484_file ), sample ]
 												useable_samples.append( files )
 	return useable_samples
 	
@@ -103,17 +103,25 @@ def find_overlap_length( C282_file, C484_file ):
 
 	return overlap_length
 
+def summary( LOH_overlap_dict, C282_file, C484_file ):
 
+	
+
+	return LOH_overlap_dict
 
 ###########################
 ###### MAIN FUNCTION ######
 ###########################
 
+# this is the sample list
 samples = find_samples()
+
+# this is the detour into making an overlap summary file for the LOH overlap
+LOH_overlap_dict = {}
 
 # for each sample
 for sample in samples:
-
+	
 	# find the lengths of the overlaps between them
 	unfilt_overlap = find_overlap_length( sample[ 0 ], sample[ 1 ] )
 	#print unfilt_overlap
@@ -126,6 +134,8 @@ for sample in samples:
 	LOH_VAQ_overlap = find_overlap_length( sample[ 8 ], sample[ 9 ] )
 	print filt_overlap, VAQ_overlap, LOH_overlap, LOH_VAQ_overlap, unfilt_overlap
 	
-
-
 ## THERE IS STILL A BUG IN THIS, BECAUSE THE LOH AND THE VAQ_LOH ARE COMING OUT IDENTICALLY, WHICH THEY ARE NOT ALLOWED TO DO BECAUSE THAT IS NOT RIGHT!!!!!!!!!!!!!!!!!!
+
+	# this is the LOH summary part...
+	LOH_overlap_dict[ sample[ 10 ] ] = []
+	

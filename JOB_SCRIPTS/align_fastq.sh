@@ -12,5 +12,12 @@ set -x                      # Echo commands
 
 echo `hostname`
 
-# Run the executable
-bash $HOME/GBM_genomics/MAKE_VCF/IN_SEQUENCE/align_fastq.sh C484.TCGA-02-2486-01A-01D-1494-08.5
+data_dir="/scratch/00001/mattcowp/dakota/"
+
+# Run the executable (tumor)
+cd $data_dir/$pfx
+bash $HOME/GBM_genomics/MAKE_VCF/IN_SEQUENCE/align_fastq.sh C484.TCGA-06-0125-02A-11D-2280-08.1
+
+# run the executable (normal)
+cd $data_dir/$pfx/normal
+bash $HOME/GBM_genomics/MAKE_VCF/IN_SEQUENCE/align_fastq.sh C484.TCGA-06-0125-10A-01D-1490-08.6

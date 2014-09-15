@@ -2,12 +2,12 @@
 
 # the purpose of this script is to align the two fastq files of a TCGA sample (paired ends) to hg19
 
-ml bwa
-ml samtools
+module load bwa
+module load samtools
 
 # pfx is the sample name
 pfx=$1
-outprefix="C484.TCGA-02-2486-01A-01D-1494-08.5.1_out"
+outprefix="$pfx.out"
 queue="normal"
 # reference hg19
 refDir="/work/00001/mattcowp/Hs_reference_datasets"
@@ -18,7 +18,7 @@ fastq1="$data_dir/$pfx/$pfx.1.fastq"
 fastq2="$data_dir/$pfx/$pfx.2.fastq"
 
 # move to working directory
-cd $data_dir/$pfx
+cd $pfx
 
 # the bwa manual says this is important
 bwa index -p RefSeqbwaidx -a bwtsw $hgReference
@@ -30,7 +30,14 @@ bwa aln -q 30 -t 4 $hgReference $fastq2 > $fastq2_prefix.sai 2>$fastq2_prefix.bw
 echo "bwa aln for $f5fastqfile done"
 
 # need to specify read groups (RG), which is the argument of  -r in bwa sempe
-RG="@RG\tID:1\tPL:ILLUMINA\tSM:$pfx\tLB:$LB\tDS:ref=hg19,pfx="$refindex
+# first get the library information from the TCGA bam:
+LB=`samtools view -H ./$pfx.bam | grep -m 1 '@RG' | awk '{print substr($5,4) }'`
+if [ ${#LB} -eq 0 ] # this is the case if the bam has no library information at all
+then
+	LB="Catch-1"
+fi
+# then set the @RG header
+RG="@RG\tID:1\tPL:ILLUMINA\tSM:$pfx\tLB:$LB\tDS:ref=hg19"
 
 # bwa sampe | samtools view
 (bwa sampe -a 600 -P -r "$RG" $hgReference $fastq1_prefix.sai $fastq2_prefix.sai $fastq1 $fastq2 | samtools view -bSh -o $outprefix.bam -) 2>$outprefix.sampe.log

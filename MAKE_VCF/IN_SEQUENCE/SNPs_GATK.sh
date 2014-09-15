@@ -43,8 +43,8 @@ mkdir $tumor_dir
 cd $tumor_dir
 
 # remove duplicate reads from bamfiles, leaving only the read with the highest map quality
-samtools rmdup ../$tumor_pfx/$tumor_pfx\_out.sorted.bam $tumor_pfx.dedup.bam &
-samtools rmdup ../normal/$blood_pfx/$blood_pfx\_out.sorted.bam $blood_pfx.dedup.bam &
+samtools rmdup ../$tumor_pfx/$tumor_pfx.out.sorted.bam $tumor_pfx.dedup.bam &
+samtools rmdup ../normal/$blood_pfx/$blood_pfx.out.sorted.bam $blood_pfx.dedup.bam &
 wait;
 
 # reindex the de-duplicated bamfiles

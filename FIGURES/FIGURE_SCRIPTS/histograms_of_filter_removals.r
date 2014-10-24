@@ -46,8 +46,8 @@ axis( 1, at=1:6, padj = 0.8, cex.axis=0.7, labels=c( "Variant Allele\nQuality (V
 dev.off()
 
 # make the same plot for the overlaps
-pdf( "../FIGURE_PDFS/boxplot_percent_overlap_filtered.pdf" )
-par(bty='n')
+pdf( "../FIGURE_PDFS/boxplot_percent_overlap_filtered.pdf", width=6, height=5 )
+par(bty='n', mar=c(5.1,4.1,1.1,0))
 boxplot( overlap_data[,c(9,13,7,5,11,15)], ylim=c(0,1), xaxt='n', ylab="% of unfiltered overlap filtered, per sample", pch=20 )
 axis( 1, at=1:6, padj = 0.8, cex.axis=0.7, labels=c( "Variant Allele\nQuality (VAQ)\n>20", "Removes\nLOH", "No putative\nSNPs within\n10 bp window\nof other SNPs", "No putative\nSNPs within\n10 bp window\nof indels", "No overlap\nwith dbSNP\ncoverage", "Alternate\nallele\ncoverage\n>=10%") )
 dev.off()

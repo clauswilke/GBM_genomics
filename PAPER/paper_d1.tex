@@ -140,13 +140,24 @@ Although the data is suggestive, it is far from conclusive. In this analysis, we
 (ii) Second, if the DNA sample is degraded to some extent, due to surgery conditions or some other factor out of the hands of the sequencing center, the same errors may appear in both replicates. Although repeatability does not and could not perfectly measure confidence, it should correlate. Having an independent measure of the confidence in SNP calls (repeatability), even an imperfect one, can help us gague the accuracy of other measures (filtering).  
 %-- we may have shown that filtering doesn't do very much good, but we haven't really given alternatives
 %-- LOH and VAQ each remove a binch of probably-real signal, but they remove a bunch of false signal too
-In this sample, we have shown that while some filters function 
+In this sample, we have shown that while some filters remove primarily putative SNPs in only one of two replicates (more likely to be false positives), two filters, VAQ and LOH, remove most of the overlap (more likely to be true positives). While our results suggest that VAQ and LOH filters are probably removing some true positives, that does not preclude them removing false positives. Therefore, if we remove these filters, we may retain more true positives, but we also retain more false positives.
 %-- other snp callers
+Finally, we looked at results from one SNP caller. There are many more equally widely used SNP callers available, which might do better or worse than the one we have chosen here.
 
 %E) (optional) End with a paragraph that again summarizes your research and highlights the most important findings
-
+We have shown that 
 
 \section{Figures}
+
+\begin{figure}
+\includegraphics[scale=1.0]{data_processing_flowchart_2.png}
+\caption{\textbf{Number of putative SNPs in WGS v. WGA, as called by SomaticSniper.} Each point is a patient. The line is y=x, so points falling below the line agree with the hypothesis that whole genome amplification makes more mutations in a sample.}
+\end{figure}
+
+\begin{figure}
+\includegraphics[scale=1.0]{overlap_explained.png}
+\caption{\textbf{Number of putative SNPs in WGS v. WGA, as called by SomaticSniper.} Each point is a patient. The line is y=x, so points falling below the line agree with the hypothesis that whole genome amplification makes more mutations in a sample.}
+\end{figure}
 
 \begin{figure}
 \includegraphics[scale=1.0]{C282_v_C484.png}

@@ -34,6 +34,7 @@ amp_frac = density( data$OVERLAP/data$TOTAL_WGA.C282., from=0 )
 seq_frac = density( data$OVERLAP/data$TOTAL_WGS.C484., from=0 )
 par(bty='n')
 plot( seq_frac$x, seq_frac$y, type='l', col='blue', main="", xlab="% of sample obtained in overlap", ylab="Density")
+legend( "topright", c( "WGS", "WGA" ), col=c( "blue", "red" ), lty=1 )
 lines( amp_frac$x, amp_frac$y, col='red' )
 dev.off()
 

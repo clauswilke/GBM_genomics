@@ -7,27 +7,34 @@ module load samtools
 
 # pfx is the sample name
 pfx=$1
+tissue=$2
 outprefix="$pfx.out"
 queue="normal"
 # reference hg19
 refDir="/work/00001/mattcowp/Hs_reference_datasets"
 hgReference="$refDir/Homo_sapiens.GRCh37.72.dna.fa"
 # what data we're running on...
-data_dir="/scratch/00001/mattcowp/dakota/"
+data_dir="/scratch/00001/mattcowp/dakota"
+if [ $tissue = "blood" ]
+then
+	data_dir="/scratch/00001/mattcowp/dakota/normal"
+fi
 fastq1="$data_dir/$pfx/$pfx.1.fastq"
 fastq2="$data_dir/$pfx/$pfx.2.fastq"
 
 # move to working directory
-cd $pfx
+cd $data_dir/$pfx
 
 # the bwa manual says this is important
-bwa index -p RefSeqbwaidx -a bwtsw $hgReference
+# but Matt says take it out...
+# bwa index -p RefSeqbwaidx -a bwtsw $hgReference
 
 # bwa aln first fastq
-bwa aln -q 30 -t 4 $hgReference $fastq1 > $fastq1_prefix.sai 2>$fastq1_prefix.bwa.log
+bwa aln -q 30 -t 8 $hgReference $fastq1 > $fastq1.aln.sai 2>$fastq1.aln.bwa.log &
 # bwa aln second fastq
-bwa aln -q 30 -t 4 $hgReference $fastq2 > $fastq2_prefix.sai 2>$fastq2_prefix.bwa.log
-echo "bwa aln for $f5fastqfile done"
+bwa aln -q 30 -t 8 $hgReference $fastq2 > $fastq2.aln.sai 2>$fastq2.aln.bwa.log &
+wait
+echo "bwa aln for $pfx done"
 
 # need to specify read groups (RG), which is the argument of  -r in bwa sempe
 # first get the library information from the TCGA bam:
@@ -40,8 +47,8 @@ fi
 RG="@RG\tID:1\tPL:ILLUMINA\tSM:$pfx\tLB:$LB\tDS:ref=hg19"
 
 # bwa sampe | samtools view
-(bwa sampe -a 600 -P -r "$RG" $hgReference $fastq1_prefix.sai $fastq2_prefix.sai $fastq1 $fastq2 | samtools view -bSh -o $outprefix.bam -) 2>$outprefix.sampe.log
+(bwa sampe -a 600 -P -r "$RG" $hgReference $fastq1.aln.sai $fastq2.aln.sai $fastq1 $fastq2 | samtools view -bSh -o $outprefix.bam -) 2>$outprefix.log
 # samtools sort
-samtools sort $outprefix.bam $outprefix.sorted >>$outprefix.sampe.log
+samtools sort -@ 16 $outprefix.bam $outprefix.sorted 2>>$outprefix.log
 # samtools index
-samtools index $outprefix.sorted.bam >>$outprefix.sampe.log
+samtools index $outprefix.sorted.bam 2>>$outprefix.log

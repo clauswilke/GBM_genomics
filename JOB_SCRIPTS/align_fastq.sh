@@ -16,8 +16,8 @@ data_dir="/scratch/00001/mattcowp/dakota/"
 
 # Run the executable (tumor)
 cd $data_dir/$pfx
-bash $HOME/GBM_genomics/MAKE_VCF/IN_SEQUENCE/align_fastq.sh C484.TCGA-06-0125-02A-11D-2280-08.1
+bash $HOME/GBM_genomics/MAKE_VCF/IN_SEQUENCE/align_fastq.sh C484.TCGA-06-0125-01A-01D-1490-08.6 tumor
 
 # run the executable (normal)
-cd $data_dir/$pfx/normal
-bash $HOME/GBM_genomics/MAKE_VCF/IN_SEQUENCE/align_fastq.sh C484.TCGA-06-0125-10A-01D-1490-08.6
+# cd $data_dir/$pfx/normal
+# bash $HOME/GBM_genomics/MAKE_VCF/IN_SEQUENCE/align_fastq.sh C484.TCGA-06-0125-10A-01D-1490-08.6 blood

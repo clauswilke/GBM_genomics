@@ -81,12 +81,14 @@ We took data from 55 TCGA samples that were sequenced twice, once with the stand
 
 \section{Results}
 
-\subsection{Raw data}
+\subsection{Unfiltered data}
 
 % Experiment: size of overlap (figures 1 and 2)
 %(a) a brief (one sentence to one paragraph) summary of what you did and why
 %(b) a description of what you found carrying out this experiment
-For 55 samples, TCGA provides two sets of raw sequence data, one set captured with tthe standard whole exome sequencing methods (WGA) including an amplification of the DNA extracted from the tumor prior to library pred, and one using a protocol for large quantities of DNA that omits this amplification (WGS). For each sample, we analyzed each technical replicate using the same pipeline (see Methods), and then compared the WGA replicate to the WGS replicate, to see the extent of the similarity between the two. We first looked at the similarity between the two replicates, by number of mutations (Figure 1) and percent overlap partcular mutations (Figure 2) between replicates. We found that overall, the number of mutations found in one replicate correlated strongly with the number of mutations found in the other, though as expected the WGA replicate, with the additional amplification step, had slightly more mutations (Figure 1). We found that the overlap between the two samples, caclulated by $WGA \cap WGS/WGS$ for WGS replicates and $WGA \cap WGS/WGA$ for WGA replicates, was mostly between 20-40\% in WGA replicates and mostly between 40-60\% in WGS replicates. As expected the distribution is narrower and taller in the WGS replicates, as a greater percentage of those samples are likley "real" mutations and so present in the overlap (Figure 2).
+Next-generation sequencing is far from perfect; it produces errors at a rate of around XX per Mbp, and those errors are both predictable and not. Cancer sequencing, with highly heterogenous DNA targets from impure tissue samples, is possibly even mroe unreliable. Thus, we expect a high number of false positives in tumor sequencing. The gold-standard for determining a true somatic mutation from a germ line mutation or a sequencing error is to double check for the variant with PCR, but this is expensive, time consuming with so many samples, and often not available. To try and estimate an approximate rate of false positives, we first looked at the degree of overlap between technical replicates in GBM sequencing. For 55 GBM tumors, TCGA provides two sets of raw sequence data, one set captured with tthe standard whole exome sequencing methods (WGA) including an amplification of the DNA extracted from the tumor prior to library prep, and one using a protocol for large quantities of DNA that omits this amplification (WGS). Our assumption is that putative SNPs appearing in both technical replicates are more likely to be true positives than those appearing only in one replicate.
+
+For each sample, we analyzed each technical replicate using the same pipeline (see Methods), and then compared the WGA replicate to the WGS replicate, to see the extent of the similarity between the two. We first looked at the similarity between the two replicates, by number of mutations (Figure 1) and percent overlap partcular mutations (Figure 2) between replicates. We found that overall, the number of mutations found in one replicate correlated strongly with the number of mutations found in the other, though as expected the WGA replicate, with the additional amplification step, had slightly more mutations (Figure 1). We found that the overlap between the two samples, caclulated by $WGA \cap WGS/WGS$ for WGS replicates and $WGA \cap WGS/WGA$ for WGA replicates, was mostly between 20-40\% in WGA replicates and mostly between 40-60\% in WGS replicates. As expected the distribution is narrower and taller in the WGS replicates, as a greater percentage of those samples are likley "real" mutations and so present in the overlap (Figure 2).
 
 % Experiment: number of mutations (figure 3)
 %(a) a brief (one sentence to one paragraph) summary of what you did and why
@@ -94,6 +96,17 @@ For 55 samples, TCGA provides two sets of raw sequence data, one set captured wi
 Different cancers mutate at different rates; from some pediatric cancers that arise from single and double hit mutations \cite{pediatric}, to tumors with a mutator phenotype, which usually results from errors in DNA repair pathways \cite{mutator}. GBM specifically is thought to have a relatively low mutation rate \cite{GBM_mut_rate}, and while the majority of our samples had low mutation frequencies in line with this thoery, several samples also had mutation frequencies an order of magnitude greater. One possible explanation is a degraded DNA sample, or bad data. If this were the case, we would expect the percentage of the overlap between replicates to decrease with the overall number of putative mutations. We found no correlation between the number of putatve mutations and the percentage of the sample that was overlapping (Figure 3). 
 
 \subsection{Filtering}
+
+\begin{itemize}
+	\item Removes putative SNPs with GATK quality scores less than 40 (as part of the GATK processing, with indel realignment and base recalibration)
+	\item Removes ... I forget
+	\item Removes putative SNPs with SomaticSniper VAQ scores less than or equal to 20 (VAQ)
+	\item Removes putative SNPs that are identified as loss of heterozygosity (LOH)
+	\item Removes putative SNPs located within a 10 bp window of any other putative SNP
+	\item Removes putative SNPs located within a 10 bp window of indels
+	\item Removes putative SNPs that overlap with dbSNP coverage
+	\item Removes putative SNPs if, in the tumor data, the percentage of reads covering the site with the alternate allele is less than 10%
+\end{itemize}
 
 % Experiment: which filters do what (figures 4 and 5) % Experiment: those two filters are different (figures 6 and 7)
 %(a) a brief (one sentence to one paragraph) summary of what you did and why
@@ -145,18 +158,18 @@ In this sample, we have shown that while some filters remove primarily putative 
 Finally, we looked at results from one SNP caller. There are many more equally widely used SNP callers available, which might do better or worse than the one we have chosen here.
 
 %E) (optional) End with a paragraph that again summarizes your research and highlights the most important findings
-We have shown that 
+We have shown that there is significant overlap between technical replicates of whole exome sequencing in the TCGA GBM dataset, comprising about 50% of putative SNPs in whole exome sequencing and about 30% in whole genome sequencing. This effect remains even at a high number of putative SNPs, suggesting that some GBMs may have significantly more somatic mutation than others. While PCR remains the gold standard for distinguishing true positives from false positives in sequencing, we looked at the effects of six strictly computational filters on teh putative mutaions in each technical replicate and the overlap between them, for all 55 samples. We found that some filters remove principally those mutaions found in one sample or the other, while other filers remove primarily those in the overlap. We suggest using just the first set in the future, when working with strictly computational data.
 
 \section{Figures}
 
 \begin{figure}
 \includegraphics[scale=1.0]{data_processing_flowchart_2.png}
-\caption{\textbf{Number of putative SNPs in WGS v. WGA, as called by SomaticSniper.} Each point is a patient. The line is y=x, so points falling below the line agree with the hypothesis that whole genome amplification makes more mutations in a sample.}
+\caption{\textbf{Data processing flowchart.} For each of 55 patients, we began with a C484 tumor bamfile (WGS), a C282 tumor bamfile (WGA), and a normal bamfile, all aligned to hg18. For each bamfile, we used picard to regerate fastq files, bwa to realign the fastq files to hg19, GATK to recalibrate bases and indels, and SomaticSniper to call somatic mutations.}
 \end{figure}
 
 \begin{figure}
 \includegraphics[scale=1.0]{overlap_explained.png}
-\caption{\textbf{Number of putative SNPs in WGS v. WGA, as called by SomaticSniper.} Each point is a patient. The line is y=x, so points falling below the line agree with the hypothesis that whole genome amplification makes more mutations in a sample.}
+\caption{\textbf{Overlap between WGS and WGA.} For each sample, we generated a SomaticSniper VCF with putative somatic mutations for each of two replicates. We took the overlap between the two lists for the most likely true positives.}
 \end{figure}
 
 \begin{figure}

@@ -1,0 +1,11 @@
+## this is the lab notebook for the Doubles Project
+
+## 9 November, 2014: 19h45
+1. For tumor-C484.TCGA-02-2486-01A-01D-1494-08.5: the FixMatePairs worked on the .sorted.bam, so now am running the dedup, etc. on that
+   But in order to run the alignment, we actually need the blood file to run SNPs GATK, so we're going to align the blood first
+2. We are aligning the blood in step one, which will allow us to carry out the second part of the test in (2) as well
+3. Aligning tumor files through C484.TCGA-06-0152-02A-01D-2280-08.1, so we'll be starting the next set of alignmnets,
+   and tests depending on parts (1) and (2), with C484.TCGA-06-0156-01A-01D-1491-08.5
+4. Beginning to align blood files, with the only one in the working directory... it is aligning now...
+   the plan will be to fix it if necessary, and use the fixed script in test (1)
+   and the presumable mate-non-indexed one in test (2)

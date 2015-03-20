@@ -1,3 +1,6 @@
+## FIGURES IN PAPER: 6 and 7
+## it's the two box plots
+
 # this script looks in different ways at which mutations are removed when I run the filters
 
 # first look at the STD_40 data
@@ -22,7 +25,7 @@ dev.off()
 pdf( "../FIGURE_PDFS/boxplot_number_filtered.pdf", width=6, height=5 )
 par(bty='n', mar=c(5.1,4.1,1.1,0))
 boxplot( data[,c(5,7,4,3,6,8)], log='y', ylim=c(1,100000), xaxt='n', pch=20, ylab="# of putative SNPs filtered, per sample" )
-axis( 1, at=1:6, padj=0.8, cex.axis=0.7, labels=c( "Removes Variant\nAllele Quality\n(VAQ)<20", "Removes\nLOH", "Removes putative\nSNPs within\n10 bp window\nof other SNPs", "Removes putative\nSNPs within\n10 bp window\nof indels", "Removes\noverlap\nwith dbSNP\ncoverage", "Removes when\nalt. allele\ncoverage<=10%" ) )
+axis( 1, at=1:6, padj=0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNP", "10bp-INDEL", "dbSNP", "<10%" ) )
 dev.off()
 
 ### still working on two problems:
@@ -49,5 +52,5 @@ dev.off()
 pdf( "../FIGURE_PDFS/boxplot_percent_overlap_filtered.pdf", width=6, height=5 )
 par(bty='n', mar=c(5.1,4.1,1.1,0))
 boxplot( overlap_data[,c(9,13,7,5,11,15)], ylim=c(0,1), xaxt='n', ylab="% of unfiltered overlap filtered, per sample", pch=20 )
-axis( 1, at=1:6, padj = 0.8, cex.axis=0.7, labels=c( "Removes Variant\nAllele Quality\n(VAQ)<20", "Removes\nLOH", "Removes putative\nSNPs within\n10 bp window\nof other SNPs", "Removes putative\nSNPs within\n10 bp window\nof indels", "Removes\noverlap\nwith dbSNP\ncoverage", "Removes when\nalt. allele\ncoverage<=10%" ) )
+axis( 1, at=1:6, padj = 0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNP", "10bp-INDEL", "dbSNP", "<10%" ) )
 dev.off()

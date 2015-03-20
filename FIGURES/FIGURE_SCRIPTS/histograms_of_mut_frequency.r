@@ -1,3 +1,6 @@
+## This is for figure 3 in the paper
+## and hte plot with the trendline (3)
+
 # setwd( "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/GBM_genomics/FIGURES/" )
 
 # this script makes histograms of mutation frequency for the different data sets
@@ -19,8 +22,8 @@ dev.off()
 
 # plot of (paired) C282 against C484, with a line at 1 to see how things fall
 # anything below the line is in line with the hypothesis, above is bad
-png( "../FIGURE_PDFS/C282_v_C484.png" )
-#pdf( "../FIGURE_PDFS/C282_v_C484.pdf" )
+#png( "../FIGURE_PDFS/C282_v_C484.png" )
+pdf( "../FIGURE_PDFS/C282_v_C484.pdf" )
 par(bty='n')
 plot(data$C282_count, data$C484_count, log='xy', pch=20, xlab="No. of putative SNPs, WGA", ylab="No. of putative SNPs, WGS" )
 abline(0,1)
@@ -28,7 +31,8 @@ dev.off()
 
 # the two density plots on top of each other, to see what is going on
 pdf( "../FIGURE_PDFS/unfiltered_C282_C484_density.pdf" )
-plot( d2$x, d2$y, type='l', col='red')
+par(bty='n')
+plot( d2$x, d2$y, type='l', col='red', xlab="Density", ylab="% of sample contained in overlap")
 lines( d1$x, d1$y, col='blue' )
 dev.off()
 

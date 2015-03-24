@@ -29,7 +29,7 @@ fi
 ## locations of relevant and needed files
 gatkJar="$TACC_GATK_DIR/GenomeAnalysisTK.jar"
 refDir="/work/00001/mattcowp/Hs_reference_datasets"
-hgReference="$ref_dir/Homo_sapiens.GRCh37.72.dna.fa"
+hgReference="$refDir/Homo_sapiens.GRCh37.72.dna.fa"
 dbSNP="$refDir/dbsnp_137.b37.vcf"
 hapMap="$refDir/hapmap_3.3.b37.vcf"
 G1000HiConfSNPs="$refDir/1000G_phase1.snps.high_confidence.b37.vcf"

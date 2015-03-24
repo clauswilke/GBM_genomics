@@ -60,7 +60,7 @@ java -d64 -jar $gatkJar -R $hgReference -nt 12 -T RealignerTargetCreator -rf Bad
 echo "$0: `date`"
 
 # (local realignment around indels) tumor
-echo "IndelRealigner: " `date` >> ../$tumor_pfx.gatk.log
+echo "IndelRealigner: " `date` >> ../$tumorPfx.gatk.log
 java -d64 -jar $gatkJar -R $hgReference -T IndelRealigner -rf BadCigar -I $tumorPfx.dedup.bam -known $G1000Mills -known $G1000Phase1Indels -targetIntervals $tumorPfx.intervals -o $tumorPfx.realn.bam &>>../$tumorPfx.gatk.log &
 # (local realignment around indels) blood
 java -d64 -jar $gatkJar -R $hgReference -T IndelRealigner -rf BadCigar -I $bloodPfx.dedup.bam -known $G1000Mills -known $G1000Phase1Indels -targetIntervals $tumorPfx.intervals -o $bloodPfx.realn.bam &>>../$tumorPfx.gatk.log &

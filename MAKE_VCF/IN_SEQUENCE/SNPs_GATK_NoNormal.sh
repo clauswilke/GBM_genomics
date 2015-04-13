@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # load modules (gatk current default is 2.7.2)
+module load jdk64
 module load gatk
-module load samtools
+module load samtools/0.1.19
 module load picard 
 
 ## this script does the GATK processing and variant calibration on all of the sorted .bam and .bam.bai files
@@ -12,7 +13,7 @@ cd $dataDir
 
 ## get sample names and file names, and make sure the two files have the same sample name
 tumorPfx1=$1
-bloodPfx2=$2
+tumorPfx2=$2
 sampPfx=$3
 tumorSamp1=${tumorPfx1:0:17}
 tumorSamp2=${tumorPfx2:0:17}
@@ -57,14 +58,14 @@ wait;
 ## indel re-alignment
 # generate a common interval file for the blood and tumor data
 echo "Start RealignerTargetCreator: " >> ../$sampPfx.gatk.log
-java -d64 -jar $gatkJar -R $hgReference -nt 12 -T RealignerTargetCreator -rf BadCigar -known $G1000Mills -known $G1000Phase1Indels -o $sampPfx.intervals -I $tumorPfx1.dedup.bam -I $tumorPfx2.dedup.bam &>>../$sampPfx.gatk.log
+java -d64 -Xmx20g -jar $gatkJar -R $hgReference -nt 12 -T RealignerTargetCreator -rf BadCigar -known $G1000Mills -known $G1000Phase1Indels -o $sampPfx.intervals -I $tumorPfx1.dedup.bam -I $tumorPfx2.dedup.bam &>>../$sampPfx.gatk.log
 echo "$0: `date`"
 
 # (local realignment around indels) tumor
 echo "IndelRealigner: " `date` >> ../$sampPfx.gatk.log
-java -d64 -jar $gatkJar -R $hgReference -T IndelRealigner -rf BadCigar -I $tumorPfx1.dedup.bam -known $G1000Mills -known $G1000Phase1Indels -targetIntervals $sampPfx.intervals -o $tumorPfx1.realn.bam &>>../$sampPfx.gatk.log &
+java -d64 -Xmx10g -jar $gatkJar -R $hgReference -T IndelRealigner -rf BadCigar -I $tumorPfx1.dedup.bam -known $G1000Mills -known $G1000Phase1Indels -targetIntervals $sampPfx.intervals -o $tumorPfx1.realn.bam &>>../$sampPfx.gatk.log &
 # (local realignment around indels) blood
-java -d64 -jar $gatkJar -R $hgReference -T IndelRealigner -rf BadCigar -I $tumorPfx2.dedup.bam -known $G1000Mills -known $G1000Phase1Indels -targetIntervals $sampPfx.intervals -o $tumorPfx2.realn.bam &>>../$sampPfx.gatk.log &
+java -d64 -Xmx10g -jar $gatkJar -R $hgReference -T IndelRealigner -rf BadCigar -I $tumorPfx2.dedup.bam -known $G1000Mills -known $G1000Phase1Indels -targetIntervals $sampPfx.intervals -o $tumorPfx2.realn.bam &>>../$sampPfx.gatk.log &
 wait;
 
 # index the re-aligned bams
@@ -74,17 +75,17 @@ samtools index $tumorPfx2.realn.bam
 ## base recalibration
 # "BaseRecalibrator"
 echo "BaseRecalibrator on $tumorPfx1: " `date`  >> ../$sampPfx.gatk.log
-java -d64 -jar $gatkJar -nct 8 -T BaseRecalibrator -rf BadCigar -I $tumorPfx1.realn.bam -R $hgReference -knownSites $dbSNP -o $tumorPfx1.recal.grp &>>../$sampPfx.gatk.log &
+java -d64 -Xmx10g -jar $gatkJar -nct 8 -T BaseRecalibrator -rf BadCigar -I $tumorPfx1.realn.bam -R $hgReference -knownSites $dbSNP -o $tumorPfx1.recal.grp &>>../$sampPfx.gatk.log &
 echo "BaseRecalibrator on $tumorPfx2: " `date`  >> ../$tumorPfx.gatk.log
-java -d64 -jar $gatkJar -nct 8 -T BaseRecalibrator -rf BadCigar -I $tumorPfx2.realn.bam -R $hgReference -knownSites $dbSNP -o $tumorPfx2.recal.grp &>>../$sampPfx.gatk.log &
+java -d64 -Xmx10g -jar $gatkJar -nct 8 -T BaseRecalibrator -rf BadCigar -I $tumorPfx2.realn.bam -R $hgReference -knownSites $dbSNP -o $tumorPfx2.recal.grp &>>../$sampPfx.gatk.log &
 echo "Waiting for BQSR to finish... "`date` >> ../$sampPfx.gatk.log
 wait;
  
 # "PrintReads"   
 echo "PrintReads on $tumorPfx1: " `date` >> ../$sampPfx.gatk.log
-java -d64 -jar $gatkJar -nct 8 -T PrintReads -rf BadCigar -R $hgReference -I $tumorPfx1.realn.bam -BQSR $tumorPfx1.recal.grp -o $tumorPfx1.realn.recal.bam 2>>../$sampPfx.gatk.log &
+java -d64 -Xmx10g -jar $gatkJar -nct 8 -T PrintReads -rf BadCigar -R $hgReference -I $tumorPfx1.realn.bam -BQSR $tumorPfx1.recal.grp -o $tumorPfx1.realn.recal.bam 2>>../$sampPfx.gatk.log &
 echo "PrintReads on $tumorPfx2: " `date` >> ../$tumorPfx.gatk.log
-java -d64 -jar $gatkJar -nct 8 -T PrintReads -rf BadCigar -R $hgReference -I $tumorPfx2.realn.bam -BQSR $tumorPfx2.recal.grp -o $tumorPfx2.realn.recal.bam 2>>../$sampPfx.gatk.log &
+java -d64 -Xmx10g -jar $gatkJar -nct 8 -T PrintReads -rf BadCigar -R $hgReference -I $tumorPfx2.realn.bam -BQSR $tumorPfx2.recal.grp -o $tumorPfx2.realn.recal.bam 2>>../$sampPfx.gatk.log &
 echo "Waiting for PrintReads to finish... "`date` >> ../$sampPfx.gatk.log
 wait;
 

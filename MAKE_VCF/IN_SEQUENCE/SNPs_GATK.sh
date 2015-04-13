@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # load modules (gatk current default is 2.7.2)
+# module load jdk64 # this line added just for 190 run
 module load gatk
-module load samtools
+module load samtools/0.1.19 # used older version of samtools only on the 190 run
 module load picard 
 
 ## this script does the GATK processing and variant calibration on all of the sorted .bam and .bam.bai files
@@ -17,8 +18,8 @@ tumorSamp=${tumorPfx:0:17}
 bloodSamp=${bloodPfx:0:17}
 tumorDir="$tumorPfx.WORK"
 # echo $tumor_dir
-echo $tumorPfx $tumorSamp
-echo $bloodPfx $bloodSamp
+echo $tumorPfx $tumorSamp &>>../$tumorPfx.gatk.log
+echo $bloodPfx $bloodSamp &>>../$tumorPfx.gatk.log
 if [ $tumorSamp != $bloodSamp ]; then
 	echo "Non-matching sample names:"
 	echo "	$tumorSamp"
@@ -37,21 +38,28 @@ G1000Phase1Indels="$refDir/1000G_phase1.indels.b37.vcf"
 G1000OmniSNPs="$refDir/1000G_omni2.5.b37.vcf"
 G1000Mills="$refDir/Mills_and_1000G_gold_standard.indels.b37.vcf"
 
-echo "Generating somatic calls for $tumorPfx" > $tumorPfx.gatk.log
+echo "Generating somatic calls for $tumorPfx" >> $tumorPfx.gatk.log
 
 # make a temporary directory in which this will actually run
 mkdir $tumorDir
+echo "Moving to working directory $tumorDir" >> $tumorPfx.gatk.log
 cd $tumorDir
 
 # remove duplicate reads from bamfiles, leaving only the read with the highest map quality
-samtools rmdup ../$tumorPfx/$tumorPfx.out.sorted.matefixed.bam $tumorPfx.dedup.bam &
-samtools rmdup ../normal/$bloodPfx/$bloodPfx.out.sorted.matefixed.bam $bloodPfx.dedup.bam &
+echo "Now running samtools rmdup..." >> $tumorPfx.gatk.log
+samtools rmdup ../$tumorPfx/$tumorPfx.out.sorted.matefixed.bam $tumorPfx.dedup.bam &>>../$tumorPfx.gatk.log &
+samtools rmdup ../normal/$bloodPfx/$bloodPfx.out.sorted.matefixed.bam $bloodPfx.dedup.bam &>>../$tumorPfx.gatk.log &
 wait;
+echo "`date`">>../$tumorPfx.gatk.log
+echo "">>../$tumorPfx.gatk.log
 
 # reindex the de-duplicated bamfiles
-samtools index $tumorPfx.dedup.bam &
-samtools index $bloodPfx.dedup.bam &
+echo "Now running samtools index..." >>../$tumorPfx.gatk.log
+samtools index $tumorPfx.dedup.bam &>>../$tumorPfx.gatk.log &
+samtools index $bloodPfx.dedup.bam &>>../$bloodPfx.gatk.log &
 wait;
+echo "`date`">>../$tumorPfx.gatk.log
+echo "">>../$tumorPfx.gatk.log
 
 ## indel re-alignment
 # generate a common interval file for the blood and tumor data

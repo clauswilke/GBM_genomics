@@ -1,8 +1,8 @@
 #! /bin/bash
 
-#SBATCH -J t1_3.1
-#SBATCH -o t1_3.1.out
-#SBATCH -e t1_3.1.err
+#SBATCH -J SNPcalling
+#SBATCH -o SNPcalling.out
+#SBATCH -e SNP calling.err
 #SBATCH -n 16
 #SBATCH -p normal
 #SBATCH -A mattcowp
@@ -12,12 +12,19 @@ set -x                      # Echo commands
 
 echo `hostname`
 
-data_dir="/scratch/00001/mattcowp/dakota/"
+## set up input variables
+## pfx is the prefix (sample name) that is common between the tumor and blood files for the sample
+## blood is the end of the blood file name, such that the blood file is called $pfx$blood
+## tumor is the end of the tumor file name, such that the tumor file is called $pfx$tumor
+## SS, MT, ST, and VS refer to each of the four possible SNP callers
+##		the value for each of these variables should be "yes" or "no," depending whether you want that SNP-caller to run
+pfx=""
+tumor=""
+blood=""
+SS=""
+MT=""
+ST=""
+VS=""
 
-# Run the executable (tumor)
-cd $data_dir/$pfx
-bash $HOME/GBM_genomics/MAKE_VCF/IN_SEQUENCE/align_fastq.sh C484.TCGA-06-0125-01A-01D-1490-08.6 tumor
-
-# run the executable (normal)
-# cd $data_dir/$pfx/normal
-# bash $HOME/GBM_genomics/MAKE_VCF/IN_SEQUENCE/align_fastq.sh C484.TCGA-06-0125-10A-01D-1490-08.6 blood
+## Run the executable
+bash $HOME/GBM_genomics/MAKE_VCF/IN_SEQUENCE/SNPcalling.sh $pfx $tumor $blood $SS $MT $ST $VS

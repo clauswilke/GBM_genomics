@@ -13,5 +13,4 @@ set -x                      # Echo commands
 echo `hostname`
 
 # Run the executable
-cd /scratch/00001/mattcowp/dakota
-bash $HOME/GBM_genomics/MAKE_VCF/12_batchFastExon.sh C484.TCGA-06-0190-01A-01D-1491-08.11 2000000 32 4
+bash $HOME/GBM_genomics/MAKE_VCF/IN_SEQUENCE/bam_to_fastq.sh C484.TCGA-02-2486-10A-01D-1494-08.6 /scratch/00001/mattcowp/dakota/normal

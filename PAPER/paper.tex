@@ -236,8 +236,8 @@ We used the same or substantially similar python scripts to calculate and compar
 %% Figure 1
 \begin{figure}
 \centerline{
-\includegraphics[width=5in]{figs1and2combo.pdf} }
-\caption{\textbf{Data processing pipeline.} For each of 55 patients, we began with a C484 tumor BAM file (WGS), a C282 tumor BAM file (WGA), and a normal BAM file, all aligned to hg18. For each BAM file, we used picard to regenerate fastq files, bwa to realign the fastq files to hg19, and GATK to recalibrate bases and indels. We used SomaticSniper to call somatic mutations (differences between the tumor and normal sequences) for each replicate. When we had a VCF for each replicate, we calculated the overlap between the two lists as the number of individual mutations which appeared in both replicates. {\color{red}Comment on the figure: The two colored boxes called ``SomaticSniper VCF'' need labels ``WGS'' and ``WGA'' next to them.}}
+\includegraphics[width=5in]{pipeline.pdf} }
+\caption{\textbf{Data processing pipeline.} For each of 55 patients, we began with a C484 tumor BAM file (WGS), a C282 tumor BAM file (WGA), and a normal BAM file, all aligned to hg18. For each BAM file, we used picard to regenerate fastq files, bwa to realign the fastq files to hg19, and GATK to recalibrate bases and indels. We used SomaticSniper to call somatic mutations (differences between the tumor and normal sequences) for each replicate. When we had a VCF for each replicate, we calculated the overlap between the two lists as the number of individual mutations which appeared in both replicates.}
 \label{fig:pipeline}
 \end{figure}
 
@@ -261,7 +261,7 @@ We used the same or substantially similar python scripts to calculate and compar
 \begin{figure}
 \centerline{
 \includegraphics[width=5in]{unfiltered_total_muts_v_percent_overlap.pdf} }
-\caption{\textbf{Percent of overlap versus (log) number of putative SNPs per sample.} Plot of the percentage of a given WGS samples that is in the overlap between replicates against the number of mutations in that sample (Pearson $r=0.25$, {\color{red}$df=XXX$}, $P=0.06$).}
+\caption{\textbf{Percent of overlap versus (log) number of putative SNPs per sample.} Plot of the percentage of a given WGS samples that is in the overlap between replicates against the number of mutations in that sample (Pearson $r=-0.04$, $df=53$, $P=0.76$).}
 \label{fig:unfiltered_total_muts}
 \end{figure}
 
@@ -286,7 +286,7 @@ We used the same or substantially similar python scripts to calculate and compar
 \begin{figure}
 \centerline{
 \includegraphics[width=5in]{./LOH_VAQ/LOH_all.pdf} }
-\caption{\textbf{{\color{red}Figure needs a better title. The current one is unclear.} Length of overlap of LOH segments.} As the length of the overlap between WGS and WGA increases ($x$-axis), the percentage of the overlap filtered out by LOH increases. This is the almost (but not quite) perfect inverse of the pattern observed in VAQ mutations (Figure~\ref{fig:VAQ_all}).}
+\caption{\textbf{Percentage of replicate SNPs filtered out by LOH, as a function of the total number of overlapping SNPs.} As the length of the overlap between WGS and WGA increases ($x$-axis), the percentage of the overlap filtered out by LOH increases. This is the almost (but not quite) perfect inverse of the pattern observed in VAQ mutations (Figure~\ref{fig:VAQ_all}), indicating that these two filters remove almost disjoint sets of putative SNPs.}
 \label{fig:LOH_all}
 \end{figure}
 
@@ -294,7 +294,7 @@ We used the same or substantially similar python scripts to calculate and compar
 \begin{figure}
 \centerline{
 \includegraphics[width=5in]{./LOH_VAQ/VAQ_all.pdf} }
-\caption{ \textbf{{\color{red}Figure needs a better title. The current one is unclear.} Length of overlap of VAQ segments.} As the length of the overlap between WGS and WGA increases ($x$-axis), the percentage of the overlap filtered out by VAQ decreases. This is the almost (but not quite) perfect inverse of the pattern observed in LOH mutations (Figure~\ref{fig:LOH_all}).}
+\caption{ \textbf{Percentage of replicate SNPs filtered out by VAQ, as a function of the total number of overlapping SNPs.} As the length of the overlap between WGS and WGA increases ($x$-axis), the percentage of the overlap filtered out by VAQ decreases. This is the almost (but not quite) perfect inverse of the pattern observed in LOH mutations (Figure~\ref{fig:LOH_all}), indicating that these two filters remove almost disjoint sets of putative SNPs.}
 \label{fig:VAQ_all}
 \end{figure}
 

@@ -17,18 +17,16 @@ tumorbam="$workDir/$pfx$tumor.realn.recal.bam"
 normalbam="$workDir/$pfx$blood.realn.recal.bam"
 
 ## make paths to files you will need, including hg19, 
-ref_dir="/work/00001/mattcowp/Hs_reference_datasets"
-hgReference="$ref_dir/Homo_sapiens.GRCh37.72.dna.fa"
+refDir="/work/00001/mattcowp/Hs_reference_datasets"
+hgReference="$refDir/Homo_sapiens.GRCh37.72.dna.fa"
+
+## additional references for Strelka
+
+## additional references for VarScan
 
 #####################################
 ## First SNP-Caller: SomaticSniper ##
 #####################################
-
-## locate or build the SomaticSniper executable
-function LoB_SS {
-	echo "Load or build SomaticSniper: " `date` >> ./$pfx.SNPcalls.log
-	somaticsniper="/scratch/00001/mattcowp/dakota/bam-somaticsniper"
-}
 
 ## run SomaticSniper
 function runSS {
@@ -42,24 +40,34 @@ function runSS {
 ## Second SNP-Caller: MuTect ##
 ###############################
 
-## locate or build the MuTect executable
-function LoB_MT {
-	exit
-}
-
 ## run MuTect
 function runMT {
-	exit
+	
+	# go to the working directory
+	cd $workDir
+	
+	# set variables
+	muTectDir="/work/01839/dakotaz/MuTect"
+	muTectJar="$muTectDir/muTect-1.1.1.jar"
+	myRefDir="/work/01839/dakotaz/referenceDS"
+	dbSNPgz="$myRefDir/dbsnp_132_b37.leftAligned.vcf.gz"
+	COSMIC="$myRefDir/Cosmic.hg19.vcf"
+	
+	# unzip dbSNP in scratch (because it is huge)
+	gunzip -c $dbSNPgz > $workDir/dbsnp_132_b37.leftAligned.vcf
+	dbSNP="$workDir/dbsnp_132_b37.leftAligned.vcf"
+	
+	# and finally the run command...
+	java -Xmx12g -jar $muTectJar --analysis_type MuTect --reference_sequence $hgReference --cosmic $COSMIC --dbsnp $dbSNP --input_file:normal $normalbam --input_file:tumor $tumorbam --out $pfx$tumor.MT.out --coverage_file $pfx$tumor.MTcoverage.wig.txt
+	
+	# clean up 
+	rm $dbSNP
+	
 }
 
 ###############################
 ## Third SNP-Caller: Strelka ##
 ###############################
-
-## locate or build the Strelka executable
-function LoB_ST {
-	exit
-}
 
 ## run Strelka
 function runST {
@@ -70,12 +78,8 @@ function runST {
 ## Fourth SNP-Caller: VarScan ##
 ################################
 
-## locate or build the VarScan executable
-function LoB_VS {
-	exit
-}
-
 ## run VarScan
+
 function runVS {
 	exit
 }
@@ -85,8 +89,19 @@ function runVS {
 ###################
 
 if [ "$4" == "yes" ]; then
-	LoB_SS
 	runSS
+fi
+
+if [ "$5" == "yes" ]; then
+	runMT
+fi
+
+if [ "$6" == "yes" ]; then
+	runST
+fi
+
+if [ "$7" == "yes" ]; then
+	runVS
 fi
 
 exit;

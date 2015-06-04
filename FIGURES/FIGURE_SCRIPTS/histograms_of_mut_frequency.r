@@ -25,7 +25,7 @@ dev.off()
 #png( "../FIGURE_PDFS/C282_v_C484.png" )
 pdf( "../FIGURE_PDFS/C282_v_C484.pdf" )
 par(bty='n')
-plot(data$C282_count, data$C484_count, log='xy', pch=20, xlab="No. of putative SNPs, WGA", ylab="No. of putative SNPs, WGS" )
+plot(data$C282_count, data$C484_count, log='xy', pch=20, xlab="No. of putative SNVs, WGA", ylab="No. of putative SNVs, WGS" )
 abline(0,1)
 dev.off()
 

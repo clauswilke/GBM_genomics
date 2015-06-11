@@ -47,21 +47,21 @@ function runMT {
 	cd $workDir
 	
 	# set variables
-	muTectDir="/work/01839/dakotaz/MuTect"
+	muTectDir="/work/01839/dakotaz/local/bin/MuTect"
 	muTectJar="$muTectDir/muTect-1.1.1.jar"
 	myRefDir="/work/01839/dakotaz/referenceDS"
-	dbSNPgz="$myRefDir/dbsnp_132_b37.leftAligned.vcf.gz"
 	COSMIC="$myRefDir/Cosmic.hg19.vcf"
+	dbSNP="$refDir/dbsnp_137.b37.vcf"
 	
 	# unzip dbSNP in scratch (because it is huge)
-	gunzip -c $dbSNPgz > $workDir/dbsnp_132_b37.leftAligned.vcf
-	dbSNP="$workDir/dbsnp_132_b37.leftAligned.vcf"
+	# gunzip -c $dbSNPgz > $workDir/dbSNP.human_9606_b142_GRCh37p13.All.vcf
+	# dbSNP="$workDir/dbSNP.human_9606_b142_GRCh37p13.All.vcf"
 	
 	# and finally the run command...
 	java -Xmx12g -jar $muTectJar --analysis_type MuTect --reference_sequence $hgReference --cosmic $COSMIC --dbsnp $dbSNP --input_file:normal $normalbam --input_file:tumor $tumorbam --out $pfx$tumor.MT.out --coverage_file $pfx$tumor.MTcoverage.wig.txt
 	
 	# clean up 
-	rm $dbSNP
+	# rm $dbSNP
 	
 }
 
@@ -79,28 +79,44 @@ function runST {
 ################################
 
 ## run VarScan
+## note that this is the VarScan protocol to call Somatic Variants in CANCER; that is not the same thing as lots of other potential VarScan protocols. See their website for all their protocols.
 
 function runVS {
-	exit
+
+	## set up environment
+	ml samtools
+
+	## important variables
+	VarScanJar="/home1/01839/dakotaz/June2015/SNPcalling0169/VarScan/VarScan.v2.3.8.jar"
+	outPfx="$pfx.VarScan"
+	
+	## samtools the important input files
+	puNormal="$workDir/$pfx$blood.pileup"
+	puTumor="$workDir/$pfx$tumor.pileup"
+	samtools mpileup -q 1 -f $hgReference $normalbam > $puNormal
+	samtools mpileup -q 1 -f $hgReference $tumorbam > $puTumor
+
+	## and run VarScan
+	java -jar $VarScanJar somatic $puNormal $puTumor $outPfx
 }
 
 ###################
 ## MAIN FUNCTION ##
 ###################
 
-if [ "$4" == "yes" ]; then
+if [ "$SS" == "yes" ]; then
 	runSS
 fi
 
-if [ "$5" == "yes" ]; then
+if [ "$MT" == "yes" ]; then
 	runMT
 fi
 
-if [ "$6" == "yes" ]; then
+if [ "$ST" == "yes" ]; then
 	runST
 fi
 
-if [ "$7" == "yes" ]; then
+if [ "$VS" == "yes" ]; then
 	runVS
 fi
 

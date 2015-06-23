@@ -16,15 +16,9 @@ echo `hostname`
 ## pfx is the prefix (sample name) that is common between the tumor and blood files for the sample
 ## blood is the end of the blood file name, such that the blood file is called $pfx$blood
 ## tumor is the end of the tumor file name, such that the tumor file is called $pfx$tumor
-## SS, MT, ST, and VS refer to each of the four possible SNP callers
-##		the value for each of these variables should be "yes" or "no," depending whether you want that SNP-caller to run
 pfx=""
 tumor=""
 blood=""
-SS=""
-MT=""
-ST=""
-VS=""
 
 ## Run the executable
-bash $HOME/GBM_genomics/MAKE_VCF/IN_SEQUENCE/SNPcalling.sh $pfx $tumor $blood $SS $MT $ST $VS
+bash $HOME/GBM_genomics/MAKE_VCF/SNPcalling.sh $pfx $tumor $blood

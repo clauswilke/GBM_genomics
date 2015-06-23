@@ -20,6 +20,12 @@ GBM_genomics
 
 -- these are the slurm scripts used to submit jobs to stampede
 
+1. 
+2. 
+3. 
+4. 
+5. 
+
 #################
 ## PROCESS_VCF ##
 #################

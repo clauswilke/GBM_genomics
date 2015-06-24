@@ -8,6 +8,12 @@ data2 = read.table( "../FIGURE_DATA/unfiltered_WGS-WGA_counts.txt", header=T )
 data34 = read.table( "../FIGURE_DATA/STD40_unfiltered_overlap.txt", header=T )
 data5 = read.table( "../FIGURE_DATA/numbers_excluded_by_filter_MUTATION_CALLS_STD40.txt", header=T )
 data6 = read.table( "../FIGURE_DATA/overlap_numbers_excluded_by_filter_MUTATION_CALLS_STD40.txt", header=T )
+data78a = read.table( "../FIGURE_DATA/STD40_unfiltered_overlap.txt", header=T )
+data78a[ 3:14 ] <- list( NULL )
+data78b = read.table( "../FIGURE_DATA/overlap_numbers_excluded_by_filter_MUTATION_CALLS_STD40.txt", header=T )
+data78b[ 2:7 ] <- list( NULL )
+data78b[ 4:5 ] <- list( NULL )
+data78b[ 6:7 ] <- list( NULL )
 
 #########################################################
 ## FIGURE 2: Number of putative SNVs in WGS versus WGA ##
@@ -88,15 +94,33 @@ boxplot( data5[,c(5,7,4,3,6,8)], log='y', ylim=c(1,100000), xaxt='n', pch=20, yl
 axis( 1, at=1:6, padj=0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
 # dev.off()
 
-## FIGURE 6: ##
+#################################################################
+## FIGURE 6: Percentage of WGS/WGSA overlap removed, by filter ##
+#################################################################
 
-pdf( "../FIGURE_PDFS/Figure6.pdf", width=6, height=5 )
+# pdf( "../FIGURE_PDFS/Figure6.pdf", width=6, height=5 )
 par(bty='n', mar=c(5.1,4.1,1.1,0))
 boxplot( data6[,c(9,13,7,5,11,15)], ylim=c(0,1), xaxt='n', ylab="Percentage of overlap filtered, per sample", pch=20 )
 axis( 1, at=1:6, padj = 0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
-dev.off()
+# dev.off()
 
-## FIGURE 7: ##
+#######################################################################################################################
+## FIGURE 7: Percentage of replicate SNVs filtered out by LOH, as a function of the total number of overlapping SNVs ##
+#######################################################################################################################
+
+LOH_VAQ_data <- merge( data78a, data78b, by="SAMPLE" )
+names( LOH_VAQ_data )[ names( LOH_VAQ_data )=="FILT_5_COUNT" ] <- "VAQ_COUNT"
+names( LOH_VAQ_data )[ names( LOH_VAQ_data )=="FILT_7_COUNT" ] <- "LOH_COUNT"
+names( LOH_VAQ_data )[ names( LOH_VAQ_data )=="FILT_5_PERCENT" ] <- "VAQ_PERCENT"
+names( LOH_VAQ_data )[ names( LOH_VAQ_data )=="FILT_7_PERCENT" ] <- "LOH_PERCENT"
+
+# note that this is pretty close to 1.00 every time, hence the inversion...
+LOH_VAQ_data$SUM=LOH_VAQ_data$LOH_PERCENT + LOH_VAQ_data$VAQ_PERCENT
+
+pdf( "../FIGURE_PDFS/Figure7.pdf" )
+par(bty='n')
+plot( LOH_VAQ_data$OVERLAP, LOH_VAQ_data$LOH_PERCENT, xlab="Number of SNVs in both replicates", ylab="Percentage of SNVs in both replicates filtered out by LOH", pch=20 )
+dev.off()
 
 ## FIGURE 8: ##
 

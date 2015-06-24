@@ -20,11 +20,11 @@ GBM_genomics
 
 -- these are the slurm scripts used to submit jobs to stampede
 
-1. 
-2. 
-3. 
-4. 
-5. 
+the five scripts that match names to those in MAKE-VCFs are the slurm scripts that run them
+
+-- there is one script used to submit a job on phylocluster
+
+this script runs scripts from PROCESS_VCF
 
 #################
 ## PROCESS_VCF ##
@@ -59,6 +59,14 @@ GBM_genomics
 -- these are the custom scripts, run in R, used to make the figures in the paper
 -- they were run on a Macbook
 
+## FIGURE_DATA ##
+
+## FIGURE_SCRIPTS ##
+
+## FIGURE_PDFS ## 
+
+-- 
+
 ###########
 ## PAPER ##
 ###########
@@ -70,6 +78,9 @@ GBM_genomics
 ## POSTER ##
 ############
 
--- these are the files uesd to generate a poster on this work presented at the Big Data in Biology symposium
+-- these are the files used to generate a poster on this work presented at the Big Data in Biology symposium
 -- they were all created and run on a Macbook
 
+1. BigData2015.key is the poster in Keynote
+2. BigData2015.pages is the text only
+3. BigData2015.pdf is the pdf for printing

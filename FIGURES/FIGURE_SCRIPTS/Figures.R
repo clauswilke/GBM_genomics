@@ -117,15 +117,17 @@ names( LOH_VAQ_data )[ names( LOH_VAQ_data )=="FILT_7_PERCENT" ] <- "LOH_PERCENT
 # note that this is pretty close to 1.00 every time, hence the inversion...
 LOH_VAQ_data$SUM=LOH_VAQ_data$LOH_PERCENT + LOH_VAQ_data$VAQ_PERCENT
 
-pdf( "../FIGURE_PDFS/Figure7.pdf" )
+# pdf( "../FIGURE_PDFS/Figure7.pdf" )
 par(bty='n')
 plot( LOH_VAQ_data$OVERLAP, LOH_VAQ_data$LOH_PERCENT, xlab="Number of SNVs in both replicates", ylab="Percentage of SNVs in both replicates filtered out by LOH", pch=20 )
-dev.off()
+# dev.off()
 
 ## FIGURE 8: ##
 
-
-
+pdf( "../FIGURE_PDFS/Figure8.pdf" )
+par(bty='n')
+plot( LOH_VAQ_data$OVERLAP, LOH_VAQ_data$VAQ_PERCENT, xlab="Number of SNVs in both replicates", ylab="Percentage of SNVs in both replicates filtered out by VAQ", pch=20 )
+dev.off()
 
 
 

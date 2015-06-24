@@ -1,5 +1,5 @@
 ## This is for figure 3 in the paper
-## and hte plot with the trendline (3)
+## and hte plot with the trendline (2)
 
 # setwd( "/share/WilkeLab/work/dzd58/TCGA_Reanalysis/GBM_genomics/FIGURES/" )
 

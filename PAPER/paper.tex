@@ -1,4 +1,4 @@
-\documentclass[11pt]{article} % use larger type; default would be 10pt
+\documentclass[11 pt]{article} % use larger type; default would be 10pt
 \usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
 \usepackage[T1]{fontenc}
 \usepackage{authblk}
@@ -53,13 +53,13 @@
 
 %%% Title and author are here
 \title{Reproducibility of SNV-calling in multiple sequencing runs from single tumors}
-\author[1]{Dakota Z. Derryberry\thanks{dakotaz@utexas.edu}}
+\author[1]{Dakota Z. Derryberry\thanks{Dakota Z. Derryberry: 2500 Speedway, Austin, TX, 78712; (512)232-2459; dakotaz@utexas.edu}}
 \author[2,3]{Matthew C. Cowperthwaite}
 \author[1,4]{Claus O. Wilke} 
-\affil[1]{The University of Texas at Austin, Cell \& Molecular Biology}
-\affil[2]{St. David's NeuroTexas Institute Research Foundation}
-\affil[3]{Center for Systems and Synthetic Biology, The University of Texas at Austin}
-\affil[4]{The University of Texas at Austin, Integrative Biology}
+\affil[1]{Cell \& Molecular Biology, The University of Texas at Austin, Austin, TX USA}
+\affil[2]{St. David's NeuroTexas Institute Research Foundation, Austin, TX, USA}
+\affil[3]{Center for Systems and Synthetic Biology, The University of Texas at Austin, Austin TX, USA}
+\affil[4]{Integrative Biology, The University of Texas at Austin, Austin, TX, USA}
 
 \begin{document}
 \maketitle
@@ -67,6 +67,8 @@
 \section*{Abstract}
 
 We examined 55 technical sequencing replicates of Glioblastoma multiforme (GBM) tumors from The Cancer Genome Atlas (TCGA) to ascertain the degree of repeatability in calling single-nucleotide variants (SNVs). We used the same mutation-calling pipeline on all pairs of samples, and we measured the extent of the overlap between two replicates, that is, how many specific point mutations were found in both replicates. We further tested whether additional filtering increased or decreased the size of the overlap.  We found that about half of the putative mutations identified in one sequencing run of a given sample were also identified in the second, and that this percentage remained steady throughout orders of magnitude of variation in the total number of mutations identified (from 23 to 10,966). We further found that using filtering after SNV-calling removed the overlap completely. We concluded that there is variation in the frequency of mutations in GBMs, and that while some filtering approaches preferentially removed putative mutations found in only one replicate, others removed a large fraction of putative mutations found in both.
+
+\clearpage
 
 \section*{Introduction}
 

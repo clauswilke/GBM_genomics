@@ -6,7 +6,8 @@
 
 data2 = read.table( "../FIGURE_DATA/unfiltered_WGS-WGA_counts.txt", header=T )
 data34 = read.table( "../FIGURE_DATA/STD40_unfiltered_overlap.txt", header=T )
-data56 = read.table( "../FIGURE_DATA/numbers_excluded_by_filter_MUTATION_CALLS_STD40.txt", header=T )
+data5 = read.table( "../FIGURE_DATA/numbers_excluded_by_filter_MUTATION_CALLS_STD40.txt", header=T )
+data6 = read.table( "../FIGURE_DATA/overlap_numbers_excluded_by_filter_MUTATION_CALLS_STD40.txt", header=T )
 
 #########################################################
 ## FIGURE 2: Number of putative SNVs in WGS versus WGA ##
@@ -83,11 +84,17 @@ abline( 0,1 )
 
 # pdf( "../FIGURE_PDFS/Figure5.pdf", width=6, height=5 )
 par(bty='n', mar=c(5.1,4.1,1.1,0))
-boxplot( data56[,c(5,7,4,3,6,8)], log='y', ylim=c(1,100000), xaxt='n', pch=20, ylab="Number of putative SNVs filtered, per sample" )
+boxplot( data5[,c(5,7,4,3,6,8)], log='y', ylim=c(1,100000), xaxt='n', pch=20, ylab="Number of putative SNVs filtered, per sample" )
 axis( 1, at=1:6, padj=0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
 # dev.off()
 
 ## FIGURE 6: ##
+
+pdf( "../FIGURE_PDFS/Figure6.pdf", width=6, height=5 )
+par(bty='n', mar=c(5.1,4.1,1.1,0))
+boxplot( data6[,c(9,13,7,5,11,15)], ylim=c(0,1), xaxt='n', ylab="Percentage of overlap filtered, per sample", pch=20 )
+axis( 1, at=1:6, padj = 0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
+dev.off()
 
 ## FIGURE 7: ##
 

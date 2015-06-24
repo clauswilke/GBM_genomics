@@ -6,6 +6,7 @@
 
 data2 = read.table( "../FIGURE_DATA/unfiltered_WGS-WGA_counts.txt", header=T )
 data34 = read.table( "../FIGURE_DATA/STD40_unfiltered_overlap.txt", header=T )
+data56 = read.table( "../FIGURE_DATA/numbers_excluded_by_filter_MUTATION_CALLS_STD40.txt", header=T )
 
 #########################################################
 ## FIGURE 2: Number of putative SNVs in WGS versus WGA ##
@@ -51,12 +52,12 @@ lines( amp_frac$x, amp_frac$y, col='red' )
 ## FIGURE 4: Percentage of overlap versus (log) number of putative SNVs per sample ##
 #####################################################################################
 
-pdf( "../FIGURE_PDFS/Figure4.pdf" )
+# pdf( "../FIGURE_PDFS/Figure4.pdf" )
 # when necessary, use the following title: Number of putative SNPs does not correlate with percentage WGS/WGA overlap
 par(bty = 'n')
 plot( data34$TOTAL, data34$PERCENT_OVERLAP_by_WGA.282, log='x', pch=20, main="", xlab="Number of putative SNVs in unfiltered data (log)", ylab="Percentage overlap between WGS and WGA in unfiltered data" )
 abline( 0,1 )
-dev.off()
+# dev.off()
 
 ############################
 ## FIGURE 4 CORERELATIONS ##
@@ -74,7 +75,17 @@ dev.off()
 # cor.test(data34$TOTAL, data34$PERCENT_OVERLAP_by_WGA.282, method="spearman")
 # OUTPUT: S = 29268, p-value = 0.6847, rho=-0.05584416
 
-## FIGURE 5: ##
+######################################################################
+## FIGURE 5: Number of putative SNPs removed by each of six filters ##
+######################################################################
+
+# make density of each filter removal
+
+# pdf( "../FIGURE_PDFS/Figure5.pdf", width=6, height=5 )
+par(bty='n', mar=c(5.1,4.1,1.1,0))
+boxplot( data56[,c(5,7,4,3,6,8)], log='y', ylim=c(1,100000), xaxt='n', pch=20, ylab="Number of putative SNVs filtered, per sample" )
+axis( 1, at=1:6, padj=0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
+# dev.off()
 
 ## FIGURE 6: ##
 

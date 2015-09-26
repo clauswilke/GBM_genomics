@@ -110,16 +110,20 @@ median(all$F7ratio, na.rm=TRUE)
 ## finally make some (supplementary) figures
 
 # here is a plot of points...
+pdf( "../FIGURE_PDFS/Diffset_bypoints.pdf" )
 par(bty='n')
 plot( all$F7ratio, ylim=c(0,80), pch=20, col='black' )
 points( all$F5ratio, pch=20, col='navy' )
 points( all$F3ratio, pch=20, col='red' )
 points( all$F4ratio, pch=20, col='yellow' )
 points( all$F6ratio, pch=20, col='orange' )
+dev.off()
 
 # and here is a boxplot...
 #24-28
+pdf( "../FIGURE_PDFS/Diffset_bybars.pdf" )
 par(bty='n')
 boxplot( all[,c(26,28,25,24,27)], ylim=c(1,50), xaxt='n', pch=20, ylab="Ratio of the diffset to the overlap, per filter" )
-axis( 1, at=1:6, padj=0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP" ) )
+axis( 1, at=1:5, padj=0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP" ) )
+dev.off()
 

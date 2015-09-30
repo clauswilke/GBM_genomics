@@ -61,20 +61,18 @@ this script runs scripts from PROCESS_VCF
 
 ## FIGURE_DATA ##
 
+-- there are 
+
 ## FIGURE_SCRIPTS ##
 
 -- These are the scripts (or other documents) used to produce the figures in FIGURE_PDFS
 
 1. Figure1.key is the keynote document that is Figure 1
 2. Figures.R is the R script used to make figures 2-8, and also to do statistical calculations
-3. 
 
 ## FIGURE_PDFS ## 
 
 -- figures for the paper are in .pdf form and are numbered 1-8
--- additional figures are as follows:
-
-1. 
 
 ###########
 ## PAPER ##

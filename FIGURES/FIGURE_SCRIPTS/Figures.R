@@ -127,7 +127,7 @@ plot( LOH_VAQ_data$OVERLAP, LOH_VAQ_data$LOH_PERCENT, xlab="Number of SNVs in bo
 pdf( "../FIGURE_PDFS/Figure8.pdf" )
 par(bty='n')
 plot( LOH_VAQ_data$OVERLAP, LOH_VAQ_data$VAQ_PERCENT, xlab="Number of SNVs in both replicates", ylab="Percentage of SNVs in both replicates filtered out by VAQ", pch=20 )
-dev.off()
+## this dev.off()
 
 
 

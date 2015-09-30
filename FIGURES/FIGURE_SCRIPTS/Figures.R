@@ -41,33 +41,36 @@ abline(0,1)
 # cor.test(data2$C282_count, data2$C484_count, method="spearman")
 # OUTPUT: S = 16142.79, p-value = 0.001511, rho=0.4176482
 
-#########################################################################
-## FIGURE 3: Density of percentage overlap between WGS and WGA samples ##
-#########################################################################
+##################################################################################
+## FIGURE 3 ORIGINAL: Density of percentage overlap between WGS and WGA samples ##
+##################################################################################
 
 # pdf( "../FIGURE_PDFS/Figure3.pdf" )
 # figure title (should it ever be needed): Greater % of WGS sample found in overlap than WGA
-amp_frac = density( data34$OVERLAP/data34$TOTAL_WGA.C282., from=0 )
-seq_frac = density( data34$OVERLAP/data34$TOTAL_WGS.C484., from=0 )
-par(bty='n')
-plot( seq_frac$x, seq_frac$y, type='l', col='blue', main="", xlab="Percentage of putative SNVs in a sample also recovered in the samples's technical replicate", ylab="Density")
-legend( "topright", c( "WGS", "WGA" ), col=c( "blue", "red" ), lty=1 )
-lines( amp_frac$x, amp_frac$y, col='red' )
+# amp_frac = density( data34$OVERLAP/data34$TOTAL_WGA.C282., from=0 )
+# seq_frac = density( data34$OVERLAP/data34$TOTAL_WGS.C484., from=0 )
+# par(bty='n')
+# plot( seq_frac$x, seq_frac$y, type='l', col='blue', main="", xlab="Percentage of putative SNVs in a sample also recovered in the samples's technical replicate", ylab="Density")
+# legend( "topright", c( "WGS", "WGA" ), col=c( "blue", "red" ), lty=1 )
+# lines( amp_frac$x, amp_frac$y, col='red' )
 # dev.off()
 
-#####################################################################################
-## FIGURE 4: Percentage of overlap versus (log) number of putative SNVs per sample ##
-#####################################################################################
+#############################################################################################################
+## FIGURE 3 MOD (ORIGINAL FIGURE 4): Percentage of overlap versus (log) number of putative SNVs per sample ##
+#############################################################################################################
 
-# pdf( "../FIGURE_PDFS/Figure4.pdf" )
+pdf( "../FIGURE_PDFS/Figure3.pdf" )
 # when necessary, use the following title: Number of putative SNPs does not correlate with percentage WGS/WGA overlap
 par(bty = 'n')
 plot( data34$TOTAL, data34$PERCENT_OVERLAP_by_WGA.282, log='x', pch=20, main="", xlab="Number of putative SNVs in unfiltered data (log)", ylab="Percentage overlap between WGS and WGA in unfiltered data" )
+points ( data34$TOTAL, data34$PERCENT_OVERLAP_by_WGS.484, pch=20, col="red" )
 abline( 0,1 )
-# dev.off()
+legend( 'topright', c( "overlap/WGA total", "overlap/WGS total" ), col=c( 'black', 'red' ) )
+legend( 'topright', c( "overlap/WGA total", "overlap/WGS total" ), col=c( 'black', 'red' ), pch=20 )
+dev.off()
 
 ############################
-## FIGURE 4 CORERELATIONS ##
+## FIGURE 3 CORERELATIONS ##
 ############################
 
 # First the Pearson correlation on the raw data
@@ -82,31 +85,31 @@ abline( 0,1 )
 # cor.test(data34$TOTAL, data34$PERCENT_OVERLAP_by_WGA.282, method="spearman")
 # OUTPUT: S = 29268, p-value = 0.6847, rho=-0.05584416
 
-######################################################################
-## FIGURE 5: Number of putative SNPs removed by each of six filters ##
-######################################################################
+######################################################################################
+## FIGURE 4 (ORIG FIGURE 5): Number of putative SNPs removed by each of six filters ##
+######################################################################################
 
 # make density of each filter removal
 
-# pdf( "../FIGURE_PDFS/Figure5.pdf", width=6, height=5 )
+pdf( "../FIGURE_PDFS/Figure4.pdf", width=6, height=5 )
 par(bty='n', mar=c(5.1,4.1,1.1,0))
 boxplot( data5[,c(5,7,4,3,6,8)], log='y', ylim=c(1,100000), xaxt='n', pch=20, ylab="Number of putative SNVs filtered, per sample" )
 axis( 1, at=1:6, padj=0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
-# dev.off()
+dev.off()
 
-#################################################################
-## FIGURE 6: Percentage of WGS/WGSA overlap removed, by filter ##
-#################################################################
+#################################################################################
+## FIGURE 5 (ORIG FIGURE 6): Percentage of WGS/WGSA overlap removed, by filter ##
+#################################################################################
 
-# pdf( "../FIGURE_PDFS/Figure6.pdf", width=6, height=5 )
+pdf( "../FIGURE_PDFS/Figure5.pdf", width=6, height=5 )
 par(bty='n', mar=c(5.1,4.1,1.1,0))
 boxplot( data6[,c(9,13,7,5,11,15)], ylim=c(0,1), xaxt='n', ylab="Percentage of overlap filtered, per sample", pch=20 )
 axis( 1, at=1:6, padj = 0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
-# dev.off()
+dev.off()
 
-#######################################################################################################################
-## FIGURE 7: Percentage of replicate SNVs filtered out by LOH, as a function of the total number of overlapping SNVs ##
-#######################################################################################################################
+#######################################################################################################################################
+## FIGURE 7 (ORIG FIGURE 6): Percentage of replicate SNVs filtered out by LOH, as a function of the total number of overlapping SNVs ##
+#######################################################################################################################################
 
 LOH_VAQ_data <- merge( data78a, data78b, by="SAMPLE" )
 names( LOH_VAQ_data )[ names( LOH_VAQ_data )=="FILT_5_COUNT" ] <- "VAQ_COUNT"
@@ -117,17 +120,19 @@ names( LOH_VAQ_data )[ names( LOH_VAQ_data )=="FILT_7_PERCENT" ] <- "LOH_PERCENT
 # note that this is pretty close to 1.00 every time, hence the inversion...
 LOH_VAQ_data$SUM=LOH_VAQ_data$LOH_PERCENT + LOH_VAQ_data$VAQ_PERCENT
 
-# pdf( "../FIGURE_PDFS/Figure7.pdf" )
+pdf( "../FIGURE_PDFS/Figure6.pdf" )
 par(bty='n')
 plot( LOH_VAQ_data$OVERLAP, LOH_VAQ_data$LOH_PERCENT, xlab="Number of SNVs in both replicates", ylab="Percentage of SNVs in both replicates filtered out by LOH", pch=20 )
-# dev.off()
+dev.off()
 
-## FIGURE 8: ##
+###############################
+## FIGURE 7 (ORIG FIGURE 8): ##
+###############################
 
-pdf( "../FIGURE_PDFS/Figure8.pdf" )
+pdf( "../FIGURE_PDFS/Figure7.pdf" )
 par(bty='n')
 plot( LOH_VAQ_data$OVERLAP, LOH_VAQ_data$VAQ_PERCENT, xlab="Number of SNVs in both replicates", ylab="Percentage of SNVs in both replicates filtered out by VAQ", pch=20 )
-## this dev.off()
+dev.off()
 
 
 

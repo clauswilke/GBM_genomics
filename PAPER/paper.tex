@@ -86,18 +86,18 @@ We answered these questions using TCGA data from 55 GBM tumors that were sequenc
 %(a) a brief (one sentence to one paragraph) summary of what you did and why
 %(b) a description of what you found carrying out this experiment
 
-DNA sequencing is not error-free. Error is introduced by mis-called bases in sequencing runs and by mis-aligned bases during sequence analysis \citep{seqerror}. Loss of heterozygosity may be a real feature of the data, or an amplification artifact that occurs when only one allele of a polymorphic site is amplified. Cancer DNA is highly heterogenous, which makes for an additional source of error: A polymorphic mutation, defined as a mutation that is not fixed and therefor is not present in all tumor cells, may or may not be represented at high enough frequency in a particular tumor specimen to be identified with next-gen sequencing. Alternatively, a polymorphic mutation may appear to be fixed when present at at very high frequency in a tumor specimen. In general, we would like to know how often these errors occur. One way of investigating this question would be to use an orthogonal technique such as PCR to verify each individual mutation. However, this method is expensive and time consuming. A cheaper alternative would be to sequence the tumor multiple times and to look at the similarity between replicates. Theoretically, any fixed mutation will appear in all replicates, while errors due to (i) sequencing errors, (ii) amplification errors, or (iii) alignment errors will not. (Polymorphic mutations would be present in some but not all samples, so this method does not address the difficulty of calling low-frequency variants in tumors.) The multiple-sequencing approach is used in most biological sequencing experiments, but not generally in cancer genomics, presumably due to unavailability of additional pathology specimens and the expense of sequencing multiple replicates for each of the hundreds of samples necessary for cancer genomics research. Nevertheless, even if researchers cannot verify every mutation or sequence multiple replicates for each tumor, it would be useful to know what percentage of called mutations would be likely to appear in additional sequencing replicates.
+DNA sequencing is not error-free. Error is introduced by mis-called bases in sequencing runs and by mis-aligned bases during sequence analysis \citep{seqerror}. Loss of heterozygosity may be a real feature of the data, or an amplification artifact that occurs when only one allele of a polymorphic site is amplified. Cancer DNA is highly heterogenous, which makes for an additional source of error: A polymorphic mutation, defined as a mutation that is not fixed and therefor is not present in all tumor cells, may or may not be represented at high enough frequency in a particular tumor specimen to be identified with next-gen sequencing. Alternatively, a polymorphic mutation may appear to be fixed when present at at very high frequency in a tumor specimen. In general, we would like to know how often these sorts of errors occur. One way of investigating this question would be to use an orthogonal technique such as PCR to verify each individual mutation. However, this method is expensive and time consuming. A cheaper alternative would be to sequence the tumor multiple times and to look at the similarity between replicates. Theoretically, any fixed mutation will appear in all replicates, while errors due to (i) sequencing errors, (ii) amplification errors, or (iii) alignment errors will not. (Polymorphic mutations would be present in some but not all samples, so this method does not address the difficulty of calling low-frequency variants in tumors.) The multiple-sequencing approach is used in most biological sequencing experiments, but not generally in cancer genomics, presumably due to unavailability of additional pathology specimens and the expense of sequencing multiple replicates for each of the hundreds of samples necessary for cancer genomics research. Nevertheless, even if researchers cannot verify every mutation or sequence multiple replicates for each tumor, it would be useful to know what percentage of called mutations would be likely to appear in additional sequencing replicates.
 
-TCGA's GBM data set includes 2 technical replicates for each of 55 tumors. In this case, the technical replicates are not identical. One protocol included an additional amplification step \citep{TCGA-GBM}, and we refer to this replicate as the WGA (whole-genome amplification) replicate, and the other as the WGS (whole-genome sequencing) replicate. Despite the difference in sequencing protocol, we would expect any fixed mutation to appear in both replicates, while polymorphic mutations and sequencing error might appear in only one. Consequently, those putative mutations appearing in both replicates are more likely to be real somatic variants than those found in only one replicate. We further hypothesized that the WGA samples would have a greater number of amplification errors, and thus more putative SNVs per sample, than the corresponding WGS samples. 
+TCGA's GBM data set includes 2 technical replicates for each of 55 tumors. In this case, the technical replicates are not identical. One protocol included an additional amplification step \citep{TCGA-GBM}, and we refer to this replicate as the WGA (whole-genome amplification) replicate, and the other as the WGS (whole-genome sequencing) replicate. Despite the difference in sequencing protocol, we would theoretically expect any fixed mutation to appear in both replicates, while polymorphic mutations and sequencing error might appear in only one. Consequently, those putative mutations appearing in both replicates are more likely to be real somatic variants than those found in only one replicate. We further hypothesized that the WGA samples would have a greater number of amplification errors, and thus more putative SNVs per sample, than the corresponding WGS samples. 
 
 For each patient (n=55), we called mutations in both technical replicates and in the patient's blood sample, using the same computational pipeline (see Figure~\ref{fig:pipeline} and Methods): We downloaded TCGA BAM files with CGHub \citep{CGHub}, re-generated fastq files with picard \citep{picard}, re-aligned the fastq files to hg19 with bwa \citep{bwa}, performed indel re-alignment and base recalibration with GATK \citep{GATK}, and finally called somatic mutations with SomaticSniper \citep{SomaticSniper}. We then compared the VCFs produced by SomaticSniper for each of the two technical replicates, and calculated the number of somatic mutations called in each replicate and the number of individual somatic mutations called in both replicates (hereafter, the overlap, see Figure~\ref{fig:pipeline}). We further calculated the percentage of mutations in each replicate that occurred in the overlap between the two. 
 
-There were on average 844 putative mutations in the WGS replicates and 1,531 putative mutations in the WGA replicates (Table~\ref{tab:summary_stats}). Across all samples, the number of mutations in a given WGS replicate was correlated with the number of mutations in its corresponding WGA replicate (Spearman $\rho=0.42$, $S=16142$, $P=0.002$, Figure~\ref{fig:Figure2}). As expected, for each sample the WGA replicate (with the additional amplification step) had slightly more mutations overall, with a slightly smaller percentage appearing in the overlap (Figures~\ref{fig:C282_v_C484} and~\ref{fig:unfiltered_overlap}). We found that the percent overlap between the two samples, calculated as $\text{WGA} \cap \text{WGS}/\text{WGS}$ for WGS replicates and $\text{WGA} \cap \text{WGS}/\text{WGA}$ for WGA replicates, varied widely, from 1\%-74\%, but was fairly evenly distributed around the average of 31\% in WGA replicates and 44\% in WGS replicates (Table~\ref{tab:summary_stats}). As expected, the distribution of the percentage overlap was narrower and taller in the WGS replicates, because on the whole the WGA samples had more amplification errors than the WGS samples (Figure~\ref{fig:unfiltered_overlap}).
+There were an average of 844 putative mutations in the WGS replicates and 1,531 putative mutations in the WGA replicates (Table~\ref{tab:summary_stats}). Across all samples, the number of mutations in a given WGS replicate was correlated with the number of mutations in its corresponding WGA replicate (Spearman $\rho=0.42$, $S=16142$, $P=0.002$, Figure~\ref{fig:C282_v_C484}). As expected, for each sample the WGA replicate (with the additional amplification step) had slightly more mutations overall, with a slightly smaller percentage appearing in the overlap (Figures~\ref{fig:C282_v_C484} and~\ref{fig:unfiltered_total_muts}). We found that the percent overlap between the two samples, calculated as $\text{WGA} \cap \text{WGS}/\text{WGS}$ for WGS replicates and $\text{WGA} \cap \text{WGS}/\text{WGA}$ for WGA replicates, varied widely, from 1\%-74\%, but was fairly evenly distributed around the average of 31\% in WGA replicates and 44\% in WGS replicates (Table~\ref{tab:summary_stats}). As expected, the distribution of the percentage overlap was narrower and taller in the WGS replicates, because on the whole the WGA samples had more amplification errors than the WGS samples (Supplementary Figure 1).
 
-% Experiment: number of mutations (figure 4)
+% Experiment: number of mutations (figure 3 **ORIGINALLY FIGURE 4** )
 %(a) a brief (one sentence to one paragraph) summary of what you did and why
 %(b) a description of what you found carrying out this experiment
-Although the percent overlap in WGS and WGA samples was fairly constant across samples, and the numbers of putative mutations in WGS and WGA samples were correlated, the exact number of putative mutations varied by orders of magnitude (Table~\ref{tab:summary_stats}). It is known that different cancers mutate at different rates: Some pediatric cancers have very few mutations \citep{RB2hit, pediatric}, while some adult tumors show a mutator phenotype leading to vastly increased numbers of mutations, usually resulting from errors in DNA repair pathways \citep{mutator}. GBM specifically is thought to have a relatively low mutation rate \citep{Parsons, TCGA-GBM-13}, and while some of our samples had low mutation frequencies in line with this theory (29 out of 110 samples had a mutation frequency within a factor of 2 of the reported 3 mutations per Mbp genome), several samples also had mutation frequencies an order of magnitude greater (24 out of 110 samples had a mutation frequency greater than 30 mutations per Mbp genome). One possible explanation is a degraded DNA sample or otherwise bad data. If this were the case, we would expect the percentage of the overlap between replicates (a measure of data quality) to decrease with the overall number of putative mutations. However, we found no significant correlation (Spearman $\rho=0.05$, $S=29268$, $P=0.68$) between the number of putative mutations in the WGS replicate and the percentage of those mutations that were in the overlap between replicates (Figure~\ref{fig:unfiltered_total_muts}). Thus, our data suggest that some samples may simply have a higher mutation frequency than others, or indeed than is generally supposed in GBM.
+Although the numbers of putative mutations in WGS and WGA samples were correlated, the exact number of putative mutations in each sample varied by orders of magnitude (Table~\ref{tab:summary_stats}). It is known that different cancers mutate at different rates: Some pediatric cancers have very few mutations \citep{RB2hit, pediatric}, while some adult tumors show a mutator phenotype leading to vastly increased numbers of mutations, usually resulting from errors in DNA repair pathways \citep{mutator}. GBM specifically is thought to have a relatively low mutation rate \citep{Parsons, TCGA-GBM-13}, and while some of our samples had low mutation frequencies in line with this theory (29 out of 110 samples had a mutation frequency within a factor of 2 of the reported 3 mutations per Mbp genome), several samples also had mutation frequencies an order of magnitude greater (24 out of 110 samples had a mutation frequency greater than 30 mutations per Mbp genome). One possible explanation is a degraded DNA sample, significant alignment error, or otherwise bad data. If this were the case, we would expect the percentage of the overlap between replicates (a measure of data quality) to decrease with the overall number of putative mutations. However, we found no significant correlation (Spearman $\rho=0.05$, $S=29268$, $P=0.68$) between the number of putative mutations in the WGS replicate and the percentage of those mutations that were in the overlap between replicates (Figure~\ref{fig:unfiltered_total_muts}). Thus, our data suggest that some samples may simply have a higher mutation frequency than others, or indeed than is generally supposed in GBM.
 
 \subsection*{Does more sophisticated SNV filtering software increase or decrease the degree of similarity between replicates?}
 
@@ -215,26 +215,6 @@ We used the same or substantially similar python scripts to calculate and compar
 \end{table}
 \end{landscape}
 
-%% Data processing commands table
-\begin{landscape}
-\begin{table}
-\caption{\textbf{Back-end Processing.} This table shows the software packages we used in data processing, what we used each piece of software for, and the command associated with it. The rows are in order of use.}
-\label{tab:commands}
-\begin{tabular}{ p{2.5cm} p{6cm} p{12cm} }
-	software & purpose & command\\
-	\hline
-	picard & regenerate fastq files from BAM file aligned to hg18 & \texttt{java -d64 -Xmx4g -jar SamToFastq.jar I=\$pfx.bam F=\$pfx.1.fastq F2=\$pfx.2.fastq 2$>$\&1} \\
-	bwa & align fastq files to hg19 & \texttt{bwa aln -q 30 -t 8 \$hgReference \$fastq $>$ \$fastq.aln.sai} \\
-	bwa, samtools & convert aligned fastq files into new BAM file & \texttt{bwa sampe -a 600 -P -r "\$RG" \$hgReference \$fastq1.aln.sai \$fastq2.aln.sai \$fastq1 \$fastq2 | samtools view -bSh -o \$outprefix.bam -} \\
-	samtools & sort and index new BAM file & \texttt{samtools sort -@ 16 \$outprefix.bam \$outprefix.sorted 2, samtools index \$outprefix.sorted.bam 2} \\
-	samtools & remove duplicate reads from BAM files & \texttt{samtools rmdup ../\$tumorpfx/\$tumorpfx.out.sorted.bam \$tumorpfx.dedup.bam} \\
-	GATK & indel realignment & \texttt{java -d64 -jar \$gatkJar -R \$hgReference -T IndelRealigner -rf BadCigar -I \$tumorpfx.dedup.bam -known \$G1000.Mills -known \$G1000.Phase1.Indels -targetIntervals \$tumorpfx.intervals -o \$tumorpfx.realn.bam} \\
-	GATK & base recalibration & \texttt{java -d64 -jar \$gatkJar -nct 8 -T BaseRecalibrator -rf BadCigar -I \$tumorpfx.realn.bam -R \$hgReference -knownSites \$dbSNP -o \$tumorpfx.recal.grp} \\
-	samtools & index recalibrated BAM file & \texttt{samtools index \$tumorpfx.realn.recal.bam} \\
-	SomaticSniper & call somatic mutations, generate VCF & \texttt{bam-somaticsniper -q 40 -Q 40 -J -s 0.001 -F vcf -f \$hgReference \$tumorbam \$normalbam \$tumorpfx.SS.vcf} \\
-\end{tabular}
-\end{table}
-\end{landscape}
 
 %% Figure 1
 \begin{figure}
@@ -256,31 +236,23 @@ We used the same or substantially similar python scripts to calculate and compar
 \begin{figure}
 \centerline{
 \includegraphics[width=5in]{Figure3.pdf} }
-\caption{\textbf{One third (WGA) to one half (WGS) of putative SNVs were recovered in technical replicates.} Density of the percentage of each WGS (blue) and WGA (red) sample that is present in the overlap between replicates for each patient. The WGS distribution is higher and narrower, showing that the WGS samples overall have a higher percentage overlap than the WGA samples, and less range in this parameter. }
-\label{fig:unfiltered_overlap}
+\caption{\textbf{Number of putative SNVs per sample does not correlate with the number of putative SNVs recoverable in both replicates.} The percentage of a given WGS sample that is in the overlap between replicates is not correlated to the number of mutations in that sample (Spearman $\rho=0.05$, $S=29268$, $P=0.68$). We calculated the percent overlap in two ways: with reference to the total number of putative SNVs in the WGS sample (red) and with reference to the total number of putative SNVs in the WGA sample (black). The correlation was calculated with respect to WGA.}
+\label{fig:unfiltered_total_muts}
 \end{figure}
 
 %% Figure 4
 \begin{figure}
 \centerline{
-\includegraphics[width=5in]{Figure4.pdf} }
-\caption{\textbf{Number of putative SNVs per sample does not correlate with the number of putative SNVs recoverable in both replicates.} The percentage of a given WGS sample that is in the overlap between replicates is not correlated to the number of mutations in that sample (Spearman $\rho=0.05$, $S=29268$, $P=0.68$).}
-\label{fig:unfiltered_total_muts}
-\end{figure}
-
-%% Figure 5
-\begin{figure}
-\centerline{
-\includegraphics[width=6in]{Figure5.pdf} }
+\includegraphics[width=6in]{Figure4.pdf} }
 \caption{\textbf{Number of putative SNVs removed by each of six filters.} The $x$-axis gives the name of each filter (detail on Table 1), and the $y$-axis gives, on a log scale, the number of mutations removed by a given filter in a given sample. In all cases, the LOH and VAQ filters removed the majority of the putative SNVs for a given sample.}
 \label{fig:boxplot_number_filtered}
 \end{figure}
 
-%%Figure 6
+%%Figure 5
 \begin{figure}
 % 379 samples, 311 patients
 \centerline{
-\includegraphics[width=6in]{Figure6.pdf} }
+\includegraphics[width=6in]{Figure5.pdf} }
 \caption{\textbf{Percentage of WGS/WGA overlap removed, by filter.} The $x$-axis gives the names of the filters, and the $y$-axis gives the percentage of the WGS--WGA overlap removed by the filter, per sample. Filters removing LOH and putative SNVs with low VAQ removed a significant percentage of the overlap; nothing else did.}
 \label{fig:boxplot_percent_overlap_filtered}
 \end{figure}
@@ -288,7 +260,7 @@ We used the same or substantially similar python scripts to calculate and compar
 %%Figure 7
 \begin{figure}
 \centerline{
-\includegraphics[width=5in]{Figure7.pdf} }
+\includegraphics[width=5in]{Figure6.pdf} }
 \caption{\textbf{Percentage of replicate SNVs filtered out by LOH, as a function of the total number of overlapping SNVs.} As the length of the overlap between WGS and WGA increases ($x$-axis), the percentage of the overlap filtered out by LOH increases. This is the almost (but not quite) perfect inverse of the pattern observed in VAQ mutations (Figure~\ref{fig:VAQ_all}), indicating that these two filters remove almost disjoint sets of putative SNVs.}
 \label{fig:LOH_all}
 \end{figure}
@@ -296,7 +268,7 @@ We used the same or substantially similar python scripts to calculate and compar
 %%Figure 8
 \begin{figure}
 \centerline{
-\includegraphics[width=5in]{Figure8.pdf} }
+\includegraphics[width=5in]{Figure7.pdf} }
 \caption{ \textbf{Percentage of replicate SNVs filtered out by VAQ, as a function of the total number of overlapping SNVs.} As the length of the overlap between WGS and WGA increases ($x$-axis), the percentage of the overlap filtered out by VAQ decreases. This is the almost (but not quite) perfect inverse of the pattern observed in LOH mutations (Figure~\ref{fig:LOH_all}), indicating that these two filters remove almost disjoint sets of putative SNVs.}
 \label{fig:VAQ_all}
 \end{figure}

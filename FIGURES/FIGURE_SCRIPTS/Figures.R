@@ -111,9 +111,9 @@ axis( 1, at=1:6, padj = 0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "
 ## FIGURE 6 IS MADE IN THE SCRIPT Jacquard.R IN THIS FOLDER ##
 ##############################################################
 
-#######################################################################################################################################
+##############################################################################################################################################
 ## FIGURE 7 (ORIG FIGURES 7 AND 8): Percentage of replicate SNVs filtered out by LOH, as a function of the total number of overlapping SNVs ##
-#######################################################################################################################################
+##############################################################################################################################################
 
 LOH_VAQ_data <- merge( data78a, data78b, by="SAMPLE" )
 names( LOH_VAQ_data )[ names( LOH_VAQ_data )=="FILT_5_COUNT" ] <- "VAQ_COUNT"
@@ -124,20 +124,11 @@ names( LOH_VAQ_data )[ names( LOH_VAQ_data )=="FILT_7_PERCENT" ] <- "LOH_PERCENT
 # note that this is pretty close to 1.00 every time, hence the inversion...
 LOH_VAQ_data$SUM=LOH_VAQ_data$LOH_PERCENT + LOH_VAQ_data$VAQ_PERCENT
 
-#pdf( "../FIGURE_PDFS/Figure6.pdf" )
-par(bty='n')
-plot( LOH_VAQ_data$OVERLAP, LOH_VAQ_data$LOH_PERCENT, xlab="Number of SNVs in both replicates", ylab="Percentage of SNVs in both replicates filtered out by LOH", pch=20 )
-#dev.off()
-
-###############################
-## FIGURE 7 (ORIG FIGURE 8): ##
-###############################
-
 #pdf( "../FIGURE_PDFS/Figure7.pdf" )
-par(bty='n')
+par(bty='n', mfrow=c(1,2) )
+plot( LOH_VAQ_data$OVERLAP, LOH_VAQ_data$LOH_PERCENT, xlab="Number of SNVs in both replicates", ylab="Percentage of SNVs in both replicates filtered out by LOH", pch=20 )
 plot( LOH_VAQ_data$OVERLAP, LOH_VAQ_data$VAQ_PERCENT, xlab="Number of SNVs in both replicates", ylab="Percentage of SNVs in both replicates filtered out by VAQ", pch=20 )
 #dev.off()
-
 
 
 

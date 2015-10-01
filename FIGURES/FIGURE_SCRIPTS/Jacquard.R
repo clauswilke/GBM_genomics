@@ -123,8 +123,19 @@ mergedData$delta.Jacquard.F6<-((mergedData$Jacquard.F6-mergedData$Jacquard.befor
 mergedData$delta.Jacquard.F7<-((mergedData$Jacquard.F7-mergedData$Jacquard.before)/mergedData$Jacquard.before)*100
 mergedData$delta.Jacquard.F8<-((mergedData$Jacquard.F8-mergedData$Jacquard.before)/mergedData$Jacquard.before)*100
 
+## then make figure 6 for the paper
 
-## then average everything for the paper
+#pdf( "../FIGURE_PDFS/Jacquard1.pdf", width=6, height=5 )
+par(bty='n', mar=c(3.1,2.1,1.1,0))
+boxplot( mergedData[,c(50,52)], ylim=c(0,450), xaxt='n', ylab="Difference in Jacquard(WGS, WGA) before and after filtering", pch=20 )
+axis( 1, at=1:2, padj = 0.8, cex.axis=0.7, labels=c( "VAQ", "LOH" ) )
+#dev.off()
+
+#pdf( "../FIGURE_PDFS/Jacquard2.pdf", width=6, height=5 )
+par(bty='n', mar=c(5.1,4.1,1.1,0))
+boxplot( mergedData[,c(49,48,51,53)], ylim=c(0,15), xaxt='n', ylab="Difference in Jacquard(WGS, WGA) before and after filtering", pch=20 )
+axis( 1, at=1:4, padj = 0.8, cex.axis=0.7, labels=c( "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
+#dev.off()
 
 
 

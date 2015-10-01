@@ -242,7 +242,8 @@ median(all$F7ratio, na.rm=TRUE)
 ## THEN MAKE FIGURE 6 (COMPOUND FIGURE) FOR THE PAPER ##
 ########################################################
 
-pdf( "../FIGURE_PDFS/Figure5.pdf", width=6, height=5 )
+#pdf( "../FIGURE_PDFS/Figure5.pdf", width=6, height=5 )
+
 par(bty='n', mfrow=c(2,2), mar=c(3,4.1,2,1) )
 
 plot( all$F7ratio, ylim=c(0,80), pch=20, col='black', ylab="Ratio of difference to overlap", xaxt='n', xlab="Samples" )
@@ -261,7 +262,7 @@ axis( 1, at=1:2, padj = 0.8, cex.axis=0.7, labels=c( "LOH", "VAQ" ) )
 boxplot( mergedData[,c(49,48,51,53)], ylim=c(0,15), xaxt='n', ylab="", pch=20 )
 axis( 1, at=1:4, padj = 0.8, cex.axis=0.7, labels=c( "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
 
-dev.off()
+#dev.off()
 
 
 

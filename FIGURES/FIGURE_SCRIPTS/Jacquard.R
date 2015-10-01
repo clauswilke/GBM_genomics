@@ -242,16 +242,10 @@ median(all$F7ratio, na.rm=TRUE)
 ## THEN MAKE FIGURE 6 (COMPOUND FIGURE) FOR THE PAPER ##
 ########################################################
 
-#pdf( "../FIGURE_PDFS/Figure5.pdf", width=6, height=5 )
-par(bty='n', mfrow=c(2,2), mar=c(5.1,4.1,1.1,0) )
+pdf( "../FIGURE_PDFS/Figure5.pdf", width=6, height=5 )
+par(bty='n', mfrow=c(2,2), mar=c(3,4.1,2,1) )
 
-boxplot( mergedData[,c(52,50)], ylim=c(0,450), xaxt='n', ylab=expression(paste( Delta, "Jaccard( WGS, WGA )")), pch=20 )
-axis( 1, at=1:2, padj = 0.8, cex.axis=0.7, labels=c( "LOH", "VAQ" ) )
-
-boxplot( mergedData[,c(49,48,51,53)], ylim=c(0,15), xaxt='n', ylab="", pch=20 )
-axis( 1, at=1:4, padj = 0.8, cex.axis=0.7, labels=c( "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
-
-plot( all$F7ratio, ylim=c(0,80), pch=20, col='black', ylab="Ratio of intersection to union", xaxt='n', xlab="Samples" )
+plot( all$F7ratio, ylim=c(0,80), pch=20, col='black', ylab="Ratio of difference to overlap", xaxt='n', xlab="Samples" )
 points( all$F5ratio, pch=20, col='navy' )
 points( all$F3ratio, pch=20, col='red' )
 points( all$F4ratio, pch=20, col='yellow' )
@@ -260,7 +254,16 @@ legend( 'topright', c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP" ), col=c(
 
 boxplot( all[,c(26,28,25,24,27)], ylim=c(1,50), xaxt='n', pch=20, ylab="" )
 axis( 1, at=1:5, padj=0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP" ) )
-#dev.off()
+
+boxplot( mergedData[,c(52,50)], ylim=c(0,450), xaxt='n', ylab=expression(paste( Delta, "Jaccard( WGS, WGA )")), pch=20 )
+axis( 1, at=1:2, padj = 0.8, cex.axis=0.7, labels=c( "LOH", "VAQ" ) )
+
+boxplot( mergedData[,c(49,48,51,53)], ylim=c(0,15), xaxt='n', ylab="", pch=20 )
+axis( 1, at=1:4, padj = 0.8, cex.axis=0.7, labels=c( "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
+
+dev.off()
+
+
 
 
 ##############

@@ -85,34 +85,24 @@ legend( 'topright', c( "overlap/WGA total", "overlap/WGS total" ), col=c( 'black
 # cor.test(data34$TOTAL, data34$PERCENT_OVERLAP_by_WGA.282, method="spearman")
 # OUTPUT: S = 29268, p-value = 0.6847, rho=-0.05584416
 
-######################################################################################
-## FIGURE 4 (ORIG FIGURE 5): Number of putative SNPs removed by each of six filters ##
-######################################################################################
-
-# make density of each filter removal
+############################################################################################
+## FIGURE 4 (ORIG FIGURE 5 and 6): Number of putative SNPs removed by each of six filters ##
+############################################################################################
 
 #pdf( "../FIGURE_PDFS/Figure4.pdf", width=6, height=5 )
-par(bty='n', mar=c(5.1,4.1,1.1,0))
-boxplot( data5[,c(5,7,4,3,6,8)], log='y', ylim=c(1,100000), xaxt='n', pch=20, ylab="Number of putative SNVs filtered, per sample" )
+par(bty='n', mfrow=c(2,1), mar=c(5.1,4.1,1.1,0))
+boxplot( data5[,c(5,7,4,3,6,8)], log='y', ylim=c(1,100000), xaxt='n', pch=20, ylab="Number putative SNVs filtered" )
 axis( 1, at=1:6, padj=0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
-#dev.off()
-
-#################################################################################
-## FIGURE 5 (ORIG FIGURE 6): Percentage of WGS/WGSA overlap removed, by filter ##
-#################################################################################
-
-#pdf( "../FIGURE_PDFS/Figure5.pdf", width=6, height=5 )
-par(bty='n', mar=c(5.1,4.1,1.1,0))
-boxplot( data6[,c(9,13,7,5,11,15)], ylim=c(0,1), xaxt='n', ylab="Percentage of overlap filtered, per sample", pch=20 )
+boxplot( data6[,c(9,13,7,5,11,15)], ylim=c(0,1), xaxt='n', ylab="Percentage overlap filtered", pch=20 )
 axis( 1, at=1:6, padj = 0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
 #dev.off()
 
 ##############################################################
-## FIGURE 6 IS MADE IN THE SCRIPT Jacquard.R IN THIS FOLDER ##
+## FIGURE 5 IS MADE IN THE SCRIPT Jacquard.R IN THIS FOLDER ##
 ##############################################################
 
 ##############################################################################################################################################
-## FIGURE 7 (ORIG FIGURES 7 AND 8): Percentage of replicate SNVs filtered out by LOH, as a function of the total number of overlapping SNVs ##
+## FIGURE 6 (ORIG FIGURES 7 AND 8): Percentage of replicate SNVs filtered out by LOH, as a function of the total number of overlapping SNVs ##
 ##############################################################################################################################################
 
 LOH_VAQ_data <- merge( data78a, data78b, by="SAMPLE" )
@@ -124,12 +114,31 @@ names( LOH_VAQ_data )[ names( LOH_VAQ_data )=="FILT_7_PERCENT" ] <- "LOH_PERCENT
 # note that this is pretty close to 1.00 every time, hence the inversion...
 LOH_VAQ_data$SUM=LOH_VAQ_data$LOH_PERCENT + LOH_VAQ_data$VAQ_PERCENT
 
-#pdf( "../FIGURE_PDFS/Figure7.pdf" )
+#pdf( "../FIGURE_PDFS/Figure6.pdf" )
 par(bty='n', mfrow=c(1,2) )
 plot( LOH_VAQ_data$OVERLAP, LOH_VAQ_data$LOH_PERCENT, xlab="Number of SNVs in both replicates", ylab="Percentage of SNVs in both replicates filtered out by LOH", pch=20 )
 plot( LOH_VAQ_data$OVERLAP, LOH_VAQ_data$VAQ_PERCENT, xlab="Number of SNVs in both replicates", ylab="Percentage of SNVs in both replicates filtered out by VAQ", pch=20 )
 #dev.off()
 
+
+##############
+## OLD CODE ##
+##############
+
+# make density of each filter removal
+
+#pdf( "../FIGURE_PDFS/Figure4.pdf", width=6, height=5 )
+par(bty='n', mar=c(5.1,4.1,1.1,0))
+boxplot( data5[,c(5,7,4,3,6,8)], log='y', ylim=c(1,100000), xaxt='n', pch=20, ylab="Number of putative SNVs filtered, per sample" )
+axis( 1, at=1:6, padj=0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
+#dev.off()
+
+
+#pdf( "../FIGURE_PDFS/Figure5.pdf", width=6, height=5 )
+par(bty='n', mar=c(5.1,4.1,1.1,0))
+boxplot( data6[,c(9,13,7,5,11,15)], ylim=c(0,1), xaxt='n', ylab="Percentage of overlap filtered, per sample", pch=20 )
+axis( 1, at=1:6, padj = 0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
+#dev.off()
 
 
 

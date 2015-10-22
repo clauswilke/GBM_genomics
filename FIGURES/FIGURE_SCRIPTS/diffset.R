@@ -1,34 +1,34 @@
 ## LOAD DATA
 
-data=read.table( "../FIGURE_DATA/overlap_numbers_excluded_by_filter_MUTATION_CALLS_STD40.txt", header=T, stringsAsFactors=FALSE )
-data2=read.table( "../FIGURE_DATA/numbers_excluded_by_filter_MUTATION_CALLS_STD40.txt", header=T, stringsAsFactors=FALSE )
+data4=read.table( "../FIGURE_DATA/overlap_numbers_excluded_by_filter_MUTATION_CALLS_STD40.txt", header=T, stringsAsFactors=FALSE )
+data5=read.table( "../FIGURE_DATA/numbers_excluded_by_filter_MUTATION_CALLS_STD40.txt", header=T, stringsAsFactors=FALSE )
 
 ## now re-name and delete columns
-names( data )[ 2 ] <- "F2overlap"
-names( data )[ 4 ] <- "F3overlap"
-names( data )[ 6 ] <- "F4overlap"
-names( data )[ 8 ] <- "F5overlap"
-names( data )[ 10 ] <- "F6overlap"
-names( data )[ 12 ] <- "F7overlap"
-names( data )[ 14 ] <- "F8overlap"
+names( data4 )[ 2 ] <- "F2overlap"
+names( data4 )[ 4 ] <- "F3overlap"
+names( data4 )[ 6 ] <- "F4overlap"
+names( data4 )[ 8 ] <- "F5overlap"
+names( data4 )[ 10 ] <- "F6overlap"
+names( data4 )[ 12 ] <- "F7overlap"
+names( data4 )[ 14 ] <- "F8overlap"
 
-data$FILT_2_PERCENT<-NULL
-data$FILT_3_PERCENT<-NULL
-data$FILT_4_PERCENT<-NULL
-data$FILT_5_PERCENT<-NULL
-data$FILT_6_PERCENT<-NULL
-data$FILT_7_PERCENT<-NULL
-data$FILT_8_PERCENT<-NULL
+data4$FILT_2_PERCENT<-NULL
+data4$FILT_3_PERCENT<-NULL
+data4$FILT_4_PERCENT<-NULL
+data4$FILT_5_PERCENT<-NULL
+data4$FILT_6_PERCENT<-NULL
+data4$FILT_7_PERCENT<-NULL
+data4$FILT_8_PERCENT<-NULL
 
 ## now merge the two data frames
-for (i in 1:length(data$SAMPLE)){
-	short<-data$SAMPLE[ i ]
+for (i in 1:length(data4$SAMPLE)){
+	short<-data4$SAMPLE[ i ]
 	newname<-paste( "C282", short, sep="." )
-	data$SAMPLE[ i ]<-newname
+	data4$SAMPLE[ i ]<-newname
 }
 
 # duplicate the data.frame
-newdata <- data
+newdata <- data4
 
 # change C282 to C484
 for (i in 1:length(newdata$SAMPLE)){
@@ -39,18 +39,18 @@ for (i in 1:length(newdata$SAMPLE)){
 }
 
 # add the two together
-overlapdata <- merge(data, newdata, all=TRUE )
+overlapdata <- merge(data4, newdata, all=TRUE )
 
-# merge with data2...
-names( data2 )[ 2 ] <- "F2all"
-names( data2 )[ 3 ] <- "F3all"
-names( data2 )[ 4 ] <- "F4all"
-names( data2 )[ 5 ] <- "F5all"
-names( data2 )[ 6 ] <- "F6all"
-names( data2 )[ 7 ] <- "F7all"
-names( data2 )[ 8 ] <- "F8all"
+# merge with data5...
+names( data5 )[ 2 ] <- "F2all"
+names( data5 )[ 3 ] <- "F3all"
+names( data5 )[ 4 ] <- "F4all"
+names( data5 )[ 5 ] <- "F5all"
+names( data5 )[ 6 ] <- "F6all"
+names( data5 )[ 7 ] <- "F7all"
+names( data5 )[ 8 ] <- "F8all"
 
-all <- merge( overlapdata, data2 )
+all <- merge( overlapdata, data5 )
 
 ## then calculate the diffset size
 all$F2diff <- all$F2all - all$F2overlap
@@ -61,7 +61,7 @@ all$F6diff <- all$F6all - all$F6overlap
 all$F7diff <- all$F7all - all$F7overlap
 all$F8diff <- all$F8all - all$F8overlap
 
-## add ratio...
+## a ratio ...
 all$F2ratio <- all$F2diff / all$F2overlap
 all$F3ratio <- all$F3diff / all$F3overlap
 all$F4ratio <- all$F4diff / all$F4overlap
@@ -107,23 +107,24 @@ all$F7ratio[all$F7ratio=="NaN"] <- NA
 mean(all$F7ratio, na.rm=TRUE)
 median(all$F7ratio, na.rm=TRUE)
 
-## finally make some (supplementary) figures
+
+## finally make some figures
 
 # here is a plot of points...
-pdf( "../FIGURE_PDFS/Diffset_bypoints.pdf" )
+#pdf( "../FIGURE_PDFS/Diffset_bypoints.pdf" )
 par(bty='n')
 plot( all$F7ratio, ylim=c(0,80), pch=20, col='black' )
 points( all$F5ratio, pch=20, col='navy' )
 points( all$F3ratio, pch=20, col='red' )
 points( all$F4ratio, pch=20, col='yellow' )
 points( all$F6ratio, pch=20, col='orange' )
-dev.off()
+#dev.off()
 
 # and here is a boxplot...
 #24-28
-pdf( "../FIGURE_PDFS/Diffset_bybars.pdf" )
+#pdf( "../FIGURE_PDFS/Diffset_bybars.pdf" )
 par(bty='n')
 boxplot( all[,c(26,28,25,24,27)], ylim=c(1,50), xaxt='n', pch=20, ylab="Ratio of the diffset to the overlap, per filter" )
 axis( 1, at=1:5, padj=0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP" ) )
-dev.off()
+#dev.off()
 

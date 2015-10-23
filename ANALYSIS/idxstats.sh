@@ -44,7 +44,7 @@ for typeDir in /scratch/01839/dakotaz/alignments/2015-05.TCGA-GBM-53techreps/*/;
 			echo "" >> $sampDir/$sampName.realn.recal.depth.txt
 
 			echo "Number of positions in the genome covered (numerator in % genome covered):" >> $sampDir/$sampName.realn.recal.depth.txt
-			samtools depth C484.TCGA-14-0790-10A-01D-1494-08.5.realn.recal.bam | wc -l >> $sampDir/$sampName.realn.recal.depth.txt
+			samtools depth C484.TCGA-14-0790-10A-01D-1494-08.5.realn.recal.bam | grep -o "chr" | wc -l >> $sampDir/$sampName.realn.recal.depth.txt
 			echo "" >> $sampDir/$sampName.realn.recal.depth.txt			
 		fi 
 	

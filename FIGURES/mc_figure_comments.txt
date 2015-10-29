@@ -1,0 +1,16 @@
+Figure Comments (based on FigureX.pdf files)
+
+Figure 1:
+1.   extract reads with picard
+2.   align reads to hg19 with bwa
+3.   tumor and blood are not aligned with SS. i would state "compare tumor and blood variants to call SNVs with SS"
+
+Figure 4:
+Some of the vertical axis labels are outside the margins
+
+Figure 5:
+Top, Left pane:  x-axis is unlabeled, some points appear in the legend
+
+Figre 6:
+
+Should the x-axis be on a log scale?

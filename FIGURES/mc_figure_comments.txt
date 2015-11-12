@@ -12,5 +12,4 @@ Figure 5:
 Top, Left pane:  x-axis is unlabeled, some points appear in the legend
 
 Figre 6:
-
 Should the x-axis be on a log scale?

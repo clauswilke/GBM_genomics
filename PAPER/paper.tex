@@ -221,54 +221,54 @@ We used the same or substantially similar python scripts to calculate and compar
 
 %% Figure 1
 \begin{figure}
-\centerline{
+%\centerline{
 %\includegraphics[width=5in]{Figure1.pdf} 
-}
+%}
 \caption{\textbf{Data processing pipeline.} For each of 55 patients, we began with a C484 tumor BAM file (WGS), a C282 tumor BAM file (WGA), and a normal BAM file, all aligned to hg18. For each BAM file, we used picard to regenerate fastq files, bwa to realign the fastq files to hg19, and GATK to recalibrate bases and indels. We used SomaticSniper to call somatic mutations (differences between the tumor and normal sequences) for each replicate. When we had a VCF for each replicate, we calculated the overlap between the two lists as the number of individual mutations which appeared in both replicates.}
 \label{fig:pipeline}
 \end{figure}
 
 %% Figure 2
 \begin{figure}
-\centerline{
+%\centerline{
 %\includegraphics[width=5in]{Figure2.pdf} 
-}
+%}
 \caption{\textbf{Number of putative SNVs in WGS versus WGA, as called by SomaticSniper before filtering.} Each point represents data for a single patient. The line is $y=x$, so points falling below the line agree with the hypothesis that an additional amplification step produces more sequencing errors in a sample. The number of mutations found in one replicate correlates with the number of mutations found in the other replicate (Spearman $\rho=0.42$, $S=16142$, $P=0.002$).}
 \label{fig:C282_v_C484}
 \end{figure}
 
 %% Figure 3
 \begin{figure}
-\centerline{
+%\centerline{
 %\includegraphics[width=5in]{Figure3.pdf} 
-}
+%}
 \caption{\textbf{Number of putative SNVs per sample does not correlate with the number of putative SNVs recoverable in both replicates.} The percentage of putative SNVs in a given sample that are in the overlap between replicates is not correlated to the number of mutations in that sample (Spearman $\rho=0.05$, $S=29268$, $P=0.68$). We calculated the percent overlap in two ways: with reference to the total number of putative SNVs in the WGS sample (red) and with reference to the total number of putative SNVs in the WGA sample (black). The correlation was calculated with respect to WGA.}
 \label{fig:unfiltered_total_muts}
 \end{figure}
 
 %% Figure 4
 \begin{figure}
-\centerline{
+%\centerline{
 %\includegraphics[width=6in]{Figure4.pdf} 
-}
+%}
 \caption{\textbf{Independent performance of the individual filters of the overlap between replicates.} The $x$-axis gives the name of each filter (detail on Table 1), and the $y$-axis gives \textit{(above)} the number of mutations removed by a given filter in a given sample on a log scale, and \textit{(below)} the percentage of the WGS--WGA overlap removed by the filter, per sample. The LOH and VAQ filters removed a large number of putative SNVs and portion of the overlap. The <10\% filter removed very few putative SNVs and almost none of the overlap. The 10bp-SNV, 10bp-INDEL, and dbSNP filters removed an intermediate number of putative SNVs (~100), but only a very small portion of the overlap, making them the best performers on the overlap data. }
 \label{fig:boxplot_filtered}
 \end{figure}
 
 %%Figure 5
 \begin{figure}
-\centerline{
+%\centerline{
 %\includegraphics[width=5in]{Figure5.pdf} 
-}
+%}
 \caption{\textbf{Independent performance of individual filters of the difference between replicates.} \textit{(top left)} A scatter plot of the ratio, per sample per filter, of putative SNVs removed from the difference versus the overlap of WGS and WGA ($WGS \triangle WGA / WGS \cap WGA$). \textit{(top right)} Boxplot of the same data, divided by filter on the $x$-axis. \textit{(below)} Plot of the percentage difference in the Jaccard(WGS, WGA) before and after the action of each filter (each filter was run on the whole data set independently).}
 \label{fig:diffset}
 \end{figure}
 
 %%Figure 6
 \begin{figure}
-\centerline{
+%\centerline{
 %\includegraphics[width=5in]{Figure6.pdf} 
-}
+%}
 \caption{ \textbf{Replicate SNVs filtered out by LOH and VAQ are almost completely non-overlapping and cover most of the sample.} As the length of the overlap between WGS and WGA increases ($x$-axis),  \textit{(above)} the percentage of the overlap filtered out by LOH increases, and \textit{(below)} the percentage of the overlap filtered out by VAQ decreases. The two are almost (but not quite) perfect inverses; putative SNPs filtered by LOH and VAQ cover almost the entire overlap, and together sum to nearly 100\% of the overlap.}
 \label{fig:LOH-VAQ_all}
 \end{figure}

@@ -89,13 +89,13 @@ legend( 'topright', c( "overlap/WGA total", "overlap/WGS total" ), col=c( 'black
 ## FIGURE 4 (ORIG FIGURE 5 and 6): Number of putative SNPs removed by each of six filters ##
 ############################################################################################
 
-#pdf( "../FIGURE_PDFS/Figure4.pdf", width=6, height=5 )
+# pdf( "../FIGURE_PDFS/Figure4.pdf", width=6, height=5 )
 par(bty='n', mfrow=c(2,1), mar=c(5.1,4.1,1.1,0))
-boxplot( data5[,c(5,7,4,3,6,8)], log='y', ylim=c(1,100000), xaxt='n', pch=20, ylab="Number putative SNVs filtered" )
+boxplot( data5[,c(5,7,4,3,6,8)], log='y', ylim=c(1,100000), xaxt='n', cex.lab=0.7, pch=20, ylab="Number putative SNVs filtered" )
 axis( 1, at=1:6, padj=0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
-boxplot( data6[,c(9,13,7,5,11,15)], ylim=c(0,1), xaxt='n', ylab="Percentage overlap filtered", pch=20 )
+boxplot( data6[,c(9,13,7,5,11,15)], ylim=c(0,1), xaxt='n', cex.lab=0.7, ylab="Percentage overlap filtered", pch=20 )
 axis( 1, at=1:6, padj = 0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
-#dev.off()
+# dev.off()
 
 ##############################################################
 ## FIGURE 5 IS MADE IN THE SCRIPT Jacquard.R IN THIS FOLDER ##

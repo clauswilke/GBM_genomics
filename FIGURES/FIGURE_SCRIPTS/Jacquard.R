@@ -272,32 +272,32 @@ axis( 1, at=1:4, padj = 0.8, cex.axis=0.7, labels=c( "10bp-SNV", "10bp-INDEL", "
 ##############
 
 #pdf( "../FIGURE_PDFS/Jaccard1.pdf", width=6, height=5 )
-par(bty='n', mar=c(5.1,4.1,1.1,0) )
-boxplot( mergedData[,c(50,52)], ylim=c(0,450), xaxt='n', ylab=expression(paste( "Percentage ", Delta, "Jaccard( WGS, WGA )")), pch=20 )
-axis( 1, at=1:2, padj = 0.8, cex.axis=0.7, labels=c( "VAQ", "LOH" ) )
+#par(bty='n', mar=c(5.1,4.1,1.1,0) )
+#boxplot( mergedData[,c(50,52)], ylim=c(0,450), xaxt='n', ylab=expression(paste( "Percentage ", Delta, "Jaccard( WGS, WGA )")), pch=20 )
+#axis( 1, at=1:2, padj = 0.8, cex.axis=0.7, labels=c( "VAQ", "LOH" ) )
 #dev.off()
 
 #pdf( "../FIGURE_PDFS/Jaccard2.pdf", width=6, height=5 )
-par(bty='n', mar=c(5.1,4.1,1.1,0))
-boxplot( mergedData[,c(49,48,51,53)], ylim=c(0,15), xaxt='n', ylab=expression(paste( "Percentage ", Delta, "Jaccard( WGS, WGA )")), pch=20 )
-axis( 1, at=1:4, padj = 0.8, cex.axis=0.7, labels=c( "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
+#par(bty='n', mar=c(5.1,4.1,1.1,0))
+#boxplot( mergedData[,c(49,48,51,53)], ylim=c(0,15), xaxt='n', ylab=expression(paste( "Percentage ", Delta, "Jaccard( WGS, WGA )")), pch=20 )
+#axis( 1, at=1:4, padj = 0.8, cex.axis=0.7, labels=c( "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
 #dev.off()
 
 #pdf( "../FIGURE_PDFS/Diffset_bypoints.pdf" )
-par(bty='n')
-plot( all$F7ratio, ylim=c(0,80), pch=20, col='black' )
-points( all$F5ratio, pch=20, col='navy' )
-points( all$F3ratio, pch=20, col='red' )
-points( all$F4ratio, pch=20, col='yellow' )
-points( all$F6ratio, pch=20, col='orange' )
+#par(bty='n')
+#plot( all$F7ratio, ylim=c(0,80), pch=20, col='black' )
+#points( all$F5ratio, pch=20, col='navy' )
+#points( all$F3ratio, pch=20, col='red' )
+#points( all$F4ratio, pch=20, col='yellow' )
+#points( all$F6ratio, pch=20, col='orange' )
 #dev.off()
 
 # and here is a boxplot...
 #24-28
 #pdf( "../FIGURE_PDFS/Diffset_bybars.pdf" )
-par(bty='n')
-boxplot( all[,c(26,28,25,24,27)], ylim=c(1,50), xaxt='n', pch=20, ylab="Ratio of the diffset to the overlap, per filter" )
-axis( 1, at=1:5, padj=0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP" ) )
+#par(bty='n')
+#boxplot( all[,c(26,28,25,24,27)], ylim=c(1,50), xaxt='n', pch=20, ylab="Ratio of the diffset to the overlap, per filter" )
+#axis( 1, at=1:5, padj=0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP" ) )
 #dev.off()
 
 

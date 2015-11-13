@@ -10,6 +10,9 @@ Some of the vertical axis labels are outside the margins
 
 Figure 5:
 Top, Left pane:  x-axis is unlabeled, some points appear in the legend
+	Actually, there is no X-axis; this is a one dimensional plot; its just spread out to make it more readable
+	As for the legend, I could not figure out how to do this. This is the only change you suggested that I did not do.
 
 Figre 6:
 Should the x-axis be on a log scale?
+	I don’t think it changes/helps much, actually, when I look at it; so I left it as is

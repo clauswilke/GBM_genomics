@@ -246,12 +246,14 @@ median(all$F7ratio, na.rm=TRUE)
 
 par(bty='n', mfrow=c(2,2), mar=c(3,4.1,2,1) )
 
-plot( all$F7ratio, ylim=c(0,80), pch=20, col='black', ylab="Ratio of difference to overlap", xaxt='n', xlab="Samples" )
+# MC EDITS:  Changed ylim in the line below
+plot( all$F7ratio, ylim=c(0,90), pch=20, col='black', ylab="Ratio of difference to overlap", xaxt='n', xlab="Samples" )
 points( all$F5ratio, pch=20, col='navy' )
 points( all$F3ratio, pch=20, col='red' )
 points( all$F4ratio, pch=20, col='yellow' )
 points( all$F6ratio, pch=20, col='orange' )
-legend( 'topright', c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP" ), col=c( 'black', 'navy', 'yellow', 'red', 'orange' ), pch=20 )
+# MC EDITS: Added cex parameter to scale down the size of the legend.
+legend( 'topright', c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP" ), col=c( 'black', 'navy', 'yellow', 'red', 'orange' ), pch=20, cex=0.90 )
 
 boxplot( all[,c(26,28,25,24,27)], ylim=c(1,50), xaxt='n', pch=20, ylab="" )
 axis( 1, at=1:5, padj=0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP" ) )

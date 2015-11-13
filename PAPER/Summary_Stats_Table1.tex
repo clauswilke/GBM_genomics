@@ -1,0 +1,83 @@
+\documentclass[11 pt]{article} % use larger type; default would be 10pt
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+\usepackage[T1]{fontenc}
+\usepackage{authblk}
+
+%%% BEGIN Article customizations
+
+%%% PAGE LAYOUT
+\usepackage{geometry} % to change the page dimensions
+\geometry{a4paper} % or letterpaper (US) or a5paper or....
+% \geometry{margin=1in} % for example, change the margins to 2 inches all round
+\usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% FIGURES
+\usepackage{graphicx} % support the \includegraphics command and options
+\graphicspath{{../FIGURES/FIGURE_PDFS/}}
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+\usepackage{lscape}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{color}
+% These packages are all incorporated in the memoir class to one degree or another...
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{fancy} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customize the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+%%%Bibliography
+\usepackage{natbib}
+\usepackage{url}
+
+%%% END Article customizations
+
+\begin{document}
+
+%% Summary Statistics Table
+\begin{landscape}
+\begin{table}
+%\caption{\textbf{Summary Statistics.} This table describes the results of our data processing pipeline across samples and pairs of replicates, in terms of the number of putative mutations found, length of the overlap between replicates, number of mutations removed (per sample) by each filter, and percent of the overlap removed (per pair of replicates) by each filter.}
+\label{tab:summary_stats}
+\begin{tabular}{ p{8cm} p{2cm} p{2cm} p{2cm}p{2cm}p{2cm} }
+	Quantity & average & median & min & max & stdev \\
+	\hline
+	No. mutations, WGS & 844 & 328 & 110 & 8,192 & 1,306 \\
+	No. mutations, WGA & 1,531 & 694 & 23 & 10,966 & 2,230 \\
+	\% mutations in overlap, WGS & 31\% & 31\% & 1\% & 74\% & 20\% \\
+	\% mutations in overlap, WGA & 44\% & 45\% & 3\% & 71\% & 13\% \\
+	No. putative mutations removed, VAQ & 309 & 164 & 17 & 11,439 & 1,372 \\
+	No. putative mutations removed, LOH & 539 & 169 & 3 & 8,538 & 1,051 \\
+	No. putative mutations removed, 10bp-SNV & 46 & 19 & 0 & 1,515 & 115 \\
+	No. putative mutations removed, 10bp-INDEL & 28 & 16 & 0 & 535 & 45 \\
+	No. putative mutations removed, dbSNP & 16 & 8 & 0 & 348 & 33 \\
+	No. putative mutations removed, $<$10\% & 1 & 1 & 1 & 36 & 3 \\
+	\% overlap removed, VAQ & 53\% & 57\% & 0\% & 100\% & 28\% \\
+	\% overlap removed, LOH & 51\% & 52\% & 0\% & 99\% & 29\% \\
+	\% overlap removed, 10bp-SNV & 3\% & 2\% & 0\% & 20\% & 3\% \\
+	\% overlap removed, 10bp-INDEL & 4\% & 4\% & 0\% & 22\% & 4\% \\
+	\% overlap removed, dbSNP & 3\% & 2\% & 0\% & 47\% & 7\% \\
+\end{tabular}
+\end{table}
+\end{landscape}
+
+\end{document}

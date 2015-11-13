@@ -92,7 +92,7 @@ TCGA's GBM data set includes 2 technical replicates for each of 55 tumors. In th
 
 For each patient (n=55), we called mutations in both technical replicates and in the patient's blood sample, using the same computational pipeline (see Figure~\ref{fig:pipeline} and Methods): We downloaded TCGA BAM files with CGHub \citep{CGHub}, re-generated fastq files with picard \citep{picard}, re-aligned the fastq files to hg19 with bwa \citep{bwa}, performed indel re-alignment and base recalibration with GATK \citep{GATK}, and finally called somatic mutations with SomaticSniper \citep{SomaticSniper}. We then compared the VCFs produced by SomaticSniper for each of the two technical replicates, and calculated the number of somatic mutations called in each replicate and the number of individual somatic mutations called in both replicates (hereafter, the overlap, see Figure~\ref{fig:pipeline}). We further calculated the percentage of mutations in each replicate that occurred in the overlap between the two. 
 
-There were an average of 844 putative mutations in the WGS replicates and 1,531 putative mutations in the WGA replicates (Table~\ref{tab:summary_stats}). Across all samples, the number of mutations in a given WGS replicate was correlated with the number of mutations in its corresponding WGA replicate (Spearman $\rho=0.42$, $S=16142$, $P=0.002$, Figure~\ref{fig:C282_v_C484}). As expected, for each sample the WGA replicate (with the additional amplification step) had slightly more mutations overall, with a slightly smaller percentage appearing in the overlap (Figures~\ref{fig:C282_v_C484} and~\ref{fig:unfiltered_total_muts}). We found that the percent overlap between the two samples, calculated as $\text{WGA} \cap \text{WGS}/\text{WGS}$ for WGS replicates and $\text{WGA} \cap \text{WGS}/\text{WGA}$ for WGA replicates, varied widely, from 1\%-74\%, but was fairly evenly distributed around the average of 31\% in WGA replicates and 44\% in WGS replicates (Table~\ref{tab:summary_stats}). As expected, the distribution of the percentage overlap was narrower and taller in the WGS replicates, because on the whole the WGA samples had more amplification errors than the WGS samples (Supplementary Figure 1).
+There were an average of 844 putative mutations in the WGS replicates and 1,531 putative mutations in the WGA replicates (Table~\ref{tab:summary_stats}). Across all samples, the number of mutations in a given WGS replicate was correlated with the number of mutations in its corresponding WGA replicate (Spearman $\rho=0.42$, $S=16142$, $P=0.002$, Figure~\ref{fig:C282_v_C484}). As expected, for each sample the WGA replicate (with the additional amplification step) had slightly more mutations overall, with a slightly smaller percentage appearing in the overlap (Figures~\ref{fig:C282_v_C484} and~\ref{fig:unfiltered_total_muts}). We found that the percent overlap between the two samples, calculated as $\text{WGA} \cap \text{WGS}/\text{WGS}$ for WGS replicates and $\text{WGA} \cap \text{WGS}/\text{WGA}$ for WGA replicates, varied widely, from 1\%-74\%, but was fairly evenly distributed around the average of 31\% in WGA replicates and 44\% in WGS replicates (Table~\ref{tab:summary_stats}). As expected, the distribution of the percentage overlap was narrower and taller in the WGS replicates, because on the whole the WGA samples had more amplification errors than the WGS samples (Figure S1).
 
 % Experiment: number of mutations (figure 3 **ORIGINALLY FIGURE 4** )
 %(a) a brief (one sentence to one paragraph) summary of what you did and why
@@ -142,9 +142,9 @@ We have shown that there is significant overlap between technical replicates of 
 
 All sequence data came from The Cancer Genome Atlas (TCGA) Research Network's Glioblastoma multiforme (GBM) data set \citep{TCGA-GBM}. We downloaded three BAM files for each of 55 patients using CGHub \citep{CGHub}. For each patient, data consisted of one BAM file taken from blood DNA, and two BAM files from tumor DNA, one for each technical replicate. In each case, the only difference in data collection for the two sets of tumor DNA was whether or not an amplification step was performed prior to building a library \citep{TCGA-GBM}. 
 
-We created a pipeline for backend processing of all TCGA BAM files, summarized in Figure~\ref{fig:pipeline}, with commands given in Supplementary Table 1. The custom python code to connect the pipeline is available in a public git repository (\texttt{https://github.com/clauswilke/GBM\_genomics}). Our pipeline first regenerated fastq files (original reads) from the TCGA BAM files, which were aligned to hg18, using picard \citep{picard}. Next, we used BWA \citep{bwa} to align the fastq files to hg19, and samtools \citep{SAMtools} to sort, index, and de-duplicate the new BAM file. We used GATK \citep{GATK} to do indel realignment and base recalibration, according to the standard best practices for genomics data \citep{best-practices}. Finally, we predicted somatic variants with SomaticSniper \citep{SomaticSniper}, with the output given in VCF format.
+We created a pipeline for backend processing of all TCGA BAM files, summarized in Figure~\ref{fig:pipeline}, with commands given in Table S1. The custom python code to connect the pipeline is available in a public git repository (\texttt{https://github.com/clauswilke/GBM\_genomics}). Our pipeline first regenerated fastq files (original reads) from the TCGA BAM files, which were aligned to hg18, using picard \citep{picard}. Next, we used BWA \citep{bwa} to align the fastq files to hg19, and samtools \citep{SAMtools} to sort, index, and de-duplicate the new BAM file. We used GATK \citep{GATK} to do indel realignment and base recalibration, according to the standard best practices for genomics data \citep{best-practices}. Finally, we predicted somatic variants with SomaticSniper \citep{SomaticSniper}, with the output given in VCF format.
 
-For all alignments, average read coverage was 30X, with a low of 5X and a high of 60X (stdev=15.95898). The percentage of mapped reads in our alignments was universally high (mean=98.03545, stdev=3.257872), with only two samples below 90\% (68\% and 74\%), and only 15 samples below 98\%. We found no correlation between the read coverage or the percentage of mapped reads and the total number of SNVs called (Supplementary Figures 2 and 3).
+For all alignments, average read coverage was 30X, with a low of 5X and a high of 60X (stdev=15.95898). The percentage of mapped reads in our alignments was universally high (mean=98.03545, stdev=3.257872), with only two samples below 90\% (68\% and 74\%), and only 15 samples below 98\%. We found no correlation between the read coverage or the percentage of mapped reads and the total number of SNVs called (Figures S2 and S3).
 
 \subsection*{Filtering and data analysis}
 
@@ -221,54 +221,54 @@ We used the same or substantially similar python scripts to calculate and compar
 
 %% Figure 1
 \begin{figure}
-%\centerline{
-%\includegraphics[width=5in]{Figure1.pdf} 
-%}
+\centerline{
+\includegraphics[width=5in]{Figure1.pdf} 
+}
 \caption{\textbf{Data processing pipeline.} For each of 55 patients, we began with a C484 tumor BAM file (WGS), a C282 tumor BAM file (WGA), and a normal BAM file, all aligned to hg18. For each BAM file, we used picard to regenerate fastq files, bwa to realign the fastq files to hg19, and GATK to recalibrate bases and indels. We used SomaticSniper to call somatic mutations (differences between the tumor and normal sequences) for each replicate. When we had a VCF for each replicate, we calculated the overlap between the two lists as the number of individual mutations which appeared in both replicates.}
 \label{fig:pipeline}
 \end{figure}
 
 %% Figure 2
 \begin{figure}
-%\centerline{
-%\includegraphics[width=5in]{Figure2.pdf} 
-%}
+\centerline{
+\includegraphics[width=5in]{Figure2.pdf} 
+}
 \caption{\textbf{Number of putative SNVs in WGS versus WGA, as called by SomaticSniper before filtering.} Each point represents data for a single patient. The line is $y=x$, so points falling below the line agree with the hypothesis that an additional amplification step produces more sequencing errors in a sample. The number of mutations found in one replicate correlates with the number of mutations found in the other replicate (Spearman $\rho=0.42$, $S=16142$, $P=0.002$).}
 \label{fig:C282_v_C484}
 \end{figure}
 
 %% Figure 3
 \begin{figure}
-%\centerline{
-%\includegraphics[width=5in]{Figure3.pdf} 
-%}
+\centerline{
+\includegraphics[width=5in]{Figure3.pdf} 
+}
 \caption{\textbf{Number of putative SNVs per sample does not correlate with the number of putative SNVs recoverable in both replicates.} The percentage of putative SNVs in a given sample that are in the overlap between replicates is not correlated to the number of mutations in that sample (Spearman $\rho=0.05$, $S=29268$, $P=0.68$). We calculated the percent overlap in two ways: with reference to the total number of putative SNVs in the WGS sample (red) and with reference to the total number of putative SNVs in the WGA sample (black). The correlation was calculated with respect to WGA.}
 \label{fig:unfiltered_total_muts}
 \end{figure}
 
 %% Figure 4
 \begin{figure}
-%\centerline{
-%\includegraphics[width=6in]{Figure4.pdf} 
-%}
+\centerline{
+\includegraphics[width=6in]{Figure4.pdf} 
+}
 \caption{\textbf{Independent performance of the individual filters of the overlap between replicates.} The $x$-axis gives the name of each filter (detail on Table 1), and the $y$-axis gives \textit{(above)} the number of mutations removed by a given filter in a given sample on a log scale, and \textit{(below)} the percentage of the WGS--WGA overlap removed by the filter, per sample. The LOH and VAQ filters removed a large number of putative SNVs and portion of the overlap. The <10\% filter removed very few putative SNVs and almost none of the overlap. The 10bp-SNV, 10bp-INDEL, and dbSNP filters removed an intermediate number of putative SNVs (~100), but only a very small portion of the overlap, making them the best performers on the overlap data. }
 \label{fig:boxplot_filtered}
 \end{figure}
 
 %%Figure 5
 \begin{figure}
-%\centerline{
-%\includegraphics[width=5in]{Figure5.pdf} 
-%}
+\centerline{
+\includegraphics[width=5in]{Figure5.pdf} 
+}
 \caption{\textbf{Independent performance of individual filters of the difference between replicates.} \textit{(top left)} A scatter plot of the ratio, per sample per filter, of putative SNVs removed from the difference versus the overlap of WGS and WGA ($WGS \triangle WGA / WGS \cap WGA$). \textit{(top right)} Boxplot of the same data, divided by filter on the $x$-axis. \textit{(below)} Plot of the percentage difference in the Jaccard(WGS, WGA) before and after the action of each filter (each filter was run on the whole data set independently).}
 \label{fig:diffset}
 \end{figure}
 
 %%Figure 6
 \begin{figure}
-%\centerline{
-%\includegraphics[width=5in]{Figure6.pdf} 
-%}
+\centerline{
+\includegraphics[width=5in]{Figure6.pdf} 
+}
 \caption{ \textbf{Replicate SNVs filtered out by LOH and VAQ are almost completely non-overlapping and cover most of the sample.} As the length of the overlap between WGS and WGA increases ($x$-axis),  \textit{(above)} the percentage of the overlap filtered out by LOH increases, and \textit{(below)} the percentage of the overlap filtered out by VAQ decreases. The two are almost (but not quite) perfect inverses; putative SNPs filtered by LOH and VAQ cover almost the entire overlap, and together sum to nearly 100\% of the overlap.}
 \label{fig:LOH-VAQ_all}
 \end{figure}

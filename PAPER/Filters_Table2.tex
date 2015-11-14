@@ -54,11 +54,11 @@
 \begin{document}
 
 %% Filters table
-\begin{landscape}
+%\begin{landscape}
 \begin{table}
 %\caption{\textbf{SNV prediction filters.} This table shows the various methods (filters) used to predict which differences found in tumor alignments relative to blood alignments are real somatic variants, as opposed to sequencing errors or other variants.}
 \label{tab:filters}
-\begin{tabular}{ p{2.25cm} p{4.25cm} p{14cm} }
+\begin{tabular}{ p{2.25cm} p{4.25cm} p{7cm} }
 	filter & software & purpose \\
 	\hline
 	GATK & GATK & Removes putative SNVs with GATK quality scores less than 40 (as part of the GATK processing, with indel realignment and base recalibration) \\
@@ -71,6 +71,6 @@
 	$<$10\% & python & Removes putative SNVs if, in the tumor data, the percentage of reads covering the site with the alternate allele is less than 10\% \\
 \end{tabular}
 \end{table}
-\end{landscape}
+%\end{landscape}
 
 \end{document}

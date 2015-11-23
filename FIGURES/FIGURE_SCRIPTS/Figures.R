@@ -62,11 +62,11 @@ abline(0,1)
 #pdf( "../FIGURE_PDFS/Figure3.pdf" )
 # when necessary, use the following title: Number of putative SNPs does not correlate with percentage WGS/WGA overlap
 par(bty = 'n')
-plot( data34$TOTAL, data34$PERCENT_OVERLAP_by_WGA.282, log='x', pch=20, main="", xlab="Number of putative SNVs in unfiltered data (log)", ylab="Percentage overlap between WGS and WGA in unfiltered data" )
-points ( data34$TOTAL, data34$PERCENT_OVERLAP_by_WGS.484, pch=20, col="red" )
+plot( data34$TOTAL, data34$PERCENT_OVERLAP_by_WGA.282, log='x', pch=20, col="orange", main="", xlab="Number of putative SNVs in unfiltered data (log)", ylab="Percentage overlap between WGS and WGA in unfiltered data" )
+points ( data34$TOTAL, data34$PERCENT_OVERLAP_by_WGS.484, pch="+", col="green" )
 abline( 0,1 )
-legend( 'topright', c( "overlap/WGA total", "overlap/WGS total" ), col=c( 'black', 'red' ) )
-legend( 'topright', c( "overlap/WGA total", "overlap/WGS total" ), col=c( 'black', 'red' ), pch=20 )
+legend( 'topleft', c( "overlap/WGS total", "overlap/WGA total" ), col=c( 'green', 'orange' ) )
+legend( 'topleft', c( "overlap/WGS total", "overlap/WGA total" ), col=c( 'green', 'orange' ), pch=c(3,20) )
 #dev.off()
 
 ############################

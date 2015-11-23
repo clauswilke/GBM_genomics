@@ -242,7 +242,7 @@ median(all$F7ratio, na.rm=TRUE)
 ## THEN MAKE FIGURE 6 (COMPOUND FIGURE) FOR THE PAPER ##
 ########################################################
 
-#pdf( "../FIGURE_PDFS/Figure5.pdf", width=6, height=5 )
+#pdf( "../FIGURE_PDFS/Figure5.pdf", width=9, height=7 )
 
 par(bty='n', mfrow=c(2,2), mar=c(3,4.1,2,1) )
 
@@ -255,13 +255,13 @@ points( all$F6ratio, pch=20, col='orange' )
 # MC EDITS: Added cex parameter to scale down the size of the legend.
 legend( 'topright', c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP" ), col=c( 'black', 'navy', 'yellow', 'red', 'orange' ), pch=20, cex=0.90 )
 
-boxplot( all[,c(26,28,25,24,27)], ylim=c(1,50), xaxt='n', pch=20, ylab="" )
+boxplot( all[,c(26,28,25,24,27)], ylim=c(1,90), xaxt='n', pch=20, ylab="Ratio of difference to overlap" )
 axis( 1, at=1:5, padj=0.8, cex.axis=0.7, labels=c( "VAQ", "LOH", "10bp-SNV", "10bp-INDEL", "dbSNP" ) )
 
 boxplot( mergedData[,c(52,50)], ylim=c(0,450), xaxt='n', ylab=expression(paste( Delta, "Jaccard( WGS, WGA )")), pch=20 )
 axis( 1, at=1:2, padj = 0.8, cex.axis=0.7, labels=c( "LOH", "VAQ" ) )
 
-boxplot( mergedData[,c(49,48,51,53)], ylim=c(0,15), xaxt='n', ylab="", pch=20 )
+boxplot( mergedData[,c(49,48,51,53)], ylim=c(0,15), xaxt='n', ylab=expression(paste( Delta, "Jaccard( WGS, WGA )")), pch=20 )
 axis( 1, at=1:4, padj = 0.8, cex.axis=0.7, labels=c( "10bp-SNV", "10bp-INDEL", "dbSNP", "<10%" ) )
 
 #dev.off()

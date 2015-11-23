@@ -224,7 +224,7 @@ We have shown that there is significant overlap between technical replicates of 
 %\centerline{
 %\includegraphics[width=5in]{Figure1.pdf} 
 %}
-\caption{\textbf{Data processing pipeline.} For each of 55 patients, we began with a C484 tumor BAM file (WGS), a C282 tumor BAM file (WGA), and a normal BAM file, all aligned to hg18. For each BAM file, we used picard to regenerate fastq files, bwa to realign the fastq files to hg19, and GATK to recalibrate bases and indels. We used SomaticSniper to call somatic mutations (differences between the tumor and normal sequences) for each replicate. When we had a VCF for each replicate, we calculated the overlap between the two lists as the number of individual mutations which appeared in both replicates.}
+\caption{\textbf{Data processing pipeline.} For each of 55 patients, we began with a C484 tumor BAM file (WGS), a C282 tumor BAM file (WGA), and a normal BAM file, all aligned to hg18. For each BAM file, we used picard to regenerate fastq reads, bwa to realign the fastq files to hg19, and GATK to recalibrate bases and indels. We used SomaticSniper to call somatic mutations (differences between the tumor and normal sequences) for each replicate. When we had a VCF for each replicate, we calculated the overlap between the two lists as the number of individual mutations that appeared in both replicates.}
 \label{fig:pipeline}
 \end{figure}
 
@@ -233,7 +233,7 @@ We have shown that there is significant overlap between technical replicates of 
 %\centerline{
 %\includegraphics[width=5in]{Figure2.pdf} 
 %}
-\caption{\textbf{Number of putative SNVs in WGS versus WGA, as called by SomaticSniper before filtering.} Each point represents data for a single patient. The line is $y=x$, so points falling below the line agree with the hypothesis that an additional amplification step produces more sequencing errors in a sample. The number of mutations found in one replicate correlates with the number of mutations found in the other replicate (Spearman $\rho=0.42$, $S=16142$, $P=0.002$).}
+\caption{\textbf{Number of putative SNVs in WGS versus WGA, as called by SomaticSniper before filtering.} For each patient (represented by one point), we compared the number of SNVs called in the WGS sample ($y$-axis) versus the number of SNVs called in the WGA sample ($x$-axis). As expected, the number of mutations found in one replicate correlates with the number of mutations found in the other replicate (Spearman $\rho=0.42$, $S=16142$, $P=0.002$). The line shown is $y=x$, so points falling below the line agree with the hypothesis that an additional amplification step produces more sequencing errors in a sample. }
 \label{fig:C282_v_C484}
 \end{figure}
 
@@ -242,7 +242,7 @@ We have shown that there is significant overlap between technical replicates of 
 %\centerline{
 %\includegraphics[width=5in]{Figure3.pdf} 
 %}
-\caption{\textbf{Number of putative SNVs per sample does not correlate with the number of putative SNVs recoverable in both replicates.} The percentage of putative SNVs in a given sample that are in the overlap between replicates is not correlated to the number of mutations in that sample (Spearman $\rho=0.05$, $S=29268$, $P=0.68$). We calculated the percent overlap in two ways: with reference to the total number of putative SNVs in the WGS sample (red) and with reference to the total number of putative SNVs in the WGA sample (black). The correlation was calculated with respect to WGA.}
+\caption{\textbf{Number of putative SNVs per sample does not correlate with the number of putative SNVs recoverable in both replicates.} To test the hypothesis that samples with a greater number of SNVs also have a greater number of errors, and consequently a smaller percentage of SNVs recovered in the overlap between replicates, we compared the percentage of putative SNVs recovered in the overlap between replicates for a sample ($y$-axis) versus the number of mutations in that sample ($x$-axis). We found no correlation (Spearman $\rho=0.05$, $S=29268$, $P=0.68$), suggesting that higher numbers of SNVs in a sample may not be only due to errors. We calculated the percent overlap in two ways: with reference to the total number of putative SNVs in the WGS sample (red) and with reference to the total number of putative SNVs in the WGA sample (black). The correlation was calculated with respect to WGA.}
 \label{fig:unfiltered_total_muts}
 \end{figure}
 

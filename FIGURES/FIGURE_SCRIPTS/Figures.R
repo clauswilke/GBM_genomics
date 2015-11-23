@@ -43,17 +43,18 @@ abline(0,1)
 
 ##################################################################################
 ## FIGURE 3 ORIGINAL: Density of percentage overlap between WGS and WGA samples ##
+## THIS IS NOW FIGURE S1														##
 ##################################################################################
 
-# pdf( "../FIGURE_PDFS/Figure3.pdf" )
+#pdf( "../FIGURE_PDFS/FigureS1.pdf" )
 # figure title (should it ever be needed): Greater % of WGS sample found in overlap than WGA
-# amp_frac = density( data34$OVERLAP/data34$TOTAL_WGA.C282., from=0 )
-# seq_frac = density( data34$OVERLAP/data34$TOTAL_WGS.C484., from=0 )
-# par(bty='n')
-# plot( seq_frac$x, seq_frac$y, type='l', col='blue', main="", xlab="Percentage of putative SNVs in a sample also recovered in the samples's technical replicate", ylab="Density")
-# legend( "topright", c( "WGS", "WGA" ), col=c( "blue", "red" ), lty=1 )
-# lines( amp_frac$x, amp_frac$y, col='red' )
-# dev.off()
+amp_frac = density( data34$OVERLAP/data34$TOTAL_WGA.C282., from=0 )
+seq_frac = density( data34$OVERLAP/data34$TOTAL_WGS.C484., from=0 )
+par(bty='n')
+plot( seq_frac$x, seq_frac$y, type='l', col='orange', main="", xlab="Percentage of putative SNVs in a sample also recovered in its technical replicate", ylab="Density")
+legend( "topright", c( "WGS", "WGA" ), col=c( "green", "orange" ), lty=1 )
+lines( amp_frac$x, amp_frac$y, col='green' )
+#dev.off()
 
 #############################################################################################################
 ## FIGURE 3 MOD (ORIGINAL FIGURE 4): Percentage of overlap versus (log) number of putative SNVs per sample ##

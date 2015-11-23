@@ -251,7 +251,7 @@ We have shown that there is significant overlap between technical replicates of 
 %\centerline{
 %\includegraphics[width=6in]{Figure4.pdf} 
 %}
-\caption{\textbf{Independent performance of the individual filters of the overlap between replicates.} The $x$-axis gives the name of each filter (detail on Table 1), and the $y$-axis gives \textit{(above)} the number of mutations removed by a given filter in a given sample on a log scale, and \textit{(below)} the percentage of the WGS--WGA overlap removed by the filter, per sample. The LOH and VAQ filters removed a large number of putative SNVs and portion of the overlap. The <10\% filter removed very few putative SNVs and almost none of the overlap. The 10bp-SNV, 10bp-INDEL, and dbSNP filters removed an intermediate number of putative SNVs (~100), but only a very small portion of the overlap, making them the best performers on the overlap data. }
+\caption{\textbf{Independent performance of the individual filters of the overlap between replicates.} For each filter (names given on the $x$-axis, with detailed description in Table 1), we looked at the number of mutations removed by a given filter in a given sample on a log scale \textit{(above)}, and the percentage of the WGS--WGA overlap removed by the filter \textit{(below)}, per sample. The LOH and VAQ filters removed a large number of putative SNVs and portion of the overlap. The <10\% filter removed very few putative SNVs and almost none of the overlap. The 10bp-SNV, 10bp-INDEL, and dbSNP filters removed an intermediate number of putative SNVs (~100), but only a very small portion of the overlap, making them the best performers on the overlap data. }
 \label{fig:boxplot_filtered}
 \end{figure}
 
@@ -260,7 +260,7 @@ We have shown that there is significant overlap between technical replicates of 
 %\centerline{
 %\includegraphics[width=5in]{Figure5.pdf} 
 %}
-\caption{\textbf{Independent performance of individual filters of the difference between replicates.} \textit{(top left)} A scatter plot of the ratio, per sample per filter, of putative SNVs removed from the difference versus the overlap of WGS and WGA ($WGS \triangle WGA / WGS \cap WGA$). \textit{(top right)} Boxplot of the same data, divided by filter on the $x$-axis. \textit{(below)} Plot of the percentage difference in the Jaccard(WGS, WGA) before and after the action of each filter (each filter was run on the whole data set independently).}
+\caption{\textbf{Independent performance of individual filters of the difference between replicates.} For each sample, we compared the size of the difference between replicates (the number of SNVs found in only one of WGS or WGA) to the size of the overlap between replicates (the number of SNVs recovered from both the WGA and WGS replicates). \textit{(top left)} A scatter plot of the ratio, per sample per filter, of putative SNVs removed from the difference versus the overlap of WGS and WGA ($WGS \triangle WGA / WGS \cap WGA$). \textit{(top right)} Boxplot of the same data, divided by filter on the $x$-axis. \textit{(below)} Plot of the percentage difference in the Jaccard(WGS, WGA), with Jaccard=$|WGS \cap WGA|/|WGS \cup WGA|$, before and after the action of each filter (each filter was run on the whole data set independently).}
 \label{fig:diffset}
 \end{figure}
 
@@ -269,7 +269,7 @@ We have shown that there is significant overlap between technical replicates of 
 %\centerline{
 %\includegraphics[width=5in]{Figure6.pdf} 
 %}
-\caption{ \textbf{Replicate SNVs filtered out by LOH and VAQ are almost completely non-overlapping and cover most of the sample.} As the length of the overlap between WGS and WGA increases ($x$-axis),  \textit{(above)} the percentage of the overlap filtered out by LOH increases, and \textit{(below)} the percentage of the overlap filtered out by VAQ decreases. The two are almost (but not quite) perfect inverses; putative SNPs filtered by LOH and VAQ cover almost the entire overlap, and together sum to nearly 100\% of the overlap.}
+\caption{ \textbf{Replicate SNVs filtered out by LOH and VAQ are almost completely non-overlapping and cover most of the sample.} Across samples, as the length of the overlap between WGS and WGA increases ($x$-axis),  \textit{(above)} the percentage of the overlap filtered out by LOH increases, and \textit{(below)} the percentage of the overlap filtered out by VAQ decreases. The two are almost (but not quite) perfect inverses: putative SNPs filtered by LOH and VAQ cover almost the entire overlap, and together sum to nearly 100\% of the overlap.}
 \label{fig:LOH-VAQ_all}
 \end{figure}
 

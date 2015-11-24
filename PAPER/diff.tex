@@ -1,11 +1,7 @@
-%DIF 1c1
+\documentclass[11 pt]{article} % use larger type; default would be 10pt
 %DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL paper_orig.tex   Fri Nov 13 17:05:02 2015
-%DIF ADD paper.tex        Fri Nov 13 17:05:52 2015
-%DIF < \documentclass[11pt]{article} % use larger type; default would be 10pt
-%DIF -------
-\documentclass[11 pt]{article} % use larger type; default would be 10pt %DIF > 
-%DIF -------
+%DIF DEL paper_revised.tex   Mon Nov 23 18:33:24 2015
+%DIF ADD paper.tex           Mon Nov 23 18:33:24 2015
 \usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
 \usepackage[T1]{fontenc}
 \usepackage{authblk}
@@ -60,22 +56,13 @@
 
 %%% Title and author are here
 \title{Reproducibility of SNV-calling in multiple sequencing runs from single tumors}
-%DIF 56c56
-%DIF < \author[1]{Dakota Z. Derryberry\thanks{dakotaz@utexas.edu}}
-%DIF -------
-\author[1]{Dakota Z. Derryberry\thanks{Dakota Z. Derryberry: 2500 Speedway, Austin, TX, 78712; (512)232-2459; dakotaz@utexas.edu}} %DIF > 
-%DIF -------
+\author[1]{Dakota Z. Derryberry\thanks{Dakota Z. Derryberry: 2500 Speedway, Austin, TX, 78712; (512)232-2459; dakotaz@utexas.edu}}
 \author[2,3]{Matthew C. Cowperthwaite}
 \author[1,4]{Claus O. Wilke} 
-%DIF < \affil[1]{The University of Texas at Austin, Cell \& Molecular Biology}
-%DIF -------
-\affil[1]{Cell \& Molecular Biology, The University of Texas at Austin, Austin, TX USA} %DIF > 
-%DIF < \affil[2]{St. David's NeuroTexas Institute Research Foundation}
-\affil[2]{St. David's NeuroTexas Institute Research Foundation, Austin, TX, USA} %DIF > 
-%DIF < \affil[3]{Center for Systems and Synthetic Biology, The University of Texas at Austin}
-\affil[3]{Center for Systems and Synthetic Biology, The University of Texas at Austin, Austin TX, USA} %DIF > 
-%DIF < \affil[4]{The University of Texas at Austin, Integrative Biology}
-\affil[4]{Integrative Biology, The University of Texas at Austin, Austin, TX, USA} %DIF > 
+\affil[1]{Cell \& Molecular Biology, The University of Texas at Austin, Austin, TX USA}
+\affil[2]{St. David's NeuroTexas Institute Research Foundation, Austin, TX, USA}
+\affil[3]{Center for Systems and Synthetic Biology, The University of Texas at Austin, Austin TX, USA}
+\affil[4]{Integrative Biology, The University of Texas at Austin, Austin, TX, USA}
 %DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
 %DIF UNDERLINE PREAMBLE %DIF PREAMBLE
 \RequirePackage[normalem]{ulem} %DIF PREAMBLE
@@ -103,98 +90,15 @@
 
 We examined 55 technical sequencing replicates of Glioblastoma multiforme (GBM) tumors from The Cancer Genome Atlas (TCGA) to ascertain the degree of repeatability in calling single-nucleotide variants (SNVs). We used the same mutation-calling pipeline on all pairs of samples, and we measured the extent of the overlap between two replicates, that is, how many specific point mutations were found in both replicates. We further tested whether additional filtering increased or decreased the size of the overlap.  We found that about half of the putative mutations identified in one sequencing run of a given sample were also identified in the second, and that this percentage remained steady throughout orders of magnitude of variation in the total number of mutations identified (from 23 to 10,966). We further found that using filtering after SNV-calling removed the overlap completely. We concluded that there is variation in the frequency of mutations in GBMs, and that while some filtering approaches preferentially removed putative mutations found in only one replicate, others removed a large fraction of putative mutations found in both.
 
-\DIFaddbegin \clearpage
+\clearpage
 
-\DIFaddend \section*{Introduction}
+\section*{Introduction}
 
-\DIFdelbegin \DIFdel{The past six years have seen an explosion of data in cancer genomics, an effort led by TCGA, an archive of publicly-available data that includes sequencing of paired tumor-normal samples from individual patients for thousands of tumors \mbox{%DIFAUXCMD
-\citep{TCGA-GBM, TCGA-GBM-13}
-}%DIFAUXCMD
-. TCGA's database includes hundreds of samples of each of several tumor types, including over 500 samples of }\DIFdelend Glioblastoma multiforme (GBM) \DIFdelbegin \DIFdel{, }\DIFdelend \DIFaddbegin \DIFadd{is }\DIFaddend the most common and deadly primary brain tumor \DIFdelbegin \DIFdel{. GBM has }\DIFdelend \DIFaddbegin \DIFadd{with }\DIFaddend a median survival time of 14 months and a 5-year survival rate of ~5\%. Prognosis for patients with this disease remains poor despite significant research investment, due to the difficulty of surgical resection and the limited number of effective chemotherapeutics \citep{GBM-stats}. \DIFdelbegin \DIFdel{To work towards the goal of improving patient outcomes using }\DIFdelend \DIFaddbegin \DIFadd{Recently, research to improve treatments for patients with this devastating disease has focused on the idea of }\DIFaddend precision medicine, \DIFdelbegin \DIFdel{TCGA and other groups \mbox{%DIFAUXCMD
-\citep{Parsons}
-}%DIFAUXCMD
-used }\DIFdelend \DIFaddbegin \DIFadd{that is using }\DIFaddend large-scale genomics data to discover \DIFaddbegin \DIFadd{how the disease arises and progresses, and how to stop it. The past six years have seen an explosion of data in cancer genomics, an effort led by TCGA, an archive of publicly-available data that includes sequencing of paired tumor-normal samples from individual patients for thousands of tumors \mbox{%DIFAUXCMD
-\citep{TCGA-GBM, TCGA-GBM-13}
-}%DIFAUXCMD
-, including over 500 GBMs. While these and other similar data \mbox{%DIFAUXCMD
-\citep{Parsons}
-}%DIFAUXCMD
-, researchers have discovered }\DIFaddend genes and pathways mutated in GBM \citep{pathways}, discover different GBM subtypes \citep{subtypes}, and develop a variety of computational models to find GBM driver mutations \citep{drivers}.  \DIFdelbegin %DIFDELCMD < 
+Glioblastoma multiforme (GBM) is the most common and deadly primary brain tumor with a median survival time of 14 months and a 5-year survival rate of ~5\%. Prognosis for patients with this disease remains poor despite significant research investment, due to the difficulty of surgical resection and the limited number of effective chemotherapeutics \citep{GBM-stats}. Recently, research to improve treatments for patients with this devastating disease has focused on the idea of precision medicine, that is using large-scale genomics data to discover how the disease arises and progresses, and how to stop it. The past six years have seen an explosion of data in cancer genomics, an effort led by TCGA, an archive of publicly-available data that includes sequencing of paired tumor-normal samples from individual patients for thousands of tumors \citep{TCGA-GBM, TCGA-GBM-13}, including over 500 GBMs. While these and other similar data \citep{Parsons}, researchers have discovered genes and pathways mutated in GBM \citep{pathways}, discover different GBM subtypes \citep{subtypes}, and develop a variety of computational models to find GBM driver mutations \citep{drivers}.  Despite widespread use of the data and adoption of the methods, however, efforts to benchmark the data--to assess the quality and repeatability of these and subsequent analyses--have lagged or been non-existent. Here, our goal is to begin to develop robust methods for benchmarking next-generation cancer sequencing data and analysis.
 
-%DIFDELCMD < %%%
-\DIFdel{However, these and other efforts have produced very few results for patients in terms of improved treatments. It may be that we simply haven't yet analyzed the data in the most informative manner. Another factor may be that the }\DIFdelend \DIFaddbegin \DIFadd{Despite widespread use of the }\DIFaddend data \DIFdelbegin \DIFdel{are noisy.
-}\DIFdelend \DIFaddbegin \DIFadd{and adoption of the methods, however, efforts to benchmark the data--to assess the quality and repeatability of these and subsequent analyses--have lagged or been non-existent. Here, our goal is to begin to develop robust methods for benchmarking next-generation cancer sequencing data and analysis.
-}
+It is well known that sequencing and variant-calling pipelines are not error-free. For example, different pipelines for calling single-nucleotide variants (SNVs) can return different results on the same data \citep{SNPcall}. Given the heterogeneity in cancer genomes \citep{heterogenous1, heterogenous2}, and the presence of functional low-frequency variants in GBM \citep{rare}, the signal-to-noise ratio in the TCGA dataset may be particularly low. Yet despite widespread use of this dataset, and significant monetary investment in collecting and analyzing the data, we know little about how to maximize the quality of the sequence data and SNV-calls. One way to address this question would be to analyze technical replicates of sequencing data \citep{replicates}. Here, we addressed one aspect of this question, by asking whether the same SNV-calling pipeline will return comparable results on two sequencing runs from the same tissue. And further, we asked whether added filtering after SNV-calling increases or decreases the degree of similarity among replicates.
 
-\DIFaddend It is well known that sequencing and variant-calling pipelines are not error-free. For example, different pipelines for calling single-nucleotide variants (SNVs) can return different results on the same data \citep{SNPcall}. Given the heterogeneity in cancer genomes \citep{heterogenous1, heterogenous2}, and the presence of functional low-frequency variants in GBM \citep{rare}, the signal-to-noise ratio in the TCGA dataset may be particularly low. Yet despite widespread use of this dataset, and significant monetary investment in collecting and analyzing the data, we know little about how to maximize the quality of the sequence data and SNV-calls. One way to address this question would be to analyze technical replicates of sequencing data \citep{replicates}. Here, we addressed one aspect of this question, by asking whether the same SNV-calling pipeline will return comparable results on two sequencing runs from the same tissue. And further, we asked whether added filtering after SNV-calling increases or decreases the degree of similarity among replicates.
-
-We answered these questions using TCGA data from 55 GBM tumors that were sequenced twice, once each with (i) the standard whole-genome sequencing (WGS) protocol, and (ii) an additional amplification step before library prep, which we refer to as the whole-genome amplification (WGA) protocol. For each of these 55 technical replicate pairs, we compared the somatic variants found in the WGS and WGA replicates, before and after analyzing the variants using various SNV-filtering approaches. We found significant overlap (around 50\%) between technical replicates, but also significant differences. As expected, the additional amplification step in the WGA protocol versus the WGS protocol added some putative mutations to the sample, so that on average these replicates had (i) more putative mutations, and (ii) a smaller percentage overlap between replicates. We found that the number of mutations in the WGS replicates varied by orders of magnitude, from 110 to 8,192. Contrary to expectations, the percentage overlap between technical replicates did not decrease with increasing numbers of putative mutations, suggesting real variation in mutation frequency \DIFdelbegin \DIFdel{between samples}\DIFdelend \DIFaddbegin \DIFadd{(the absolute number of SNVs found in a tumor) between samples from the same tumor}\DIFaddend . This result may be in part due to known mutational hotspots in some tumors \citep{Karen}. Our attempt to use SNV filtering, either via SomaticSniper \citep{SomaticSniper} or via custom-built filters, to increase the similarity between technical replicates was unsuccessful: Filtering removed almost the entirety of the overlap between the replicates.
-
-\section*{Results}
-
-\subsection*{How similar are two replicate sequencing runs of the same tumor?}
-
-% Experiment: size of overlap (figures 3 and 4)
-%(a) a brief (one sentence to one paragraph) summary of what you did and why
-%(b) a description of what you found carrying out this experiment
-
-DNA sequencing is not error-free. Error is introduced by mis-called bases in sequencing runs and by mis-aligned bases during sequence analysis \citep{seqerror}. Loss of heterozygosity may be a real feature of the data, or an amplification artifact that occurs when only one allele of a polymorphic site is amplified. Cancer DNA is highly heterogenous, which makes for an additional source of error: A \DIFdelbegin \DIFdel{mutation present in only some tumor cells}\DIFdelend \DIFaddbegin \DIFadd{polymorphic mutation is defined as a mutation that is not fixed and therefore is not present in all tumor cells. Such mutations }\DIFaddend may or may not be \DIFdelbegin \DIFdel{present in a given sample }\DIFdelend \DIFaddbegin \DIFadd{represented }\DIFaddend at high enough frequency \DIFdelbegin \DIFdel{to be seen, so that }\DIFdelend \DIFaddbegin \DIFadd{in a particular tumor specimen to be identified with next-gen sequencing. Alternatively, }\DIFaddend a polymorphic mutation may appear \DIFdelbegin \DIFdel{fixed or completely absent}\DIFdelend \DIFaddbegin \DIFadd{to be fixed when present at at very high frequency in a tumor specimen}\DIFaddend . In general, we would like to know how often these \DIFaddbegin \DIFadd{sorts of }\DIFaddend errors occur. One way of investigating this question would be to use an orthogonal technique such as PCR to verify each individual mutation. However, this method is expensive and time consuming. A cheaper alternative would be to sequence the tumor multiple times and to look at the similarity between replicates. Theoretically, any fixed mutation will appear in all replicates, while errors due to (i) sequencing errors, (ii) amplification errors, or (iii) alignment errors will not. (Polymorphic mutations would be present in some but not all samples, so this method does not address the difficulty of calling low-frequency variants in tumors.) The multiple-sequencing approach is used in most biological sequencing experiments, but not generally in cancer genomics, presumably due to unavailability of additional pathology specimens and the expense of sequencing multiple replicates for each of the hundreds of samples necessary for cancer genomics research. Nevertheless, even if researchers cannot verify every mutation or sequence multiple replicates for each tumor, it would be useful to know what percentage of called mutations would be likely to appear in additional sequencing replicates.
-
-TCGA's GBM data set includes 2 technical replicates for each of 55 tumors. In this case, the technical replicates are not identical. One protocol included an additional amplification step \citep{TCGA-GBM}, and we refer to this replicate as the WGA (whole-genome amplification) replicate, and the other as the WGS (whole-genome sequencing) replicate. Despite the difference in sequencing protocol, we would \DIFaddbegin \DIFadd{theoretically }\DIFaddend expect any fixed mutation to appear in both replicates, while polymorphic mutations and sequencing error might appear in only one. Consequently, those putative mutations appearing in both replicates are more likely to be real somatic variants than those found in only one replicate. We further hypothesized that the WGA samples would have a greater number of amplification errors, and thus more putative SNVs per sample, than the corresponding WGS samples. 
-
-For each patient (n=55), we called mutations in both technical replicates and in the patient's blood sample, using the same computational pipeline (see Figure~\ref{fig:pipeline} and Methods): We downloaded TCGA BAM files with CGHub \citep{CGHub}, re-generated fastq files with picard \citep{picard}, re-aligned the fastq files to hg19 with bwa \citep{bwa}, performed indel re-alignment and base recalibration with GATK \citep{GATK}, and finally called somatic mutations with SomaticSniper \citep{SomaticSniper}. We then compared the VCFs produced by SomaticSniper for each of the two technical replicates, and calculated the number of somatic mutations called in each replicate and the number of individual somatic mutations called in both replicates (hereafter, the overlap, see Figure~\ref{fig:pipeline}). We further calculated the percentage of mutations in each replicate that occurred in the overlap between the two. 
-
-There were \DIFdelbegin \DIFdel{on average }\DIFdelend \DIFaddbegin \DIFadd{an average of }\DIFaddend 844 putative mutations in the WGS replicates and 1,531 putative mutations in the WGA replicates (Table~\ref{tab:summary_stats}). Across all samples, the number of mutations in a given WGS replicate was correlated with the number of mutations in its corresponding WGA replicate (\DIFdelbegin \DIFdel{Pearson $r=0.51$, $df=53$, $P=8.35\times10^{-5}$}\DIFdelend \DIFaddbegin \DIFadd{Spearman $\rho=0.42$, $S=16142$, $P=0.002$}\DIFaddend , Figure~\ref{fig:C282_v_C484}). As expected, for each sample the WGA replicate (with the additional amplification step) had slightly more mutations overall, with a slightly smaller percentage appearing in the overlap (Figures~\ref{fig:C282_v_C484} and~\DIFdelbegin \DIFdel{\ref{fig:unfiltered_overlap}}\DIFdelend \DIFaddbegin \DIFadd{\ref{fig:unfiltered_total_muts}}\DIFaddend ). We \DIFdelbegin \DIFdel{further }\DIFdelend found that the percent overlap between the two samples, calculated as $\text{WGA} \cap \text{WGS}/\text{WGS}$ for WGS replicates and $\text{WGA} \cap \text{WGS}/\text{WGA}$ for WGA replicates, \DIFdelbegin \DIFdel{was fairly consistent, on average }\DIFdelend \DIFaddbegin \DIFadd{varied widely, from 1}\%\DIFadd{-74}\%\DIFadd{, but was fairly evenly distributed around the average of }\DIFaddend 31\% in WGA replicates and 44\% in WGS replicates (Table~\ref{tab:summary_stats}). As expected, the distribution \DIFaddbegin \DIFadd{of the percentage overlap }\DIFaddend was narrower and taller in the WGS replicates, because on the whole the WGA samples had more amplification errors than the WGS samples (\DIFdelbegin \DIFdel{Figure~\ref{fig:unfiltered_overlap}}\DIFdelend \DIFaddbegin \DIFadd{Supplementary Figure 1}\DIFaddend ).
-
-%DIF <  Experiment: number of mutations (figure 4)
-%DIF >  Experiment: number of mutations (figure 3 **ORIGINALLY FIGURE 4** )
-%(a) a brief (one sentence to one paragraph) summary of what you did and why
-%(b) a description of what you found carrying out this experiment
-Although the \DIFdelbegin \DIFdel{percent overlap in WGS and WGA samples was fairly constant across samples, and the }\DIFdelend numbers of putative mutations in WGS and WGA samples were correlated, the exact number of putative mutations \DIFaddbegin \DIFadd{in each sample }\DIFaddend varied by orders of magnitude (Table~\ref{tab:summary_stats}). It is known that different cancers mutate at different rates: Some pediatric cancers have very few mutations \citep{RB2hit, pediatric}, while some adult tumors show a mutator phenotype leading to vastly increased numbers of mutations, usually resulting from errors in DNA repair pathways \citep{mutator}. GBM specifically is thought to have a relatively low mutation rate \citep{Parsons, TCGA-GBM-13}, and while some of our samples had low mutation frequencies in line with this theory (29 out of 110 samples had a mutation frequency within a factor of 2 of the reported 3 mutations per Mbp genome), several samples also had mutation frequencies an order of magnitude greater (24 out of 110 samples had a mutation frequency greater than 30 mutations per Mbp genome). One possible explanation is a degraded DNA sample\DIFaddbegin \DIFadd{, significant alignment error, }\DIFaddend or otherwise bad data. If this were the case, we would expect the percentage of the overlap between replicates (a measure of data quality) to decrease with the overall number of putative mutations. However, we found no significant correlation (\DIFdelbegin \DIFdel{Pearson $r=-0.04$, $df=53$, $P=0.76$}\DIFdelend \DIFaddbegin \DIFadd{Spearman $\rho=0.05$, $S=29268$, $P=0.68$}\DIFaddend ) between the number of putative mutations in the WGS replicate and the percentage of those mutations that were in the overlap between replicates (Figure~\ref{fig:unfiltered_total_muts}). Thus, our data suggest that some samples may simply have a higher mutation frequency than others, or indeed than is generally supposed in GBM.
-
-\subsection*{Does more sophisticated SNV filtering software increase or decrease the degree of similarity between replicates?}
-
-%DIF <  Experiment: which filters do what (figures 6 and 7) 
-%DIF <  Experiment: those two filters are different (figures 8 and 9)
-%DIF < (a) a brief (one sentence to one paragraph) summary of what you did and why
-%DIF < (b) a description of what you found carrying out this experiment
-%DIF >  Experiment: which filters do what (figures 4 and 5) 
-As an additional computational validation step for somatic mutations, it is common practice to employ computational algorithms that attempt to distinguish somatic mutations from germ line mutations and sequencing errors \citep{SomaticSniper, mut_calling}. Software platforms to perform these tasks are plentiful, and each one typically employs multiple methods to identify true positive mutations. The two platforms used in this research, SomaticSniper \citep{SomaticSniper} and GATK \citep{GATK}, calculate one or more quality scores based on features of the dataset and the individual reads, and putative mutations with higher quality scores are considered to be more likely true somatic mutations than those with low quality scores. In addition to considering these quality scores, there are additional filtering steps that one can use to distinguish true somatic mutations from errors of all sorts. Table~\ref{tab:filters} lists eight distinct SNV filters we evaluated. The first three are based on the quality scores generated by GATK and SomaticSniper.  We simply remove from the dataset anything that fails to meet \DIFaddbegin \DIFadd{these }\DIFaddend conventional quality-score thresholds. The other five are additional filters that we developed for this project. Each of these five filters represents an aspect of the data or the putative mutation that is generally thought to indicate that a given SNV call is a false positive.
-
-We first asked whether filtering the data increases or decreases the percentage of the sample that is overlapping between the two technical replicates. We expect that this analysis informs us about whether filtering out putative somatic mutations with these features affects the proportion of true somatic mutations in the remaining dataset. We found that, after removing putative mutations tagged by any one of the eight filters, the number of putative mutations per replicate decreased from 23--10,966 to 0--14 (Table~\ref{tab:summary_stats}). The size of the overlap between technical replicates decreased to 0--2 per sample, with 0 as the mode, i.e., the overall overlap percentage also decreased. We concluded that running all the filters on the data, in the absence of any other verification method, was counterproductive, because it removed all of the signal (as well as all the noise). 
-
-We next looked at the individual effects of six of \DIFdelbegin \DIFdel{the }\DIFdelend eight filters. (We did not specifically study the GATK and SS filters, since both are directly linked to read quality.) We \DIFaddbegin \DIFadd{ran each filter independently on the whole dataset to see which putative SNVs it caught. We }\DIFaddend first considered the total number of putative SNVs removed by each filter (Figure~\DIFdelbegin \DIFdel{\ref{fig:boxplot_number_filtered}) }\DIFdelend \DIFaddbegin \DIFadd{\ref{fig:boxplot_filtered}) on each sample}\DIFaddend . We found that different filters removed different numbers of mutations, and that the lion's share of mutations were removed by the VAQ (Variant Allele Quality) and LOH (Loss of Heterozygosity) filters, which removed on average 309 and 539 putative SNVs, respectively (Table~\ref{tab:summary_stats}). Three other filters, those removing overlap with dbSNP and mutations within a 10 bp window of indels or other SNVs, removed 16, 28, and 46 putative mutations per sample, respectively (Figure~\DIFdelbegin \DIFdel{\ref{fig:boxplot_number_filtered} }\DIFdelend \DIFaddbegin \DIFadd{\ref{fig:boxplot_filtered} }\DIFaddend and Table~\ref{tab:summary_stats}). The final filter, which removed putative SNVs with less than 10\% coverage of the alternate allele, removed 1 putative SNV on average. 
-
-\DIFdelbegin \DIFdel{We next }\DIFdelend %DIF > % start edits for Reviewer One comment 13 here%%
-\DIFaddbegin \DIFadd{We next looked at the individual effects the six of eight filters on the overlap between replicates. We }\DIFaddend asked how many of the SNVs removed by each filter were SNVs present in the overlap between technical replicates, and how many were in just one sample? Put differently, what percentage of putative SNVs removed by a given filter was in the category more likely to be true positives (overlap), versus the category more likely to be false positives (only present in one replicate)? To answer this question, we plotted the percent of the overlap (per sample) that was removed by each of the six filters (Figure~\DIFdelbegin \DIFdel{\ref{fig:boxplot_percent_overlap_filtered}}\DIFdelend \DIFaddbegin \DIFadd{\ref{fig:boxplot_filtered}}\DIFaddend ). We found that the three filters removing overlap with dbSNP and putative mutations within 10bp of an indel or another SNV removed, on average, only 3\%--4\% of the overlap (Table~\ref{tab:summary_stats}). By contrast, the VAQ filter (specific to SomaticSniper) and the LOH filter each removed 53\% and 51\% of the overlap, respectively (Figure~\DIFdelbegin \DIFdel{\ref{fig:boxplot_percent_overlap_filtered}}\DIFdelend \DIFaddbegin \DIFadd{\ref{fig:boxplot_filtered}}\DIFaddend , Table~\ref{tab:summary_stats}). Thus, our evidence suggests that the filters removing overlap with dbSNP and putative mutations near other putative mutations are preferentially removing false positives, while the filters removing low VAQ and LOH are less discriminatory and may be removing a large proportion of the true positives. 
-
-%DIF < % this is figures 8 and 9, which need to be added to the document and explained now...
-\DIFaddbegin \DIFadd{We next looked at the individual effects of the six of eight filters on the difference between replicates of each sample, those mutations found only in WGS }\textit{\DIFadd{or}} \DIFadd{WGA, }\textit{\DIFadd{but not}} \DIFadd{both. We looked at the ratio, per sample per filter, of putative SNVs removed from the difference versus the overlap of WGS and WGA ($WGS \triangle WGA / WGS \cap WGA$), where a higher ratio indicates that more mutations are removed from the difference than the overlap. We first plotted this ratio for each sample for each filter (Figure~\ref{fig:diffset}, }\textit{\DIFadd{top left}}\DIFadd{). To better compare the filters to each other, we looked at the distribution of ratios across samples for each filter (Figure~\ref{fig:diffset}, }\textit{\DIFadd{top right}}\DIFadd{). We found that the LOH and VAQ filters scored worst, followed by the 10bp-SNV, 10bp-INDEL, and dbSNP filters, in that order. (We did not look at the <10}\% \DIFadd{filter for this analysis, because it did not catch enough data to be meaningful.) Thus, those filters that remove the fewest putative SNVs in the overlap, also remove the highest number of SNVs in the difference relative to the overlap.
-}
-
-\DIFadd{We next looked at the similarity of WGS to WGA as a whole as measured by the difference, normalized to 100, in the Jaccard similarity coefficient ($WGS \cap WGA / WGS \cup WGA$) before and after filtering (Jaccard after-Jaccard before /Jaccard before). By this measure, and in contrast to the previous two measures, we found that LOH and VAQ performed the best by an order of magnitude, followed by 10bp-SNV, 10bp-INDEL, and dbSP, in that order (Figure~\ref{fig:diffset}, }\textit{\DIFadd{below}}\DIFadd{). We see this effect because these two filters remove so much data: half or more of the overlap and as much or more of the difference. Removing so much of the data makes the intersection much, much smaller, and thus makes the Jaccard coefficient between samples much larger, mostly independently of the size of the overlap.
-}
-
-%DIF > % this is figure 6
-\DIFaddend Finally, we asked whether either the VAQ or the LOH filter, responsible between them for removing most \DIFaddbegin \DIFadd{to all }\DIFaddend of the overlap, was more likely to remove overlap for samples that showed a lot of overlap. We plotted the percent of the overlap filtered out by the LOH filter (Figure~\DIFdelbegin \DIFdel{\ref{fig:LOH_all}}\DIFdelend \DIFaddbegin \DIFadd{\ref{fig:LOH-VAQ_all}}\DIFaddend ) and the percent of the overlap filtered out by the VAQ filter (Figure~\DIFdelbegin \DIFdel{\ref{fig:VAQ_all}}\DIFdelend \DIFaddbegin \DIFadd{\ref{fig:LOH-VAQ_all}}\DIFaddend ) against the number of putative mutations in the overlap, and we found that for samples with overlap of $\lesssim 100$ there was no strong trend. Either filter was removing between 0 and 100\% of the overlap for some samples. For samples with more overlap, however, LOH was the primary filter removing overlap.   
-
-We found an additional trend that was initially unexpected: The LOH \DIFdelbegin \DIFdel{graph (Figure~\ref{fig:LOH_all}) and the VAQ graph }\DIFdelend \DIFaddbegin \DIFadd{and VAQ graphs }\DIFaddend (Figure~\DIFdelbegin \DIFdel{\ref{fig:VAQ_all}}\DIFdelend \DIFaddbegin \DIFadd{\ref{fig:LOH-VAQ_all}}\DIFaddend ) looked like exact inverses of each other. Further inspection showed that the sum of the percent overlap removed by LOH and by VAQ was nearly, but not exactly, 100\% in all cases. In hindsight, this result was somewhat expected, since (i) each of the LOH and VAQ filters removes about half of the overlap, and (ii) all or almost all of the overlap is removed every time.
-
-\section*{Discussion}
-
-GBM is an evolutionary disease that develops when mutations arise in glial cell lines and the mutated cells and their lineages subsequently co-opt the surrounding tissue and systems to the detriment of the organism as a whole. Treatment for GBM is difficult and has poor outcomes \citep{GBM-stats}, but may be improved by a more complete understanding of the somatic mutations present in GBM. Large-scale sequencing projects, like TCGA, make cancer sequencing data available to many researchers. These data are of enormous potential value to the research community, but their accuracy and reproducibility are unknown. Here, we have made a first step towards evaluating the reliability of the TCGA data, by comparing 55 technical replicates in the TCGA GBM dataset.
-
-We found that, on average, about half of the putative mutations in the raw data for the WGS replicate (no amplification before library preparation) and about a third of those in the WGA replicate (with amplification before library preparation) were present in both replicates. The number of mutations present in both replicates was anywhere between 20 and 5,000 putative mutations. We found further that the high number of putative somatic mutations in some, but not all, of the patient samples was repeatable across technical replicates. Moreover, samples with a higher frequency of putative mutations had equally similar technical replicates to those samples with a lower frequency of putative mutations. These results suggest the possibility that a higher mutation frequency could be a feature of a subset of GBM tumors and not a data artifact.
-
-Filtering the raw computational data using both quality scores from GATK and SomaticSniper, as well as five additional custom filters, eliminated more than half of the total number of putative mutations in all 110 samples, including most or all of those present in both replicates. To some extent, this result was unsurprising: These filters were designed to be used on wild type genomes, where it is generally assumed that any observed differences are more likely due to error than to the presence of true SNVs. For example, LOH in this case is more likely to be an error than an actual mutation. When we do cancer genomics, however, our goal is the opposite, to highlight changes. Therefore, it is possible that we need entirely different filtering protocols. There are also more theoretical reasons to consider altering the filtering protocols for cancer genomes. For example, multiple sources suggest that LOH mutations may be essential to cancer \citep{LOH}. This hypothesis, along with the data presented here, makes a strong argument for retaining these mutations in functional analyses rather than excluding them.
-
-Of the six filters whose individual effects we examined, only two, those that removed Loss of Heterozygosity (LOH) mutations and putative mutations with low VAQ (calculated by SomaticSniper), removed primarily mutations that we found in both technical replicates. In combination, they removed most or all of those mutations present in both replicates, since the two filters consistently removed nearly completely disjoint sets of putative mutations. Of the remaining four filters, only three removed any appreciable number of putative mutations from the sample, and each of these preferentially removed mutations present in only one technical replicate. Two of these three filters, those removing putative SNVs within a 10 bp window of putative indels or other putative SNVs, recognize a feature (clustered mutations) that suggests a local problem with the reads or alignment. The third removes overlap with dbGaP.  Our analysis suggests that these three filters do clean up the data in a meaningful way. By contrast, it may be more useful not to apply the two filters that removed principally data from the overlap of the two replicates.
-
-Several factors limit the conclusions we may draw from this analysis. First, in this analysis we used repeatability between technical replicates (being in the WGS and WGA samples) as a measure of confidence in a putative SNV. This metric is potentially problematic for \DIFdelbegin \DIFdel{three reasons}\DIFdelend \DIFaddbegin \DIFadd{many reasons, including but not limited to}\DIFaddend : (i) cancer is highly heterogeneous, and so a legitimate somatic SNV might show up in one replicate \DIFdelbegin \DIFdel{and }\DIFdelend \DIFaddbegin \DIFadd{but }\DIFaddend not another; (ii) if the DNA sample is degraded to some extent, due to surgery conditions or some other factor out of the hands of the sequencing center, the same errors may appear in both replicates; \DIFdelbegin \DIFdel{and }\DIFdelend (iii) \DIFaddbegin \DIFadd{the SNV calling process may enrich for artifacts such as germ line variants, which are nearly indistinguishable from somatic SNVs in computational analyses; cross-referencing to gold standards such as dbSNP is the only way to identify germline SNPs; (iv) }\DIFaddend a putative mutation that is present in both samples may be a somatic mutation that arose before the tumor \citep{pre-tumor-muts}. Although repeatability \DIFdelbegin \DIFdel{does not and could not perfectly measure confidence }\DIFdelend \DIFaddbegin \DIFadd{across technical replicates cannot guarantee }\DIFaddend that a putative mutation is a \DIFaddbegin \DIFadd{true }\DIFaddend somatic mutation, it does \DIFdelbegin \DIFdel{make it more likely}\DIFdelend \DIFaddbegin \DIFadd{increase the likelihood}\DIFaddend . Having an independent measure of confidence in SNV calls, even an imperfect one, can help us gauge the accuracy of other measures, specifically of different filtering approaches. 
-
-Second, we studied only one particular SNV caller, SomaticSniper \citep{SomaticSniper}. There are other, equally widely used SNV callers available \citep{MuTect, VarScan, Strelka}, which might do better or worse than the one we have chosen here. Also, we did not even consider every possible quality metric available in the SNV-caller we did choose. For example, we did not look at the effects of the SomaticScore or the GATK quality score individually. In the future, it would be worthwhile to evaluate other SNV-callers and other quality metrics.
-
-We have shown that there is significant overlap between technical replicates of whole exome sequencing in the TCGA GBM dataset, comprising about 50\% of putative SNVs in WGS samples and about 30\% in WGA samples. The overlap exists even for samples with a high number of putative SNVs, suggesting that some GBMs may have significantly more somatic mutation than others. \DIFdelbegin \DIFdel{While PCR remains the gold standard for distinguishing true positives from false positives in sequencing, we looked at the effects of }\DIFdelend \DIFaddbegin \DIFadd{We acknowledge that the high rate of non-concordance between replicates in our analyses indicates that even the best computational analyses are insufficient to validate any single SNV; when the identity of a single SNV in a single sample is important, validation by an orthogonal method (}\textit{\DIFadd{e.g.}} \DIFadd{PCR, Sanger sequencing) remains necessary. Nevertheless, when less fine-tuned methods are acceptable, or are the only option available, one may wish to employ other methods of validation rather than nothing, such as the }\DIFaddend six data filters that are commonly applied to validate SNVs \DIFaddbegin \DIFadd{that we examined}\DIFaddend . We found that some of these filters remove principally those mutations found in one sample or the other, while other filers remove primarily those in the overlap. We suggest that when \DIFdelbegin \DIFdel{mutation validation by PCR }\DIFdelend \DIFaddbegin \DIFadd{orthogonal validation }\DIFaddend is not an option, only the filters that removed little overlap between samples should be used for computational SNV validation.
+We answered these questions using TCGA data from 55 GBM tumors that were sequenced twice, once each with (i) the standard whole-genome sequencing (WGS) protocol, and (ii) an additional amplification step before library prep, which we refer to as the whole-genome amplification (WGA) protocol. For each of these 55 technical replicate pairs, we compared the somatic variants found in the WGS and WGA replicates, before and after analyzing the variants using various SNV-filtering approaches. We found significant overlap (around 50\%) between technical replicates, but also significant differences. As expected, the additional amplification step in the WGA protocol versus the WGS protocol added some putative mutations to the sample, so that on average these replicates had (i) more putative mutations, and (ii) a smaller percentage overlap between replicates. We found that the number of mutations in the WGS replicates varied by orders of magnitude, from 110 to 8,192. Contrary to expectations, the percentage overlap between technical replicates did not decrease with increasing numbers of putative mutations, suggesting real variation in mutation frequency (the absolute number of SNVs found in a tumor) between samples from the same tumor. This result may be in part due to known mutational hotspots in some tumors \citep{Karen}. Our attempt to use SNV filtering, either via SomaticSniper \citep{SomaticSniper} or via custom-built filters, to increase the similarity between technical replicates was unsuccessful: Filtering removed almost the entirety of the overlap between the replicates.
 
 \section*{Methods}
 
@@ -202,14 +106,13 @@ We have shown that there is significant overlap between technical replicates of 
 
 All sequence data came from The Cancer Genome Atlas (TCGA) Research Network's Glioblastoma multiforme (GBM) data set \citep{TCGA-GBM}. We downloaded three BAM files for each of 55 patients using CGHub \citep{CGHub}. For each patient, data consisted of one BAM file taken from blood DNA, and two BAM files from tumor DNA, one for each technical replicate. In each case, the only difference in data collection for the two sets of tumor DNA was whether or not an amplification step was performed prior to building a library \citep{TCGA-GBM}. 
 
-We created a pipeline for backend processing of all TCGA BAM files, summarized in Figure~\ref{fig:pipeline}, with commands given in \DIFdelbegin \DIFdel{Table~\ref{tab:commands}. }\DIFdelend \DIFaddbegin \DIFadd{Supplementary Table 1. }\DIFaddend The custom python code to connect the pipeline is available in a public git repository (\texttt{https://github.com/clauswilke/GBM\_genomics}). Our pipeline first regenerated fastq files (original reads) from the TCGA BAM files, which were aligned to hg18, using picard \citep{picard}. Next, we used BWA \citep{bwa} to align the fastq files to hg19, and samtools \citep{SAMtools} to sort, index, and de-duplicate the new BAM file. We used GATK \citep{GATK} to do indel realignment and base recalibration, according to the standard best practices for genomics data \citep{best-practices}. Finally, we predicted somatic variants with SomaticSniper \citep{SomaticSniper}, with the output given in VCF format.
+We created a pipeline for backend processing of all TCGA BAM files, summarized in Figure~\ref{fig:pipeline}, with commands given in Table S1. The custom python code to connect the pipeline is available in a public git repository (\texttt{https://github.com/clauswilke/GBM\_genomics}). Our pipeline first regenerated fastq files (original reads) from the TCGA BAM files, which were aligned to hg18, using picard \citep{picard}. Next, we used BWA \citep{bwa} to align the fastq files to hg19, and samtools \citep{SAMtools} to sort, index, and de-duplicate the new BAM file. We used GATK \citep{GATK} to do indel realignment and base recalibration, according to the standard best practices for genomics data \citep{best-practices}. Finally, we predicted somatic variants with SomaticSniper \citep{SomaticSniper}, with the output given in VCF format.
 
-\DIFaddbegin \DIFadd{For all alignments, average read coverage was 30X, with a low of 5X and a high of 60X (stdev=15.95898). The percentage of mapped reads in our alignments was universally high (mean=98.03545, stdev=3.257872), with only two samples below 90}\% \DIFadd{(68}\% \DIFadd{and 74}\%\DIFadd{), and only 15 samples below 98}\%\DIFadd{. We found no correlation between the read coverage or the percentage of mapped reads and the total number of SNVs called (Supplementary Figures 2 and 3).
-}
+For all alignments, average read coverage was 30X, with a low of 5X and a high of 60X (stdev=15.95898). The percentage of mapped reads in our alignments was universally high (mean=98.03545, stdev=3.257872), with only two samples below 90\% (68\% and 74\%), and only 15 samples below 98\%. We found no correlation between the read coverage or the percentage of mapped reads and the total number of SNVs called (Figures S2 and S3).
 
-\DIFaddend \subsection*{Filtering and data analysis}
+\subsection*{Filtering and data analysis}
 
-After generating a VCF file with all of the putative somatic variants for each replicate of each sample, we used custom python code (available in public git repository) to list the putative mutations in each VCF, and to calculate the overlap between technical replicates. We then filtered the lists of putative SNVs according to the eight filters described in Table~\ref{tab:filters}, using a combination of command line options and custom python code (available in a public git repository). \DIFaddbegin \DIFadd{Each of the eight filters was run independently on the whole data set. }\DIFaddend The eight filters were enacted as follows: 
+After generating a VCF file with all of the putative somatic variants for each replicate of each sample, we used custom python code (available in public git repository) to list the putative mutations in each VCF, and to calculate the overlap between technical replicates. We then filtered the lists of putative SNVs according to the eight filters described in Table~\ref{tab:filters}, using a combination of command line options and custom python code (available in a public git repository). Each of the eight filters was run independently on the whole data set. The eight filters were enacted as follows: 
 
 \begin{itemize}
 \item[GATK:] The GATK quality score is automatically generated by GATK; GATK recommends discarding all putative mutations with a quality score below 40, which we did using the command line option \texttt{-q 40} when we called SomaticSniper (for the exact command, see Table 2). We did not at any point consider putative mutations removed by this filter, and did not consider its individual action. 
@@ -224,284 +127,68 @@ After generating a VCF file with all of the putative somatic variants for each r
 
 We used the same or substantially similar python scripts to calculate and compare the overlap between technical replicates before and after filtering. These scripts are also available in the public git repository. We plotted all data and did all statistics with standard plotting and statistics functions in R \citep{Rsoftware}. This code is also available in the public git repository.  
 
+\section*{Results}
+
+\subsection*{How similar are two replicate sequencing runs of the same tumor?}
+
+% Experiment: size of overlap (figures 3 and 4)
+%(a) a brief (one sentence to one paragraph) summary of what you did and why
+%(b) a description of what you found carrying out this experiment
+
+DNA sequencing is not error-free. Error is introduced by mis-called bases in sequencing runs and by mis-aligned bases during sequence analysis \citep{seqerror}. Loss of heterozygosity may be a real feature of the data, or an amplification artifact that occurs when only one allele of a polymorphic site is amplified. Cancer DNA is highly heterogenous, which makes for an additional source of error: A polymorphic mutation is defined as a mutation that is not fixed and therefore is not present in all tumor cells. Such mutations may or may not be represented at high enough frequency in a particular tumor specimen to be identified with next-gen sequencing. Alternatively, a polymorphic mutation may appear to be fixed when present at at very high frequency in a tumor specimen. In general, we would like to know how often these sorts of errors occur. One way of investigating this question would be to use an orthogonal technique such as PCR to verify each individual mutation. However, this method is expensive and time consuming. A cheaper alternative would be to sequence the tumor multiple times and to look at the similarity between replicates. Theoretically, any fixed mutation will appear in all replicates, while errors due to (i) sequencing errors, (ii) amplification errors, or (iii) alignment errors will not. (Polymorphic mutations would be present in some but not all samples, so this method does not address the difficulty of calling low-frequency variants in tumors.) The multiple-sequencing approach is used in most biological sequencing experiments, but not generally in cancer genomics, presumably due to unavailability of additional pathology specimens and the expense of sequencing multiple replicates for each of the hundreds of samples necessary for cancer genomics research. Nevertheless, even if researchers cannot verify every mutation or sequence multiple replicates for each tumor, it would be useful to know what percentage of called mutations would be likely to appear in additional sequencing replicates.
+
+TCGA's GBM data set includes 2 technical replicates for each of 55 tumors. In this case, the technical replicates are not identical. One protocol included an additional amplification step \citep{TCGA-GBM}, and we refer to this replicate as the WGA (whole-genome amplification) replicate, and the other as the WGS (whole-genome sequencing) replicate. Despite the difference in sequencing protocol, we would theoretically expect any fixed mutation to appear in both replicates, while polymorphic mutations and sequencing error might appear in only one. Consequently, those putative mutations appearing in both replicates are more likely to be real somatic variants than those found in only one replicate. We further hypothesized that the WGA samples would have a greater number of amplification errors, and thus more putative SNVs per sample, than the corresponding WGS samples. 
+
+For each patient (n=55), we called mutations in both technical replicates and in the patient's blood sample, using the same computational pipeline (see Figure~\ref{fig:pipeline} and Methods): We downloaded TCGA BAM files with CGHub \citep{CGHub}, re-generated fastq files with picard \citep{picard}, re-aligned the fastq files to hg19 with bwa \citep{bwa}, performed indel re-alignment and base recalibration with GATK \citep{GATK}, and finally called somatic mutations with SomaticSniper \citep{SomaticSniper}. We then compared the VCFs produced by SomaticSniper for each of the two technical replicates, and calculated the number of somatic mutations called in each replicate and the number of individual somatic mutations called in both replicates (hereafter, the overlap, see Figure~\ref{fig:pipeline}). We further calculated the percentage of mutations in each replicate that occurred in the overlap between the two. 
+
+There were an average of 844 putative mutations in the WGS replicates and 1,531 putative mutations in the WGA replicates (Table~\ref{tab:summary_stats}). Across all samples, the number of mutations in a given WGS replicate was correlated with the number of mutations in its corresponding WGA replicate (Spearman $\rho=0.42$, $S=16142$, $P=0.002$, Figure~\ref{fig:C282_v_C484}). As expected, for each sample the WGA replicate (with the additional amplification step) had slightly more mutations overall, with a slightly smaller percentage appearing in the overlap (Figures~\ref{fig:C282_v_C484} and~\ref{fig:unfiltered_total_muts}). We found that the percent overlap between the two samples, calculated as $\text{WGA} \cap \text{WGS}/\text{WGS}$ for WGS replicates and $\text{WGA} \cap \text{WGS}/\text{WGA}$ for WGA replicates, varied widely, from 1\%-74\%, but was fairly evenly distributed around the average of 31\% in WGA replicates and 44\% in WGS replicates (Table~\ref{tab:summary_stats}). As expected, the distribution of the percentage overlap was narrower and taller in the WGS replicates, because on the whole the WGA samples had more amplification errors than the WGS samples (Figure S1).
+
+% Experiment: number of mutations (figure 3 **ORIGINALLY FIGURE 4** )
+%(a) a brief (one sentence to one paragraph) summary of what you did and why
+%(b) a description of what you found carrying out this experiment
+Although the numbers of putative mutations in WGS and WGA samples were correlated, the exact number of putative mutations in each sample varied by orders of magnitude (Table~\ref{tab:summary_stats}). It is known that different cancers mutate at different rates: Some pediatric cancers have very few mutations \citep{RB2hit, pediatric}, while some adult tumors show a mutator phenotype leading to vastly increased numbers of mutations, usually resulting from errors in DNA repair pathways \citep{mutator}. GBM specifically is thought to have a relatively low mutation rate \citep{Parsons, TCGA-GBM-13}, and while some of our samples had low mutation frequencies in line with this theory (29 out of 110 samples had a mutation frequency within a factor of 2 of the reported 3 mutations per Mbp genome), several samples also had mutation frequencies an order of magnitude greater (24 out of 110 samples had a mutation frequency greater than 30 mutations per Mbp genome). One possible explanation is a degraded DNA sample, significant alignment error, or otherwise bad data. If this were the case, we would expect the percentage of the overlap between replicates (a measure of data quality) to decrease with the overall number of putative mutations. However, we found no significant correlation (Spearman $\rho=0.05$, $S=29268$, $P=0.68$) between the number of putative mutations in the WGS replicate and the percentage of those mutations that were in the overlap between replicates (Figure~\ref{fig:unfiltered_total_muts}). Thus, our data suggest that some samples may simply have a higher mutation frequency than others, or indeed than is generally supposed in GBM.
+
+\subsection*{Does more sophisticated SNV filtering software increase or decrease the degree of similarity between replicates?}
+
+% Experiment: which filters do what (figures 4 and 5) 
+As an additional computational validation step for somatic mutations, it is common practice to employ computational algorithms that attempt to distinguish somatic mutations from germ line mutations and sequencing errors \citep{SomaticSniper, mut_calling}. Software platforms to perform these tasks are plentiful, and each one typically employs multiple methods to identify true positive mutations. The two platforms used in this research, SomaticSniper \citep{SomaticSniper} and GATK \citep{GATK}, calculate one or more quality scores based on features of the dataset and the individual reads, and putative mutations with higher quality scores are considered to be more likely true somatic mutations than those with low quality scores. In addition to considering these quality scores, there are additional filtering steps that one can use to distinguish true somatic mutations from errors of all sorts. Table~\ref{tab:filters} lists eight distinct SNV filters we evaluated. The first three are based on the quality scores generated by GATK and SomaticSniper.  We simply remove from the dataset anything that fails to meet these conventional quality-score thresholds. The other five are additional filters that we developed for this project. Each of these five filters represents an aspect of the data or the putative mutation that is generally thought to indicate that a given SNV call is a false positive.
+
+We first asked whether filtering the data increases or decreases the percentage of the sample that is overlapping between the two technical replicates. We expect that this analysis informs us about whether filtering out putative somatic mutations with these features affects the proportion of true somatic mutations in the remaining dataset. We found that, after removing putative mutations tagged by any one of the eight filters, the number of putative mutations per replicate decreased from 23--10,966 to 0--14 (Table~\ref{tab:summary_stats}). The size of the overlap between technical replicates decreased to 0--2 per sample, with 0 as the mode, i.e., the overall overlap percentage also decreased. We concluded that running all the filters on the data, in the absence of any other verification method, was counterproductive, because it removed all of the signal (as well as all the noise). 
+
+We next looked at the individual effects of six of eight filters. (We did not specifically study the GATK and SS filters, since both are directly linked to read quality.) We ran each filter independently on the whole dataset to see which putative SNVs it caught. We first considered the total number of putative SNVs removed by each filter (Figure~\ref{fig:boxplot_filtered}) on each sample. We found that different filters removed different numbers of mutations, and that the lion's share of mutations were removed by the VAQ (Variant Allele Quality) and LOH (Loss of Heterozygosity) filters, which removed on average 309 and 539 putative SNVs, respectively (Table~\ref{tab:summary_stats}). Three other filters, those removing overlap with dbSNP and mutations within a 10 bp window of indels or other SNVs, removed 16, 28, and 46 putative mutations per sample, respectively (Figure~\ref{fig:boxplot_filtered} and Table~\ref{tab:summary_stats}). The final filter, which removed putative SNVs with less than 10\% coverage of the alternate allele, removed 1 putative SNV on average. 
+
+%% start edits for Reviewer One comment 13 here%%
+We next looked at the individual effects the six of eight filters on the overlap between replicates. We asked how many of the SNVs removed by each filter were SNVs present in the overlap between technical replicates, and how many were in just one sample? Put differently, what percentage of putative SNVs removed by a given filter was in the category more likely to be true positives (overlap), versus the category more likely to be false positives (only present in one replicate)? To answer this question, we plotted the percent of the overlap (per sample) that was removed by each of the six filters (Figure~\ref{fig:boxplot_filtered}). We found that the three filters removing overlap with dbSNP and putative mutations within 10bp of an indel or another SNV removed, on average, only 3\%--4\% of the overlap (Table~\ref{tab:summary_stats}). By contrast, the VAQ filter (specific to SomaticSniper) and the LOH filter each removed 53\% and 51\% of the overlap, respectively (Figure~\ref{fig:boxplot_filtered}, Table~\ref{tab:summary_stats}). Thus, our evidence suggests that the filters removing overlap with dbSNP and putative mutations near other putative mutations are preferentially removing false positives, while the filters removing low VAQ and LOH are less discriminatory and may be removing a large proportion of the true positives. 
+
+We next looked at the individual effects of the six of eight filters on the difference between replicates of each sample, those mutations found only in WGS \textit{or} WGA, \textit{but not} both. We looked at the ratio, per sample per filter, of putative SNVs removed from the difference versus the overlap of WGS and WGA ($WGS \triangle WGA / WGS \cap WGA$), where a higher ratio indicates that more mutations are removed from the difference than the overlap. We first plotted this ratio for each sample for each filter (Figure~\ref{fig:diffset}, \textit{top left}). To better compare the filters to each other, we looked at the distribution of ratios across samples for each filter (Figure~\ref{fig:diffset}, \textit{top right}). We found that the LOH and VAQ filters scored worst, followed by the 10bp-SNV, 10bp-INDEL, and dbSNP filters, in that order. (We did not look at the <10\% filter for this analysis, because it did not catch enough data to be meaningful.) Thus, those filters that remove the fewest putative SNVs in the overlap, also remove the highest number of SNVs in the difference relative to the overlap.
+
+We next looked at the similarity of WGS to WGA as a whole as measured by the difference, normalized to 100, in the Jaccard similarity coefficient ($WGS \cap WGA / WGS \cup WGA$) before and after filtering (Jaccard after-Jaccard before /Jaccard before). By this measure, and in contrast to the previous two measures, we found that LOH and VAQ performed the best by an order of magnitude, followed by 10bp-SNV, 10bp-INDEL, and dbSP, in that order (Figure~\ref{fig:diffset}, \textit{below}). We see this effect because these two filters remove so much data: half or more of the overlap and as much or more of the difference. Removing so much of the data makes the intersection much, much smaller, and thus makes the Jaccard coefficient between samples much larger, mostly independently of the size of the overlap.
+
+%% this is figure 6
+Finally, we asked whether either the VAQ or the LOH filter, responsible between them for removing most to all of the overlap, was more likely to remove overlap for samples that showed a lot of overlap. We plotted the percent of the overlap filtered out by the LOH filter (Figure~\ref{fig:LOH-VAQ_all}) and the percent of the overlap filtered out by the VAQ filter (Figure~\ref{fig:LOH-VAQ_all}) against the number of putative mutations in the overlap, and we found that for samples with overlap of $\lesssim 100$ there was no strong trend. Either filter was removing between 0 and 100\% of the overlap for some samples. For samples with more overlap, however, LOH was the primary filter removing overlap.   
+
+We found an additional trend that was initially unexpected: The LOH and VAQ graphs (Figure~\ref{fig:LOH-VAQ_all}) looked like exact inverses of each other. Further inspection showed that the sum of the percent overlap removed by LOH and by VAQ was nearly, but not exactly, 100\% in all cases. In hindsight, this result was somewhat expected, since (i) each of the LOH and VAQ filters removes about half of the overlap, and (ii) all or almost all of the overlap is removed every time.
+
+\section*{Discussion}
+
+GBM is an evolutionary disease that develops when mutations arise in glial cell lines and the mutated cells and their lineages subsequently co-opt the surrounding tissue and systems to the detriment of the organism as a whole. Treatment for GBM is difficult and has poor outcomes \citep{GBM-stats}, but may be improved by a more complete understanding of the somatic mutations present in GBM. Large-scale sequencing projects, like TCGA, make cancer sequencing data available to many researchers. These data are of enormous potential value to the research community, but their accuracy and reproducibility are unknown. Here, we have made a first step towards evaluating the reliability of the TCGA data, by comparing 55 technical replicates in the TCGA GBM dataset.
+
+We found that, on average, about half of the putative mutations in the raw data for the WGS replicate (no amplification before library preparation) and about a third of those in the WGA replicate (with amplification before library preparation) were present in both replicates. The number of mutations present in both replicates was anywhere between 20 and 5,000 putative mutations. We found further that the high number of putative somatic mutations in some, but not all, of the patient samples was repeatable across technical replicates. Moreover, samples with a higher frequency of putative mutations had equally similar technical replicates to those samples with a lower frequency of putative mutations. These results suggest the possibility that a higher mutation frequency could be a feature of a subset of GBM tumors and not a data artifact.
+
+Filtering the raw computational data using both quality scores from GATK and SomaticSniper, as well as five additional custom filters, eliminated more than half of the total number of putative mutations in all 110 samples, including most or all of those present in both replicates. To some extent, this result was unsurprising: These filters were designed to be used on wild type genomes, where it is generally assumed that any observed differences are more likely due to error than to the presence of true SNVs. For example, LOH in this case is more likely to be an error than an actual mutation. When we do cancer genomics, however, our goal is the opposite, to highlight changes. Therefore, it is possible that we need entirely different filtering protocols. There are also more theoretical reasons to consider altering the filtering protocols for cancer genomes. For example, multiple sources suggest that LOH mutations may be essential to cancer \citep{LOH}. This hypothesis, along with the data presented here, makes a strong argument for retaining these mutations in functional analyses rather than excluding them.
+
+Of the six filters whose individual effects we examined, only two, those that removed Loss of Heterozygosity (LOH) mutations and putative mutations with low VAQ (calculated by SomaticSniper), removed primarily mutations that we found in both technical replicates. In combination, they removed most or all of those mutations present in both replicates, since the two filters consistently removed nearly completely disjoint sets of putative mutations. Of the remaining four filters, only three removed any appreciable number of putative mutations from the sample, and each of these preferentially removed mutations present in only one technical replicate. Two of these three filters, those removing putative SNVs within a 10 bp window of putative indels or other putative SNVs, recognize a feature (clustered mutations) that suggests a local problem with the reads or alignment. The third removes overlap with dbGaP.  Our analysis suggests that these three filters do clean up the data in a meaningful way. By contrast, it may be more useful not to apply the two filters that removed principally data from the overlap of the two replicates.
+
+Several factors limit the conclusions we may draw from this analysis. First, in this analysis we used repeatability between technical replicates (being in the WGS and WGA samples) as a measure of confidence in a putative SNV. This metric is potentially problematic for many reasons, including but not limited to: (i) cancer is highly heterogeneous, and so a legitimate somatic SNV might show up in one replicate but not another; (ii) if the DNA sample is degraded to some extent, due to surgery conditions or some other factor out of the hands of the sequencing center, the same errors may appear in both replicates; (iii) the SNV calling process may enrich for artifacts such as germ line variants, which are nearly indistinguishable from somatic SNVs in computational analyses; cross-referencing to gold standards such as dbSNP is the only way to identify germline SNPs; (iv) a putative mutation that is present in both samples may be a somatic mutation that arose before the tumor \citep{pre-tumor-muts}. Although repeatability across technical replicates cannot guarantee that a putative mutation is a true somatic mutation, it does increase the likelihood. Having an independent measure of confidence in SNV calls, even an imperfect one, can help us gauge the accuracy of other measures, specifically of different filtering approaches. 
+
+Second, we studied only one particular SNV caller, SomaticSniper \citep{SomaticSniper}. There are other, equally widely used SNV callers available \citep{MuTect, VarScan, Strelka}, which might do better or worse than the one we have chosen here. Also, we did not even consider every possible quality metric available in the SNV-caller we did choose. For example, we did not look at the effects of the SomaticScore or the GATK quality score individually. In the future, it would be worthwhile to evaluate other SNV-callers and other quality metrics.
+
+We have shown that there is significant overlap between technical replicates of whole exome sequencing in the TCGA GBM dataset, comprising about 50\% of putative SNVs in WGS samples and about 30\% in WGA samples. The overlap exists even for samples with a high number of putative SNVs, suggesting that some GBMs may have significantly more somatic mutation than others. We acknowledge that the high rate of non-concordance between replicates in our analyses indicates that even the best computational analyses are insufficient to validate any single SNV; when the identity of a single SNV in a single sample is important, validation by an orthogonal method (\textit{e.g.} PCR, Sanger sequencing) remains necessary. Nevertheless, when less fine-tuned methods are acceptable, or are the only option available, one may wish to employ other methods of validation rather than nothing, such as the six data filters that are commonly applied to validate SNVs that we examined. We found that some of these filters remove principally those mutations found in one sample or the other, while other filers remove primarily those in the overlap. We suggest that when orthogonal validation is not an option, only the filters that removed little overlap between samples should be used for computational SNV validation.
+
 %\section*{}
 
-%\bibliography{TCGA_bib}
-%\bibliographystyle{peerj}
-
-\begin{thebibliography}{31}
-\providecommand{\natexlab}[1]{#1}
-\providecommand{\url}[1]{\texttt{#1}}
-\providecommand{\urlprefix}{URL }
-\expandafter\ifx\csname urlstyle\endcsname\relax
-  \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
-  \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
-  \urlstyle{rm}\Url}\fi
-
-\bibitem[{Alioto et~al.(2014)Alioto, Derdak, Beck, Boutros, Bower, Buchhalter,
-  Eldridge, Harding, Heisler, Hovig, Jones, Lynch, Nakken, Ribeca, Sertier,
-  Simpson, Spellman, Tarpey, Tonon, Vodák, Yamaguchi, Agullo, Dabad, Denroche,
-  Ginsbach, Heath, Raineri, Anderson, Brors, Drews, Eils, Fujimoto, Giner, He,
-  Hennings-Yeomans, Hutter, Jäger, Kabbe, Kandoth, Lee, Létourneau, Ma,
-  Nakagawa, Paramasivam, Patch, Peto, Schlesner, Seth, Torrents, Wheeler, Xi,
-  Zhang, Gerhard, Quesada, Valdés-Mas, Gut, Campbell, Hudson, McPherson,
-  Puente, and Gut}]{mut_calling}
-\textbf{Alioto TS, Derdak S, Beck TA, Boutros PC, Bower L, Buchhalter I,
-  Eldridge MD, Harding NJ, Heisler LE, Hovig E, Jones DTW, Lynch AG, Nakken S,
-  Ribeca P, Sertier AS, Simpson JT, Spellman P, Tarpey P, Tonon L, Vodák D,
-  Yamaguchi TN, Agullo SB, Dabad M, Denroche RE, Ginsbach P, Heath SC, Raineri
-  E, Anderson CL, Brors B, Drews R, Eils R, Fujimoto A, Giner FC, He M,
-  Hennings-Yeomans P, Hutter B, Jäger N, Kabbe R, Kandoth C, Lee S,
-  Létourneau L, Ma S, Nakagawa H, Paramasivam N, Patch AM, Peto M, Schlesner
-  M, Seth S, Torrents D, Wheeler DA, Xi L, Zhang J, Gerhard DS, Quesada V,
-  Valdés-Mas R, Gut M, Campbell PJ, Hudson TJ, McPherson JD, Puente XS, Gut
-  IG}. \textbf{2014}.
-\newblock A comprehensive assessment of somatic mutation calling in cancer
-  genomes.
-\newblock \emph{bioRxiv} \doi{10.1101/012997}.
-
-\bibitem[{Brennan et~al.(2013)Brennan, Verhaak, McKenna, Campos, Noushmehr,
-  Salama, Zheng, Chakravarty, Sanbom, Berman, Beroukhim, Bernard, Wu, Genovese,
-  Shmulevich, Barnholtz-Sloan, Zou, Vegesna, Shukla, Ciriello, Yung, Zhang,
-  Sougnez, Mikkelsen, Aldape, Binger, Meir, Prados, Sloan, Black, Eschbacher,
-  Finocchiaro, Friedman, Andrews, Guha, Iacocca, O'Neill, Foltz, Myers,
-  Weisenberger, Penny, Kucherlapati, Perou, Hayes, Gibbs, Marra, Mills, Lander,
-  Spellman, Wilson, Sander, Weinstein, Meyerson, Gabriel, Laird, Haussler,
-  Getz, Chin, and {TCGA Research Network}}]{TCGA-GBM-13}
-\textbf{Brennan CW, Verhaak RG, McKenna A, Campos B, Noushmehr H, Salama SR,
-  Zheng S, Chakravarty D, Sanbom JZ, Berman SH, Beroukhim R, Bernard B, Wu CJ,
-  Genovese G, Shmulevich I, Barnholtz-Sloan J, Zou L, Vegesna R, Shukla SA,
-  Ciriello G, Yung W, Zhang W, Sougnez C, Mikkelsen T, Aldape K, Binger DD,
-  Meir EGV, Prados M, Sloan A, Black KL, Eschbacher J, Finocchiaro G, Friedman
-  W, Andrews DW, Guha A, Iacocca M, O'Neill BP, Foltz G, Myers J, Weisenberger
-  DJ, Penny R, Kucherlapati R, Perou CM, Hayes DN, Gibbs R, Marra M, Mills GB,
-  Lander E, Spellman P, Wilson R, Sander C, Weinstein J, Meyerson M, Gabriel S,
-  Laird PW, Haussler D, Getz G, Chin L, {TCGA Research Network}}.
-  \textbf{2013}.
-\newblock The somatic genomic landscape of glioblastoma.
-\newblock \emph{Cell} \textbf{155}:462--477.
-
-\bibitem[{{Broad Institute}(2014)}]{picard}
-\textbf{{Broad Institute}}. \textbf{2014}.
-\newblock \emph{picard}.
-\newblock \urlprefix\url{http://broadinstitute.github.io/picard/}.
-
-\bibitem[{Cerami et~al.(2010)Cerami, Demir, Schultz, Taylor, and
-  Sander}]{pathways}
-\textbf{Cerami E, Demir E, Schultz N, Taylor BS, Sander C}. \textbf{2010}.
-\newblock Automated network analysis identifies core pathways in glioblastoma.
-\newblock \emph{PLoS One} \textbf{5}:e8918.
-
-\bibitem[{Chen et~al.(2015)Chen, Pappo, and Dyer}]{pediatric}
-\textbf{Chen X, Pappo A, Dyer MA}. \textbf{2015}.
-\newblock Pediatric solid tumor genomics and developmental pliancy.
-\newblock \emph{Oncogene} \doi{10.1038/onc.2014.474}.
-
-\bibitem[{Cibulskis et~al.(2013)Cibulskis, Lawrence, Carter, Sivachenko, Jaffe,
-  Sougnez, Gabriel, Meyerson, Lander, and Getz}]{MuTect}
-\textbf{Cibulskis K, Lawrence MS, Carter SL, Sivachenko A, Jaffe D, Sougnez C,
-  Gabriel S, Meyerson M, Lander ES, Getz G}. \textbf{2013}.
-\newblock Sensitive detection of somatic point mutations in impure heterogenous
-  cancer samples.
-\newblock \emph{Nature Biotechnology} \textbf{31}:213--219.
-\newblock \doi{10.1038/nbt.2514}.
-
-\bibitem[{Friedmann-Morvinski(2014)}]{heterogenous2}
-\textbf{Friedmann-Morvinski D}. \textbf{2014}.
-\newblock Glioblastoma heterogeneity and cancer cell plasticity.
-\newblock \emph{Critical Reviews in Oncogenesis} \textbf{19}:327--336.
-
-\bibitem[{Fujimoto et~al.(1989)Fujimoto, Fults, Thomas, Nakamura, Heilbrun,
-  White, Story, Naylor, Kagan-Hallet, and Sheridan}]{LOH}
-\textbf{Fujimoto M, Fults DW, Thomas GA, Nakamura Y, Heilbrun M, White R, Story
-  JL, Naylor SL, Kagan-Hallet KS, Sheridan PJ}. \textbf{1989}.
-\newblock Loss of heterozygosity on chromosome 10 in human glioblastoma
-  multiforme.
-\newblock \emph{Genomics} \textbf{4}:210--214.
-
-\bibitem[{{GATK Development Team}(2015)}]{best-practices}
-\textbf{{GATK Development Team}}. \textbf{2015}.
-\newblock \emph{{GATK Best Practices: Recommended} workflows for variant
-  analysis with {GATK}}.
-\newblock
-  \urlprefix\url{https://www.broadinstitute.org/gatk/guide/best-practices}.
-
-\bibitem[{Gevaert and Plevritis(2013)}]{drivers}
-\textbf{Gevaert O, Plevritis S}. \textbf{2013}.
-\newblock Identifying master regulators of cancer and their downstream targets
-  by integrating genomic and epigenomic features.
-\newblock \emph{Pacific Symposium on Biocomputing} 123--134.
-
-\bibitem[{Knudson(1971)}]{RB2hit}
-\textbf{Knudson A}. \textbf{1971}.
-\newblock Mutation and cancer: statistical study of retinoblastoma.
-\newblock \emph{Proceedings of the National Academy of Sciences}
-  \textbf{68}:820--823.
-
-\bibitem[{Koboldt et~al.(2009)Koboldt, Chen, Wylie, Larson, McLellan, Mardis,
-  Weinstock, Wilson, and Ding}]{VarScan}
-\textbf{Koboldt DC, Chen K, Wylie T, Larson DE, McLellan MD, Mardis ER,
-  Weinstock GM, Wilson RK, Ding L}. \textbf{2009}.
-\newblock Varscan: variant detection in massively parallel sequencing of
-  individual and pooled samples.
-\newblock \emph{Bioinformatics} \textbf{25}:2283--2285.
-\newblock \doi{10.1093/bioinformatics/btp373}.
-
-\bibitem[{Kumar et~al.(2014)Kumar, Boyle, Tokita, Mikheev, Sanger, Girard,
-  Silber, Gonzalez-Cuyar, Hiatt, Adey, Lee, Kitzman, Born, Silbergeld, Olson,
-  Rostomily, and Shendure}]{heterogenous1}
-\textbf{Kumar A, Boyle EA, Tokita M, Mikheev AM, Sanger MC, Girard E, Silber
-  JR, Gonzalez-Cuyar LF, Hiatt JB, Adey A, Lee C, Kitzman JO, Born DE,
-  Silbergeld DL, Olson JM, Rostomily RC, Shendure J}. \textbf{2014}.
-\newblock Deep sequencing of multiple regions of glial tumors reveals spatial
-  heterogeneity for mutations in clinically relevant genes.
-\newblock \emph{Genome Biology} \textbf{15}:530--539.
-
-\bibitem[{Larson et~al.(2012)Larson, Harris, Chan, Koboldt, Abbott, Dooling,
-  Ley, Mardis, Wilson, and Ding}]{SomaticSniper}
-\textbf{Larson DE, Harris CC, Chan K, Koboldt DC, Abbott TE, Dooling DJ, Ley
-  TJ, Mardis ER, Wilson RK, Ding L}. \textbf{2012}.
-\newblock Somaticsniper: Identification of somatic point mutaitons in whole
-  genome sequencing data.
-\newblock \emph{Bioinformatics} \textbf{28}:311--317.
-
-\bibitem[{Li and Durbin(2009)}]{bwa}
-\textbf{Li H, Durbin R}. \textbf{2009}.
-\newblock Fast and accurate short read alignment with burrows-wheeler
-  transform.
-\newblock \emph{Bioinformatics} \textbf{25}:1754--1760.
-
-\bibitem[{Li et~al.(2009)Li, Handsaker, Wysoker, Fennell, Ruan, Homer, Marth,
-  Abecasis, Durbin, and Subgroup}]{SAMtools}
-\textbf{Li H, Handsaker B, Wysoker A, Fennell T, Ruan J, Homer N, Marth G,
-  Abecasis G, Durbin R, Subgroup GPP}. \textbf{2009}.
-\newblock The sequence alignment/map format and samtools.
-\newblock \emph{Bioinformatics} \textbf{25}:2078--2079.
-
-\bibitem[{Loeb(2011)}]{mutator}
-\textbf{Loeb LA}. \textbf{2011}.
-\newblock Human cancers express mutator phenotypes: origin, consequences and
-  targeting.
-\newblock \emph{Nature Reviews Cancer} \textbf{11}:450--457.
-
-\bibitem[{McKenna et~al.(2010)McKenna, Hanna, Banks, Sivachenko, Cibulskis,
-  Kernytsky, Garimella, Altshuler, Gabriel, Daly, and DePristo}]{GATK}
-\textbf{McKenna A, Hanna M, Banks E, Sivachenko A, Cibulskis K, Kernytsky A,
-  Garimella K, Altshuler D, Gabriel S, Daly M, DePristo MA}. \textbf{2010}.
-\newblock The genome analysis toolkit: a mapreduce framework for analyzing
-  next-generation dna sequencing data.
-\newblock \emph{Genome Research} \textbf{20}:1297--1303.
-
-\bibitem[{Nishikawa et~al.(2004)Nishikawa, Sugiyama, Narita, Furnari, Cavenee,
-  and Matsutani}]{rare}
-\textbf{Nishikawa R, Sugiyama T, Narita Y, Furnari F, Cavenee WK, Matsutani M}.
-  \textbf{2004}.
-\newblock Immunohistochemical analysis of the mutant epidermal growth factor,
-  $\delta${EGFR}, in glioblastoma.
-\newblock \emph{Brain Tumor Pathology} \textbf{21}:53--56.
-
-\bibitem[{Parsons et~al.(2008)Parsons, Jones, Zhang, Lin, Leary, Angenendt,
-  Mankoo, Carter, Siu, Gallia, Olivi, McLendon, Rasheed, Keir, Nikolskaya,
-  Nikolsky, Busam, Tekleab, Jr., Hartigan, Smith, Strausberg, Marie, Shinjo,
-  Yan, Riggins, Bigner, Karchin, Papadopoulos, Parmigiani, Vogelstein,
-  Velculescu, and Kinzler}]{Parsons}
-\textbf{Parsons DW, Jones S, Zhang X, Lin JCH, Leary RJ, Angenendt P, Mankoo P,
-  Carter H, Siu IM, Gallia GL, Olivi A, McLendon R, Rasheed BA, Keir S,
-  Nikolskaya T, Nikolsky Y, Busam DA, Tekleab H, Jr LAD, Hartigan J, Smith DR,
-  Strausberg RL, Marie SKN, Shinjo SMO, Yan H, Riggins GJ, Bigner DD, Karchin
-  R, Papadopoulos N, Parmigiani G, Vogelstein B, Velculescu VE, Kinzler KW}.
-  \textbf{2008}.
-\newblock An integrated genomic analysis of human glioblastoma multiforme.
-\newblock \emph{Science} \textbf{321}:1807--1812.
-
-\bibitem[{{R Core Team}(2014)}]{Rsoftware}
-\textbf{{R Core Team}}. \textbf{2014}.
-\newblock \emph{R: A Language and Environment for Statistical Computing}.
-\newblock R Foundation for Statistical Computing, Vienna, Austria.
-\newblock \urlprefix\url{http://www.R-project.org}.
-
-\bibitem[{Robasky et~al.(2014)Robasky, Lewis, and Church}]{replicates}
-\textbf{Robasky K, Lewis NE, Church GM}. \textbf{2014}.
-\newblock The role of replicates for error mitigation in next-generation
-  sequencing.
-\newblock \emph{Nature Reviews Genetics} \textbf{15}:56--62.
-\newblock \doi{10.1038/nrg3655}.
-
-\bibitem[{Saunders et~al.(2012)Saunders, Wong, Swamy, Becq, Murray, and
-  Cheetham}]{Strelka}
-\textbf{Saunders CT, Wong W, Swamy S, Becq J, Murray LJ, Cheetham RK}.
-  \textbf{2012}.
-\newblock Strelka: Accurate somatic small-variant calling from sequenced
-  tumor-normal sample pairs.
-\newblock \emph{Bioinformatics} \textbf{28}:1811--1817.
-\newblock \doi{10.1093/bioinformatics/bts271}.
-
-\bibitem[{{The Cancer Genome Atlas Research Network}(2008)}]{TCGA-GBM}
-\textbf{{The Cancer Genome Atlas Research Network}}. \textbf{2008}.
-\newblock Comprehensive genomic characterization defines human glioblastoma
-  genes and core pathways.
-\newblock \emph{Nature} \textbf{455}:1061--1068.
-
-\bibitem[{Tomasettia et~al.(2013)Tomasettia, Vogelstein, and
-  Parmigiania}]{pre-tumor-muts}
-\textbf{Tomasettia C, Vogelstein B, Parmigiania G}. \textbf{2013}.
-\newblock Half or more of the somatic mutations in cancers of self-renewing
-  tissues originate prior to tumor initiation.
-\newblock \emph{Proceedings of the National Academy of Sciences}
-  \textbf{110}:1999--2004.
-
-\bibitem[{{University of California Santa Cruz}(2014)}]{CGHub}
-\textbf{{University of California Santa Cruz}}. \textbf{2014}.
-\newblock \emph{{CGHub User Guide, Release 4.2.1}}.
-\newblock University of California, Santa Cruz, Santa Cruz, California.
-\newblock \urlprefix\url{https://cghub.ucsc.edu}.
-
-\bibitem[{Verhaak et~al.(2010)Verhaak, Hoadley, Purdom, Wang, Qi, Wilkerson,
-  Miller, Ding, Golub, Mesirov, Alexe, Lawrence, O'Kelly, Tamayo, Weir,
-  Gabriel, Winckler, Gupta, Jakkula, Feiler, Hodgson, James, Sarkaria, Brennan,
-  Kahn, Spellman, Wilson, Speed, Gray, Meyerson, Getz, Perou, Hayes, and
-  Network}]{subtypes}
-\textbf{Verhaak RG, Hoadley KA, Purdom E, Wang V, Qi Y, Wilkerson MD, Miller
-  CR, Ding L, Golub T, Mesirov JP, Alexe G, Lawrence M, O'Kelly M, Tamayo P,
-  Weir BA, Gabriel S, Winckler W, Gupta S, Jakkula L, Feiler HS, Hodgson JG,
-  James CD, Sarkaria JN, Brennan C, Kahn A, Spellman PT, Wilson RK, Speed TP,
-  Gray JW, Meyerson M, Getz G, Perou CM, Hayes DN, Network TCGAR}.
-  \textbf{2010}.
-\newblock Integrated genomic analysis identifies clinically relevant subtypes
-  of glioblastoma characterized by abnormalities in pdgfra, idh1, egfr, and
-  nf1.
-\newblock \emph{Cancer Cell} \textbf{17}:98—--110.
-
-\bibitem[{Wall et~al.(2014)Wall, Tang, Zerbe, Kvale, Kwok, Schaefer, and
-  Risch}]{seqerror}
-\textbf{Wall JD, Tang LF, Zerbe B, Kvale MN, Kwok PY, Schaefer C, Risch N}.
-  \textbf{2014}.
-\newblock Estimating genotype error rates from high-coverage next-generation
-  sequence data.
-\newblock \emph{Genome Research} \textbf{24}:1734--1739.
-
-\bibitem[{Wang et~al.(2008)Wang, Carbajal, Vijg, DiGiovanni, and
-  Vasquez}]{Karen}
-\textbf{Wang G, Carbajal S, Vijg J, DiGiovanni J, Vasquez KM}. \textbf{2008}.
-\newblock Dna structure-induced genomic instability in vivo.
-\newblock \emph{Journal of the National Cancer Institute}
-  \textbf{100}:1815--1817.
-
-\bibitem[{Wilson et~al.(2014)Wilson, Karajannis, and Harter}]{GBM-stats}
-\textbf{Wilson TA, Karajannis MA, Harter DH}. \textbf{2014}.
-\newblock Glioblastoma multiforme: State of the art and future therapeutics.
-\newblock \emph{Surgical Neurology International} \textbf{5}.
-\newblock \doi{10.4103/2152-7806.132138}.
-
-\bibitem[{Yu and Sun(2013)}]{SNPcall}
-\textbf{Yu X, Sun S}. \textbf{2013}.
-\newblock Comparing a few snp calling algorithms using low-coverage sequencing
-  data.
-\newblock \emph{BMC Bioinformatics} \textbf{14}.
-\newblock \doi{10.1186/1471-2105-14-274}.
-
-\end{thebibliography}
-
+\bibliography{TCGA_bib}
+\bibliographystyle{peerj}
 
 \cleardoublepage
 \section*{Tables and Figures}
@@ -559,7 +246,7 @@ We used the same or substantially similar python scripts to calculate and compar
 %\centerline{
 %\includegraphics[width=5in]{Figure1.pdf} 
 %}
-\caption{\textbf{Data processing pipeline.} For each of 55 patients, we began with a C484 tumor BAM file (WGS), a C282 tumor BAM file (WGA), and a normal BAM file, all aligned to hg18. For each BAM file, we used picard to regenerate fastq files, bwa to realign the fastq files to hg19, and GATK to recalibrate bases and indels. We used SomaticSniper to call somatic mutations (differences between the tumor and normal sequences) for each replicate. When we had a VCF for each replicate, we calculated the overlap between the two lists as the number of individual mutations which appeared in both replicates.}
+\caption{\textbf{Data processing pipeline.} For each of 55 patients, we began with a C484 tumor BAM file (WGS), a C282 tumor BAM file (WGA), and a normal BAM file, all aligned to hg18. For each BAM file, we used picard to regenerate fastq \DIFdelbeginFL \DIFdelFL{files}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{reads}\DIFaddendFL , bwa to realign the fastq files to hg19, and GATK to recalibrate bases and indels. We used SomaticSniper to call somatic mutations (differences between the tumor and normal sequences) for each replicate. When we had a VCF for each replicate, we calculated the overlap between the two lists as the number of individual mutations \DIFdelbeginFL \DIFdelFL{which }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{that }\DIFaddendFL appeared in both replicates.}
 \label{fig:pipeline}
 \end{figure}
 
@@ -568,7 +255,7 @@ We used the same or substantially similar python scripts to calculate and compar
 %\centerline{
 %\includegraphics[width=5in]{Figure2.pdf} 
 %}
-\caption{\textbf{Number of putative SNVs in WGS versus WGA, as called by SomaticSniper before filtering.} Each point represents data for a single patient. The line is $y=x$, so points falling below the line agree with the hypothesis that an additional amplification step produces more sequencing errors in a sample. The number of mutations found in one replicate correlates with the number of mutations found in the other replicate (Spearman $\rho=0.42$, $S=16142$, $P=0.002$).}
+\caption{\textbf{Number of putative SNVs in WGS versus WGA, as called by SomaticSniper before filtering.} \DIFdelbeginFL \DIFdelFL{Each point represents data for a single }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{For each }\DIFaddendFL patient \DIFdelbeginFL \DIFdelFL{. The line is $y=x$}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{(represented by one point)}\DIFaddendFL , \DIFdelbeginFL \DIFdelFL{so points falling below }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{we compared }\DIFaddendFL the \DIFdelbeginFL \DIFdelFL{line agree with }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{number of SNVs called in }\DIFaddendFL the \DIFdelbeginFL \DIFdelFL{hypothesis that an additional amplification step produces more sequencing errors }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{WGS sample ($y$-axis) versus the number of SNVs called }\DIFaddendFL in \DIFdelbeginFL \DIFdelFL{a }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{the WGA }\DIFaddendFL sample \DIFaddbeginFL \DIFaddFL{($x$-axis)}\DIFaddendFL . \DIFdelbeginFL \DIFdelFL{The }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{As expected, the }\DIFaddendFL number of mutations found in one replicate correlates with the number of mutations found in the other replicate (Spearman $\rho=0.42$, $S=16142$, $P=0.002$). \DIFaddbeginFL \DIFaddFL{The line shown is $y=x$, so points falling below the line agree with the hypothesis that an additional amplification step produces more sequencing errors in a sample. }\DIFaddendFL }
 \label{fig:C282_v_C484}
 \end{figure}
 
@@ -577,7 +264,7 @@ We used the same or substantially similar python scripts to calculate and compar
 %\centerline{
 %\includegraphics[width=5in]{Figure3.pdf} 
 %}
-\caption{\textbf{Number of putative SNVs per sample does not correlate with the number of putative SNVs recoverable in both replicates.} The percentage of putative SNVs in a given sample that are in the overlap between replicates is not correlated to the number of mutations in that sample (Spearman $\rho=0.05$, $S=29268$, $P=0.68$). We calculated the percent overlap in two ways: with reference to the total number of putative SNVs in the WGS sample (red) and with reference to the total number of putative SNVs in the WGA sample (black). The correlation was calculated with respect to WGA.}
+\caption{\textbf{Number of putative SNVs per sample does not correlate with the number of putative SNVs recoverable in both replicates.} \DIFdelbeginFL \DIFdelFL{The }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{To test the hypothesis that samples with a greater number of SNVs also have a greater number of errors, and consequently a smaller }\DIFaddendFL percentage of \DIFaddbeginFL \DIFaddFL{SNVs recovered in the overlap between replicates, we compared the percentage of }\DIFaddendFL putative SNVs \DIFaddbeginFL \DIFaddFL{recovered }\DIFaddendFL in \DIFdelbeginFL \DIFdelFL{a given sample that are in }\DIFdelendFL the overlap between replicates \DIFdelbeginFL \DIFdelFL{is not correlated to }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{for a sample ($y$-axis) versus }\DIFaddendFL the number of mutations in that sample (\DIFaddbeginFL \DIFaddFL{$x$-axis). We found no correlation (}\DIFaddendFL Spearman $\rho=0.05$, $S=29268$, $P=0.68$)\DIFaddbeginFL \DIFaddFL{, suggesting that higher numbers of SNVs in a sample may not be only due to errors}\DIFaddendFL . We calculated the percent overlap in two ways: with reference to the total number of putative SNVs in the WGS sample (red) and with reference to the total number of putative SNVs in the WGA sample (black). The correlation was calculated with respect to WGA.}
 \label{fig:unfiltered_total_muts}
 \end{figure}
 
@@ -586,7 +273,9 @@ We used the same or substantially similar python scripts to calculate and compar
 %\centerline{
 %\includegraphics[width=6in]{Figure4.pdf} 
 %}
-\caption{\textbf{Independent performance of the individual filters of the overlap between replicates.} The $x$-axis gives the name of each filter (detail on Table 1), and the $y$-axis gives \textit{(above)} the number of mutations removed by a given filter in a given sample on a log scale, and \textit{(below)} the percentage of the WGS--WGA overlap removed by the filter, per sample. The LOH and VAQ filters removed a large number of putative SNVs and portion of the overlap. The <10\% filter removed very few putative SNVs and almost none of the overlap. The 10bp-SNV, 10bp-INDEL, and dbSNP filters removed an intermediate number of putative SNVs (~100), but only a very small portion of the overlap, making them the best performers on the overlap data. }
+\caption{\textbf{Independent performance of the individual filters of the overlap between replicates.} \DIFdelbeginFL \DIFdelFL{The $x$-axis gives the name of }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{For }\DIFaddendFL each filter (\DIFdelbeginFL \DIFdelFL{detail }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{names given }\DIFaddendFL on \DIFaddbeginFL \DIFaddFL{the $x$-axis, with detailed description in }\DIFaddendFL Table 1), \DIFdelbeginFL \DIFdelFL{and }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{we looked at }\DIFaddendFL the \DIFdelbeginFL \DIFdelFL{$y$-axis gives }\textit{\DIFdelFL{(above)}} %DIFAUXCMD
+\DIFdelFL{the }\DIFdelendFL number of mutations removed by a given filter in a given sample on a log scale \DIFaddbeginFL \textit{\DIFaddFL{(above)}}\DIFaddendFL , and \DIFdelbeginFL \textit{\DIFdelFL{(below)}} %DIFAUXCMD
+\DIFdelendFL the percentage of the WGS--WGA overlap removed by the filter \DIFaddbeginFL \textit{\DIFaddFL{(below)}}\DIFaddendFL , per sample. The LOH and VAQ filters removed a large number of putative SNVs and portion of the overlap. The <10\% filter removed very few putative SNVs and almost none of the overlap. The 10bp-SNV, 10bp-INDEL, and dbSNP filters removed an intermediate number of putative SNVs (~100), but only a very small portion of the overlap, making them the best performers on the overlap data. }
 \label{fig:boxplot_filtered}
 \end{figure}
 
@@ -595,7 +284,7 @@ We used the same or substantially similar python scripts to calculate and compar
 %\centerline{
 %\includegraphics[width=5in]{Figure5.pdf} 
 %}
-\caption{\textbf{Independent performance of individual filters of the difference between replicates.} \textit{(top left)} A scatter plot of the ratio, per sample per filter, of putative SNVs removed from the difference versus the overlap of WGS and WGA ($WGS \triangle WGA / WGS \cap WGA$). \textit{(top right)} Boxplot of the same data, divided by filter on the $x$-axis. \textit{(below)} Plot of the percentage difference in the Jaccard(WGS, WGA) before and after the action of each filter (each filter was run on the whole data set independently).}
+\caption{\textbf{Independent performance of individual filters of the difference between replicates.} \DIFaddbeginFL \DIFaddFL{For each sample, we compared the size of the difference between replicates (the number of SNVs found in only one of WGS or WGA) to the size of the overlap between replicates (the number of SNVs recovered from both the WGA and WGS replicates). }\DIFaddendFL \textit{(top left)} A scatter plot of the ratio, per sample per filter, of putative SNVs removed from the difference versus the overlap of WGS and WGA ($WGS \triangle WGA / WGS \cap WGA$). \textit{(top right)} Boxplot of the same data, divided by filter on the $x$-axis. \textit{(below)} Plot of the percentage difference in the Jaccard(WGS, WGA)\DIFaddbeginFL \DIFaddFL{, with Jaccard=$|WGS \cap WGA|/|WGS \cup WGA|$, }\DIFaddendFL before and after the action of each filter (each filter was run on the whole data set independently).}
 \label{fig:diffset}
 \end{figure}
 
@@ -604,9 +293,8 @@ We used the same or substantially similar python scripts to calculate and compar
 %\centerline{
 %\includegraphics[width=5in]{Figure6.pdf} 
 %}
-\caption{ \textbf{Replicate SNVs filtered out by LOH and VAQ are almost completely non-overlapping and cover most of the sample.} As the length of the overlap between WGS and WGA increases ($x$-axis),  \textit{(above)} the percentage of the overlap filtered out by LOH increases, and \textit{(below)} the percentage of the overlap filtered out by VAQ decreases. The two are almost (but not quite) perfect inverses; putative SNPs filtered by LOH and VAQ cover almost the entire overlap, and together sum to nearly 100\% of the overlap.}
+\caption{ \textbf{Replicate SNVs filtered out by LOH and VAQ are almost completely non-overlapping and cover most of the sample.} \DIFdelbeginFL \DIFdelFL{As }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Across samples, as }\DIFaddendFL the length of the overlap between WGS and WGA increases ($x$-axis),  \textit{(above)} the percentage of the overlap filtered out by LOH increases, and \textit{(below)} the percentage of the overlap filtered out by VAQ decreases. The two are almost (but not quite) perfect inverses\DIFdelbeginFL \DIFdelFL{; }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{: }\DIFaddendFL putative SNPs filtered by LOH and VAQ cover almost the entire overlap, and together sum to nearly 100\% of the overlap.}
 \label{fig:LOH-VAQ_all}
 \end{figure}
-
 
 \end{document}
